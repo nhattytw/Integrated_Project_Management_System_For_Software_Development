@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const user = require('../controllers/userController')
-const signupValidation = require('../controllers/signupValidation')
-const signinValidation = require('../controllers/signinValidation')
+const signupValidation = require('../middleware/signupValidation')
+const signinValidation = require('../middleware/signinValidation')
 
 // @route POST api/signup
 router.post(

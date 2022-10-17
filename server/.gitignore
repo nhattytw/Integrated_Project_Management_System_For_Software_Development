@@ -18,6 +18,9 @@
 .env.test.local
 .env.production.local
 
+#testing
+*.rest
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
