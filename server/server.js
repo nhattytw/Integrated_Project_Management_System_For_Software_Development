@@ -6,7 +6,7 @@ const app = express()
 const connectToDB = require('./utils/dbConnect')
 
 app.use(cors())
-app.use(express.json())
+
 // Parse application/json
 app.use(bodyParser.json())
 // Parse application/x-www-form-urlencoded
