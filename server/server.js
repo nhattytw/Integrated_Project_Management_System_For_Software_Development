@@ -3,9 +3,6 @@ const express = require('express')
 const cors = require('cors');
 const bodyParser = require('body-parser')
 const app = express()
-const connectToDB = require('./utils/dbConnect')
-
-app.use(cors())
 
 // Parse application/json
 app.use(bodyParser.json())
@@ -13,12 +10,14 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
       extended: true
 }))
-
-connectToDB()
+app.use(cors())
 
 //Routes
 const auth = require('./routes/auth')
+const user = require('./routes/user')
+
 app.use('/api', auth)
+app.use('/api', user)
 
 //Backend server 
 const PORT = process.env.PORT || 5000;

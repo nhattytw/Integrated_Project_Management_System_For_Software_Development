@@ -4,14 +4,18 @@ const user = require('../controllers/userController')
 const signupValidation = require('../middleware/signupValidation')
 const signinValidation = require('../middleware/signinValidation')
 
-// @route POST api/signup
+// @route    GET api/signup
+// @desc     Registered user
+// @access   Private
 router.post(
       '/signup',
       signupValidation,
       user.signup
 )
 
-// @route POST api/signin
+// @route    GET api/signin
+// @desc     Signin into account
+// @access   Private
 router.post(
       '/signin',
       signinValidation,

@@ -8,19 +8,14 @@ const validation = Joi.object({
             .min(5)
             .max(10)
             .trim(true)
-            .required(),
-      password: Joi
-            .string()
-            .min(8)
-            .required(),
+            .required()
 })
 
-const signinValidation = async (req, res, next) => {
-      const { userName, password } = req.body
+const searchUserValidation = async (req, res, next) => {
+      const { userName } = req.body
 
       const payload = {
-            userName: userName,
-            password: password,
+            userName: userName
       }
 
       const { error } = validation.validate(payload)
@@ -30,10 +25,10 @@ const signinValidation = async (req, res, next) => {
                   .json(
                         errorFunction(
                               true,
-                              `Error in User Input Data: , ${error.message}`)
+                              `Error in User Input Data, ${error.message}`)
                   )
       else
             next()
 }
 
-module.exports = signinValidation
+module.exports = searchUserValidation 

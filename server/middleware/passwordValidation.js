@@ -1,7 +1,7 @@
 const Joi = require('joi')
 const errorFunction = require('../utils/errorFunction')
 
-const validation = Joi.object({
+const validations = Joi.object({
       userName: Joi
             .string()
             .alphanum()
@@ -12,18 +12,25 @@ const validation = Joi.object({
       password: Joi
             .string()
             .min(8)
+            .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/)
+            .required(),
+      newPassword: Joi
+            .string()
+            .min(8)
+            .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/)
             .required(),
 })
 
-const signinValidation = async (req, res, next) => {
-      const { userName, password } = req.body
+const passValidation = async (req, res, next) => {
+      const { userName, password, newPassword } = req.body
 
       const payload = {
             userName: userName,
             password: password,
+            newPassword: newPassword,
       }
 
-      const { error } = validation.validate(payload)
+      const { error } = validations.validate(payload)
       if (error)
             return res
                   .status(406)
@@ -36,4 +43,4 @@ const signinValidation = async (req, res, next) => {
             next()
 }
 
-module.exports = signinValidation
+module.exports = passValidation

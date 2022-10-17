@@ -3,7 +3,8 @@ const DB_URL = process.env.DB_URL
 
 const connectToDB = async () => {
       try {
-            await mongoose.connect(
+            mongoose
+            .connect(
                   DB_URL, {
                   useNewUrlParser: true,
                   useUnifiedTopology: true,
