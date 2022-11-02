@@ -92,6 +92,14 @@ h1,h2,h2,h3,h4{
     /* height: 65% !important; */
     width: 100%;
 }
+.Login-Form{
+  padding: 40px;
+  
+}
+.Login-form-elt{
+  margin-bottom: 2px;
+ 
+}
 #btn-get-started{
     height: 50px;
     width: 150px;
@@ -218,4 +226,10 @@ h1,h2,h2,h3,h4{
     font-size:13px;
     margin-bottom:0;
   }
-  
+.login{
+ 
+border-radius: 29px;
+background: linear-gradient(145deg, #cacaca, #f0f0f0);
+box-shadow:  50px 50px 100px #5a5a5a,
+             -50px -50px 100px #ffffff;
+}
