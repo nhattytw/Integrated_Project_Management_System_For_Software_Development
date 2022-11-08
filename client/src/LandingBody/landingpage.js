@@ -43,7 +43,7 @@ const Landing = ()=>{
       </Container>
       <Container className='container'>
         <Row className='flexlist'>
-          <Col data-aos="fade-right" className="flexitem">
+          <Col data-aos="fade-right"  data-aos-duration="2000" className="flexitem">
             <Card className="cardH">
             <Card.Img variant="top" src={image} className="img-height icon" />
             <Card.Body>
@@ -55,7 +55,7 @@ const Landing = ()=>{
             </Card.Body>
             </Card>
           </Col>
-          <Col data-aos="fade-right">
+          <Col data-aos="fade-right" data-aos-duration="3000">
             <Card className="cardH" >
             <Card.Img variant="top" src={people} className="img-height icon"/>
             <Card.Body>
@@ -67,7 +67,7 @@ const Landing = ()=>{
             </Card.Body>
             </Card>
           </Col>
-          <Col data-aos="fade-right">
+          <Col data-aos="fade-right" data-aos-duration="2200"> 
             <Card className="cardH">
             <Card.Img variant="top" src={calander} className="img-height icon" />
             

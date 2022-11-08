@@ -83,14 +83,16 @@ h1,h2,h2,h3,h4{
 .navbar{
     background-color: rgba(66,105,158,0.4)
 }
-.intro{
+/* .intro{
     height: 650px;
-}
+} */
 .LandingImage{
     background-image: linear-gradient(to right, rgba(3,3,4,1),rgba(66,105,158,0.4)  ) ,url('../LandingBody/projectTeam.jpg');
     background-size: cover;
     /* height: 65% !important; */
     width: 100%;
+    height: 650px;
+    
 }
 .Login-Form{
   padding: 40px;
