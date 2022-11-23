@@ -21,7 +21,7 @@ const Landing = ()=>{
     return (
 
       <>
-      <NavBar />
+      
       <Container fluid className='LandingImage intro' >
         <Row className>
           <Col className='c1'>

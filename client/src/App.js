@@ -12,7 +12,7 @@ import './Styles/landing.css'
 function App() {
   return (
     <>
-    
+    <NavBar />
     <Landing />
     </>
  

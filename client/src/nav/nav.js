@@ -13,7 +13,7 @@ export const NavBar =()=> {
         <Navbar.Brand to="/">procurat.io</Navbar.Brand>
           <Nav className="me-auto justify-content-end" style={{width:"100%"}} >
             
-            <LinkContainer to="/"><Nav.Link>Home</Nav.Link></LinkContainer>
+          <LinkContainer to="/"><Nav.Link>Home</Nav.Link></LinkContainer>
            <LinkContainer to="/login"><Nav.Link>Login</Nav.Link></LinkContainer>
             <Nav.Link href="#features">Register</Nav.Link>
             <Nav.Link href="#pricing">About</Nav.Link>
