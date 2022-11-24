@@ -15,7 +15,7 @@ export const NavBar =()=> {
             
           <LinkContainer to="/"><Nav.Link>Home</Nav.Link></LinkContainer>
            <LinkContainer to="/login"><Nav.Link>Login</Nav.Link></LinkContainer>
-            <Nav.Link href="#features">Register</Nav.Link>
+           <LinkContainer to="/Registration"><Nav.Link>Registration</Nav.Link></LinkContainer>
             <Nav.Link href="#pricing">About</Nav.Link>
             <Nav.Link href="#pricing">Services</Nav.Link>
             <Nav.Link href="#pricing">Contact</Nav.Link>

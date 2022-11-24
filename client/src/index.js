@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route,RouterProvider, createBrowserRouter } from "react-router-dom";
 import  LoginPage from './login/login';
+import RegistrationPage from './Registration/Registration';
 import { NavBar } from './nav/nav';
 import Landing  from './LandingBody/landingpage';
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -17,6 +18,10 @@ const router = new createBrowserRouter([{
 {
   path:'/login',
   element:<LoginPage />
+},
+{
+  path:'/Registration',
+  element:<RegistrationPage />
 }
 ])
 root.render(
