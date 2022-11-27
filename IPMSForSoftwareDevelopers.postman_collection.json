@@ -1,0 +1,229 @@
+{
+	"info": {
+		"_postman_id": "bdde80f5-8790-48bd-b539-37557f9f5ebe",
+		"name": "IPMSForSoftwareDevelopers",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18319247"
+	},
+	"item": [
+		{
+			"name": "signin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "userName",
+							"value": "test12",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12ASdf!@",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/signin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "fullName",
+							"value": "Abcdefg",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "c@c.com",
+							"type": "text"
+						},
+						{
+							"key": "userName",
+							"value": "test123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12ASdf!@",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUsers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/api/user/getUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"user",
+						"getUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "searchUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "userName",
+							"value": "test123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/user/searchUser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"user",
+						"searchUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updatePassword",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "password",
+							"value": "12ASdf!@g",
+							"type": "text"
+						},
+						{
+							"key": "newPassword",
+							"value": "12ASdf!@",
+							"type": "text"
+						},
+						{
+							"key": "userName",
+							"value": "test123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/user/updatePassword",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"user",
+						"updatePassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateUserInfo",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "userName",
+							"value": "test123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12ASdf!@",
+							"type": "text"
+						},
+						{
+							"key": "fullName",
+							"value": "Abcde",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "c@c.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9000/api/user/updateUserInfo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"user",
+						"updateUserInfo"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
