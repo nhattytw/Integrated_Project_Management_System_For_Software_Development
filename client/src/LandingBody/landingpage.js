@@ -13,6 +13,7 @@ import calander from './realtime.svg';
 import team from './people.png';
 import constraintChart from './constraintChart.png'
 import laptop from './laptop.png'
+import { LinkContainer } from 'react-router-bootstrap';
 
 const Landing = ()=>{
   useEffect(()=>{
@@ -38,7 +39,8 @@ const Landing = ()=>{
           </Col>
         </Row>  
         <Row>
-        <button id="btn-get-started">Get Started</button>
+        
+        <LinkContainer to="/Dashboard "><button id="btn-get-started">Get Started</button></LinkContainer>
         </Row>
       </Container>
       <Container className='container'>
@@ -97,7 +99,7 @@ To determine if a specific application qualifies as real time is a function of i
           <hr className='line'/>
         
         </Row>
-        <Row >
+        <Row className='heightmanip' style={{margin:"100px 0px"}}>
           <Col >
                 <img src={team}/>
           </Col>

@@ -9,7 +9,9 @@ const RegistrationPage = ()=>{
     return(
         <div>
         <NavBar />
+        
         <Container className='login'>
+            
             <Row>
                 <Col><h3>peronal Details</h3>
                 <hr />

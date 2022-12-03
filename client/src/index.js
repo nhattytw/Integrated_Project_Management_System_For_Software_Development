@@ -9,6 +9,8 @@ import  LoginPage from './login/login';
 import RegistrationPage from './Registration/Registration';
 import { NavBar } from './nav/nav';
 import Landing  from './LandingBody/landingpage';
+import Dashboard from './Components/Dashboard/Dashboard'
+import Sidebar from './Components/Sidenav/sideNav';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const router = new createBrowserRouter([{
@@ -23,10 +25,18 @@ const router = new createBrowserRouter([{
   path:'/Registration',
   element:<RegistrationPage />
 }
+,
+{
+  path:'/Dashboard',
+  element:<Dashboard />
+}
+
 ])
 root.render(
   <React.StrictMode>
+  
     <RouterProvider router={router} />
+   
   </React.StrictMode>
 );
 
