@@ -3,4 +3,4 @@ const Projects=()=>{
         <h1>Projects page</h1>
     )
 }
-export default Projects
+export default Projects;    

@@ -14,12 +14,13 @@ import PinIcon from "@rsuite/icons/Pin";
 
 import Projects from './Projects';
 import React from 'react';
+import AdminPanel from './AdminPanel';
 
 const headerStyles = {
     padding: 18,
     fontSize: 16,
     height: 56,
-    background: '#34c3ff',
+    background: 'rgba(66,105,158)',
     color: ' #fff',
     whiteSpace: 'nowrap',
     overflow: 'hidden'
@@ -72,7 +73,7 @@ const Dashboard = ()=>{
                   <Nav.Item eventKey="1" active icon={<DashboardIcon />}>
                     Dashboard
                   </Nav.Item>
-                  <Nav.Item eventKey="2" icon={<ProjectIcon />}>
+                  <Nav.Item eventKey="2" icon={<ProjectIcon />} >
                     Project
                   </Nav.Item>
                  
@@ -108,7 +109,7 @@ const Dashboard = ()=>{
   
           <Container>
             <Content>
-                <Projects />
+                <AdminPanel />
             </Content>
           </Container>
         </Container>
