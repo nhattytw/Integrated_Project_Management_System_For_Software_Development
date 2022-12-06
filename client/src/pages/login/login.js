@@ -1,7 +1,7 @@
 import { Container,Col,Row,Button } from "react-bootstrap";
-import { NavBar } from "../nav/nav";
+import { NavBar } from "../../Components/nav/nav";
 import { Form } from "react-bootstrap"
-import people from '../Assets/BuissnessPeople.png'
+import people from '../../Assets/BuissnessPeople.png'
 
 
  const LoginPage=()=>{

@@ -7,6 +7,10 @@ import { teams } from "../../API/Teams";
 import { assignments } from "../../API/Assignments";
 import { issues } from "../../API/Issues";
 
+const MeetingSummary = ()=>
+{
+
+}
 const BudgetSummary = () =>{
     return(
         <Container style={{padding:"0px",margin:"45px 0px 0px 0px"}}>
@@ -58,9 +62,6 @@ const ActiveProjects = ()=>
                         <Card.Body><p>Short Describtion of the project </p></Card.Body>
                         <Button variant="light" style={{margin:"0px 10px 10px 10px"}}>Go to project</Button>
                     </Card>
-                        
-                        
-                        
                     </Col>
                     )
                 })}
@@ -77,6 +78,21 @@ const WorkStatus=()=>{
                 </Col>
                 <Col xs={6}>
                 <h3>issues</h3>
+                {issues.map((issue)=>{
+                    return(
+                        <>
+                        <h6>{issue.project}</h6>
+                       <ul>
+                        {issue.issue.map((i)=>
+                        {return(
+                            <li>{i}</li>
+                        )
+                        })}
+                       </ul>
+                       </>
+                       
+                    )
+                })}
                 </Col>
             </Row>
         </Container>
@@ -121,12 +137,20 @@ const AdminPanel = ()=>
         <>
        
         <Container>
+            <Row>
+                <Col><h3>Dashboard</h3></Col>
+            </Row>
+        <Row>
+                <Col>
+                    <ActiveProjects />
+                </Col>
+            </Row>
             <Row >
                 <Col >
                     <BudgetSummary />
                 </Col>
                 <Col xs={8}>
-                    <BudgetGraph />
+                        <BudgetGraph />
                 </Col>
                 <Col>
                   <h1>insert piechart</h1>

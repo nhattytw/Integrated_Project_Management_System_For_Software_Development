@@ -3,23 +3,21 @@ import { LinkContainer } from 'react-router-bootstrap';
 import CogIcon from '@rsuite/icons/legacy/Cog';
 import AngleLeftIcon from '@rsuite/icons/legacy/AngleLeft';
 import AngleRightIcon from '@rsuite/icons/legacy/AngleRight';
-import GearCircleIcon from '@rsuite/icons/legacy/GearCircle';
 import DashboardIcon from '@rsuite/icons/Dashboard';
-import GroupIcon from '@rsuite/icons/legacy/Group';
-import MagicIcon from '@rsuite/icons/legacy/Magic';
 import PageIcon from "@rsuite/icons/Page"//for payroll page
 import ProjectIcon from "@rsuite/icons/Project" //for project page
 import SentToUserIcon from "@rsuite/icons/SentToUser" //for communications page
 import PinIcon from "@rsuite/icons/Pin";
-
+import "rsuite/dist/rsuite.min.css";
 import Projects from './Projects';
 import React from 'react';
 import AdminPanel from './AdminPanel';
+import Assignments from './Assignments/Assingments';
 
 const headerStyles = {
     padding: 18,
-    fontSize: 16,
-    height: 56,
+    fontSize: 20,
+    height: 60,
     background: 'rgba(66,105,158)',
     color: ' #fff',
     whiteSpace: 'nowrap',
@@ -55,12 +53,13 @@ const headerStyles = {
 const Dashboard = ()=>{
     const [expand, setExpand] = React.useState(true);
     return (
-      <div className="show-fake-browser sidebar-page">
-        <Container>
+      <div className="show-fake-browser sidebar-page"   style={{Position:"sticky"}}>
+        <Container  >
           <Sidebar
             style={{ display: 'flex', flexDirection: 'column' }}
             width={expand ? 260 : 56}
             collapsible
+            className="Navcontainer"
           >
             <Sidenav.Header>
               <div style={headerStyles}>
@@ -68,7 +67,7 @@ const Dashboard = ()=>{
               </div>
             </Sidenav.Header>
             <Sidenav expanded={expand} defaultOpenKeys={['3']} appearance="subtle">
-              <Sidenav.Body>
+              <Sidenav.Body >
                 <Nav>
                   <Nav.Item eventKey="1" active icon={<DashboardIcon />}>
                     Dashboard
@@ -85,18 +84,11 @@ const Dashboard = ()=>{
                     icon={<PinIcon />}
                     >Assignments
                     </Nav.Item>
-                    {/* <Nav.Item eventKey="3-2">Devices</Nav.Item>
-                    <Nav.Item eventKey="3-3">Brand</Nav.Item>
-                    <Nav.Item eventKey="3-4">Loyalty</Nav.Item>
-                    <Nav.Item eventKey="3-5">Visit Depth</Nav.Item> */}
-                    
-                 
-                
                     <Nav.Item 
                     eventKey="4-1" 
                     icon={<SentToUserIcon />}
                     >
-                        communication
+                      communication
                         
                     </Nav.Item>
 
@@ -107,9 +99,9 @@ const Dashboard = ()=>{
             <NavToggle expand={expand} onChange={() => setExpand(!expand)} />
           </Sidebar>
   
-          <Container>
+          <Container > 
             <Content>
-                <AdminPanel />
+                <Assignments />
             </Content>
           </Container>
         </Container>

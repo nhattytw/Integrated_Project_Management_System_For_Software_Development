@@ -1,6 +1,6 @@
 import {Container,Col,Row,Form,Button, ButtonGroup} from 'react-bootstrap'
 import { renderMatches } from 'react-router-dom';
-import { NavBar } from '../nav/nav';
+import { NavBar } from '../../Components/nav/nav';
 
 
 

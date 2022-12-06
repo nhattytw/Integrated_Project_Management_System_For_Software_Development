@@ -5,8 +5,7 @@ import { Card } from 'react-bootstrap';
 import Aos from 'aos';
 import 'aos/dist/aos.css'
 import { useEffect } from 'react';
-import { Footer } from '../footer/Footer'
-import { NavBar } from '../nav/nav';
+import { Footer } from '../../Components/footer/Footer'
 import image from './google.svg';
 import people from './github.svg';
 import calander from './realtime.svg';

@@ -1,16 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route,RouterProvider, createBrowserRouter } from "react-router-dom";
-import  LoginPage from './login/login';
-import RegistrationPage from './Registration/Registration';
-import { NavBar } from './nav/nav';
-import Landing  from './LandingBody/landingpage';
-import Dashboard from './Components/Dashboard/Dashboard'
-import Sidebar from './Components/Sidenav/sideNav';
+import  LoginPage from './pages/login/login';
+import RegistrationPage from './pages/Registration/Registration';
+import Dashboard from "./pages/Dashboard/Dashboard"
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const router = new createBrowserRouter([{
