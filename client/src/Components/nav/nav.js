@@ -12,28 +12,8 @@ import TimeIcon from '@rsuite/icons/Time';
 import CheckRoundIcon from '@rsuite/icons/CheckRound'; 
 import PauseRoundIcon from '@rsuite/icons/PauseRound';
 import PeoplesIcon from '@rsuite/icons/Peoples';
-const ProjectNav = ()=>
-{
-  const ChangePage = (props)=>{
-      return props.page;
-  }
-  return(
-<Container>
-<Row>
-    <Col>
-        <Nav appearance='tabs' >
-            <Nav.Item icon={<AdvancedAnalyticsIcon/>} >Active Projects</Nav.Item>
-            <Nav.Item icon={<PlusIcon />}>Create Project</Nav.Item>
-            <Nav.Item icon={<BarChartIcon />}>Project Status</Nav.Item>
-            <Nav.Item icon={<ListIcon />}>Create WBS</Nav.Item>
-            <Nav.Item icon={<TimeIcon />}>Schedule </Nav.Item>
-        </Nav>
-    </Col>
-</Row>
-</Container>
 
-  )
-}
+
 const AssignemtsNav=()=>{
   return(
 <Container>
@@ -71,7 +51,7 @@ const AssignemtsNav=()=>{
     </>
   );
 }
-export { NavBar,ProjectNav,AssignemtsNav }
+export { NavBar,AssignemtsNav }
 
 
 

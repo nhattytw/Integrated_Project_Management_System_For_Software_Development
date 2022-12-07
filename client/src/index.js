@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route,RouterProvider, createBrowserRou
 import  LoginPage from './pages/login/login';
 import RegistrationPage from './pages/Registration/Registration';
 import Dashboard from "./pages/Dashboard/Dashboard"
+import { ContextProvider } from './Context/context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -31,8 +32,10 @@ const router = new createBrowserRouter([{
 ])
 root.render(
   <React.StrictMode>
-  
+    <ContextProvider>
+
     <RouterProvider router={router} />
+    </ContextProvider>
    
   </React.StrictMode>
 );

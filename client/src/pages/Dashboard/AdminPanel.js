@@ -7,6 +7,7 @@ import { teams } from "../../API/Teams";
 import { assignments } from "../../API/Assignments";
 import { issues } from "../../API/Issues";
 
+
 const MeetingSummary = ()=>
 {
 
@@ -30,7 +31,7 @@ const BudgetGraph = ()=>{
     <Container>
         <Row>
             <Col >
-                <BarChart width={730} height={250} data={ProjectBudgetData}> 
+                <BarChart width={730} height={350} data={ProjectBudgetData}> 
                     <XAxis dataKey="name"/>
                     <YAxis />
                     <Legend />
