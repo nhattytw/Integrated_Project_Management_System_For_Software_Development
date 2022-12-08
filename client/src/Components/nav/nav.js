@@ -14,22 +14,7 @@ import PauseRoundIcon from '@rsuite/icons/PauseRound';
 import PeoplesIcon from '@rsuite/icons/Peoples';
 
 
-const AssignemtsNav=()=>{
-  return(
-<Container>
-<Row>
-    <Col>
-        <Nav appearance='tabs' >
-            <Nav.Item icon={<PeoplesIcon/>} >Asign task to team</Nav.Item>
-            <Nav.Item icon={<CheckRoundIcon />}>Completed </Nav.Item>
-            <Nav.Item icon={<PauseRoundIcon />}>Pending</Nav.Item>
 
-        </Nav>
-    </Col>
-</Row>
-</Container>
-  )
-}
  const NavBar =()=> {
   return (
     <>
@@ -51,7 +36,7 @@ const AssignemtsNav=()=>{
     </>
   );
 }
-export { NavBar,AssignemtsNav }
+export { NavBar }
 
 
 

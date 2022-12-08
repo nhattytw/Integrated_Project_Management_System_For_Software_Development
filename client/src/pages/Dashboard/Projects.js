@@ -124,7 +124,7 @@ const ProjectStatus = ()=>{
 }
 const Projects=()=>{
     const {Tabs,setTabs} = useContext(Context)
-    console.log(Tabs)
+    
     return(
         <>
         
