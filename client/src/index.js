@@ -32,12 +32,9 @@ const router = new createBrowserRouter([{
 ])
 root.render(
   <React.StrictMode>
-    <AssignmentContextProvider>
     <ContextProvider>
         <RouterProvider router={router} />
     </ContextProvider>
-      </AssignmentContextProvider>
-   
   </React.StrictMode>
 );
 

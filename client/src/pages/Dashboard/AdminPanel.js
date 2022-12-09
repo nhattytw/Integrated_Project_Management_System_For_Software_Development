@@ -1,6 +1,6 @@
 import { Container,Row,Col,Card ,Button,Accordion} from "react-bootstrap";
 import {BarChart, Bar ,XAxis,YAxis,Legend,PieChart,Pie} from 'recharts'
-
+import Example from "../../Components/charts/PieChart";
 import "../../Styles/dashboard.css"
 import { ProjectBudgetData } from "../../API/Budgetdata";
 import { teams } from "../../API/Teams";
@@ -10,6 +10,56 @@ import { issues } from "../../API/Issues";
 
 const MeetingSummary = ()=>
 {
+    return(
+        <Container>
+            <Row>
+                <Col>
+                <Card>
+                
+                <Card.Body>
+                    <Card.Title>meeting with font end team</Card.Title>
+                    <Card.Text>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget nulla facilisi etiam dignissim diam quis enim lobortis. 
+                    Cursus mattis molestie a iaculis at erat pellentesque. Nulla malesuada pellentesque elit eget gravida cum sociis.
+                    <h5>date:12/12/12</h5>
+                    <h5>time:1:20</h5>
+                    <h5>Participating teams:front End team</h5>
+                    </Card.Text>
+                </Card.Body>
+            </Card>
+                </Col>
+                <Col>
+                <Card>
+                <Card.Body>
+                    <Card.Title>meeting with font end team</Card.Title>
+                    <Card.Text>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget nulla facilisi etiam dignissim diam quis enim lobortis. 
+                    Cursus mattis molestie a iaculis at erat pellentesque. Nulla malesuada pellentesque elit eget gravida cum sociis.
+                    <h5>date:12/12/12</h5>
+                    <h5>time:1:20</h5>
+                    <h5>Participating teams:front End team</h5>
+                    </Card.Text>
+                </Card.Body>
+            </Card>
+                </Col>
+                <Col>
+                <Card>
+                <Card.Body>
+                    <Card.Title>meeting with font end team</Card.Title>
+                    <Card.Text>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget nulla facilisi etiam dignissim diam quis enim lobortis. 
+                    Cursus mattis molestie a iaculis at erat pellentesque. Nulla malesuada pellentesque elit eget gravida cum sociis.
+                    <h5>date:12/12/12</h5>
+                    <h5>time:1:20</h5>
+                    <h5>Participating teams:front End team</h5>
+                    </Card.Text>
+                </Card.Body>
+            </Card>
+                </Col>
+            </Row>
+
+        </Container>
+    )
 
 }
 const BudgetSummary = () =>{
@@ -38,8 +88,11 @@ const BudgetGraph = ()=>{
                     <Bar dataKey="budget" fill="#8884d8" />
                     <Bar dataKey="spent" fill="#82ca9d" />
                 </BarChart>
+                
             </Col>
+          <Col>
           
+          </Col>
 
          </Row>
     </Container>
@@ -53,6 +106,7 @@ const ActiveProjects = ()=>
 {
     return(
         <Container  >
+            <h3>Active Projects</h3>
             <Row>
                 {ProjectBudgetData.map((project)=>{
                     return(
@@ -132,29 +186,27 @@ const Teams = ()=>
     </Container>
     )
 }
-const AdminPanel = ()=>
-{
+const Parent=()=>{
     return(
-        <>
-       
         <Container>
             <Row>
                 <Col><h3>Dashboard</h3></Col>
             </Row>
         <Row>
                 <Col>
-                    <ActiveProjects />
+                    <MeetingSummary />
                 </Col>
             </Row>
+            <Row>
+            <Col><h3>Budget Summary</h3></Col>
+            </Row>
             <Row >
+
                 <Col >
-                    <BudgetSummary />
-                </Col>
-                <Col xs={8}>
-                        <BudgetGraph />
+                <BudgetGraph />
                 </Col>
                 <Col>
-                  <h1>insert piechart</h1>
+               
                 </Col>
             </Row>
             <Row>
@@ -173,6 +225,14 @@ const AdminPanel = ()=>
                 </Col>
             </Row>
         </Container>
+    )
+}
+const AdminPanel = ()=>
+{
+    return(
+        <>
+       <Parent />
+        
         </>
     )
 }

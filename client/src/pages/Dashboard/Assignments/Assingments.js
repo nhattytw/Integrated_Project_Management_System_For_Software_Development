@@ -1,4 +1,4 @@
-import { AssignmentContext,AssignmentContextProvider } from "../../../Context/context";
+import { AssignmentContext,Context } from "../../../Context/context";
 import {Container,Col,Row,Form,Button,Table, Tab} from 'react-bootstrap'
 import {CheckTreePicker,Toggle }from "rsuite";
 import {Nav} from 'rsuite'
@@ -8,7 +8,7 @@ import PeoplesIcon from '@rsuite/icons/Peoples';
 import { useContext, useState } from "react";
 import ContenetDisplay from "../../../Components/ConentDisplay/ConentDisplay";
 const AssignemtsNav=()=>{
-    const {Assignment,setAssignment}= useContext(AssignmentContext) 
+    const {Assignment,setAssignment}= useContext(Context) 
     
     return(
   <Container>
@@ -123,8 +123,8 @@ const AssignemtsNav=()=>{
       "AssignTaskToTeam":AssignTaskToTeam
   }
 const Assignments =()=>{
-    const {Assignment,setAssignment} = useContext(AssignmentContext)
-    
+    const {Assignment,setAssignment} = useContext(Context)
+    console.log(Assignment)
     return(
         <>
         <AssignemtsNav />
