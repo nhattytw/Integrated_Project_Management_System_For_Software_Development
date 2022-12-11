@@ -36,7 +36,7 @@ import PeoplesIcon from '@rsuite/icons/Peoples';
     </>
   );
 }
-export { NavBar }
+export { NavBar  }
 
 
 

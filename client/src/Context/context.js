@@ -3,7 +3,7 @@ const Context = React.createContext();
 const AssignmentContext =React.createContext();
 
 const ContextProvider = ({ children }) =>{
-    const [Tabs,setTabs] = useState("ActiveProjects")
+    const [Tabs,setTabs] = useState("CreateProject")
     const [Assignment,setAssignment] = useState("AssignTaskToTeam")
     const [Communications,setCommunications] = useState("ScheduledMeetings")
     

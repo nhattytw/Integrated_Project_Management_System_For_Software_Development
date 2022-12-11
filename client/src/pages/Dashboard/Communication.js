@@ -3,9 +3,11 @@ import Overlay from 'react-bootstrap';
 import {Nav} from 'rsuite'
 import NoticeIcon from '@rsuite/icons/Notice';
 import TimeIcon from '@rsuite/icons/Time';
+import EmailIcon from '@rsuite/icons/Email';
 import { Context } from '../../Context/context';
 import { useContext } from 'react';
 import ContenetDisplay from '../../Components/ConentDisplay/ConentDisplay';
+
 const CommunicationsNav=()=>{
     const {Communications,setCommunications} = useContext(Context)
     return(
@@ -15,6 +17,7 @@ const CommunicationsNav=()=>{
           <Nav appearance='tabs' >
               <Nav.Item icon={<NoticeIcon />} onSelect={()=>{setCommunications("ScheduledMeetings")}} >Scheduled Meetings</Nav.Item>
               <Nav.Item icon={<TimeIcon/>} onSelect={()=>{setCommunications("ScheduleMeetings")}}>Schedule Meeting</Nav.Item>
+              <Nav.Item icon={<EmailIcon />} onSelect={()=>{setCommunications("Email")}}>Email</Nav.Item>
           </Nav>
       </Col>
   </Row>
@@ -96,12 +99,39 @@ const ScheduledMeetings = ()=>{
            </Container>
     )
 }
+const Email =()=>{
+return(
+    <Container>
+        <Row>
+            <Col><h3>Automated Email</h3></Col>
+        </Row>
+        <Row>
+            <Col>
+            <Form>
+                <Form.Label>Subject</Form.Label>
+                <Form.Control type="text"></Form.Control>
+            </Form> 
+            </Col>
+        </Row>
+        <Row>
+            <Col>
+            <Form.Label>Subject</Form.Label>
+            <Form.Control as="textarea"></Form.Control>
+            </Col>
+        </Row>
+        <Row>
+            <Col><Button>send   </Button></Col>
+        </Row>
+    </Container>
+)
+}
 
 const Communications = ()=>{
     const {Communications,setCommunication} = useContext(Context)
     const pages = {
         "ScheduleMeetings":ScheduleMeetings,
-        "ScheduledMeetings":ScheduledMeetings
+        "ScheduledMeetings":ScheduledMeetings,
+        "Email":Email
     }
 
     return <Container>

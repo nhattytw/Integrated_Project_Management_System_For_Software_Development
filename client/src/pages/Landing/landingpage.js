@@ -22,7 +22,7 @@ const Landing = ()=>{
 
       <>
       
-      <Container fluid className='LandingImage intro' >
+      <Container fluid className='LandingImage intro'  style={{height:"100vh"}}>
         <Row className>
           <Col className='c1'>
           <h4 className='intro-h4' >Now you can manage your projects,teams and constraints,
