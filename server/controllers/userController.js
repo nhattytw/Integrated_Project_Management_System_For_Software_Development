@@ -8,7 +8,7 @@ const connectToDB = require('../utils/dbConnect')
 const signup = async (req, res) => {
       connectToDB()
       try {
-            const { fullName, email, userName, password } = req.body
+            const { firstName, lastName, dob, phoneNumber, email, userName, password, position, gitHubAccount } = req.body
 
             const existingUser = await user.findOne({
                   userName: userName
@@ -24,10 +24,15 @@ const signup = async (req, res) => {
                   const hashedPassword = await securePassword(password)
 
                   const newUser = new user({
-                        fullName: fullName,
+                        firstName: firstName,
+                        lastName: lastName,
+                        dob: dob,
+                        phoneNumber: phoneNumber,
                         email: email,
                         userName: userName,
-                        password: hashedPassword
+                        password: hashedPassword,
+                        position: position,
+                        gitHubAccount: gitHubAccount
                   })
 
                   if (await newUser.save()) {
@@ -168,7 +173,7 @@ const searchUser = async (req, res) => {
 const updateUserInfo = async (req, res) => {
       connectToDB()
       try {
-            const { fullName, email, userName, password } = req.body
+            const { phoneNumber, email, userName, password, position, gitHubAccount } = req.body
 
             // Try with checking session or cookie - of the authentication - to get the userName without being sent as part of the data
 
@@ -195,8 +200,10 @@ const updateUserInfo = async (req, res) => {
                               { userName: existingUser.userName },
                               {
                                     $set: {
-                                          fullName: fullName,
-                                          email: email
+                                          phoneNumber: phoneNumber,
+                                          email: email,
+                                          position: position,
+                                          gitHubAccount: gitHubAccount
                                     }
                               },
                               {

@@ -12,7 +12,10 @@ const userSchema = new mongoose.Schema({
             // required: true
       },
       dob: {
-            type: date
+            type: Date
+      },
+      phoneNumber: {
+            type: Number,
       },
       email: {
             type: String,
@@ -24,6 +27,12 @@ const userSchema = new mongoose.Schema({
       password: {
             type: String,
             // required: true
+      },
+      position: {
+            type: String,
+      },
+      gitHubAccount: {
+            type: String,
       },
       created: {
             type: Date,
