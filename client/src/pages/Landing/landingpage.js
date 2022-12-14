@@ -44,7 +44,7 @@ const Landing = ()=>{
       </Container>
       <Container className='container'>
         <Row className='flexlist'>
-          <Col data-aos="fade-right"  data-aos-duration="2000" className="flexitem">
+          <Col data-aos="fade-right"  data-aos-duration="2000" className="flexitem"> 
             <Card className="cardH">
             <Card.Img variant="top" src={image} className="img-height icon" />
             <Card.Body>
@@ -98,7 +98,7 @@ To determine if a specific application qualifies as real time is a function of i
           <hr className='line'/>
         
         </Row>
-        <Row className='heightmanip' style={{margin:"100px 0px"}}>
+        <Row className='heightmanip' style={{margin:"100px 0px",height:"50vh"}}>
           <Col >
                 <img src={team}/>
           </Col>

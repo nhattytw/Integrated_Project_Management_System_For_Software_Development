@@ -70,20 +70,21 @@ const Dashboard = ()=>{
     const [page,SetPage] = useState("AdminPanel")
     const [expand, setExpand] = React.useState(true);
     return (
-      <div className="show-fake-browser sidebar-page"   style={{Position:"sticky"}}>
+      <div className="show-fake-browser sidebar-page"  >
         <Container  >
           <Sidebar
-            style={{ display: 'flex', flexDirection: 'column' }}
+            style={{ display: 'flex', flexDirection: 'column', position:"sticky !important"}}
             width={expand ? 260 : 56}
             collapsible
             className="Navcontainer"
+            
           >
             <Sidenav.Header > 
               <div style={headerStyles}>
                 <span style={{ marginLeft: 12 }}> procurat.io</span>
               </div>
             </Sidenav.Header>
-            <Sidenav expanded={expand} defaultOpenKeys={['3']} appearance="subtle">
+            <Sidenav expanded={expand} defaultOpenKeys={['3']} appearance="subtle" >
               <Sidenav.Body >
                 <Nav>
                   <Nav.Item eventKey="1"  icon={<DashboardIcon />} 
@@ -104,6 +105,7 @@ const Dashboard = ()=>{
                     </Nav.Item>
                     <Nav.Item eventKey="3-2"
                     icon={<PinIcon />}
+                    
                     onClick={()=>{SetPage("Assignments")}}
                     >Assignments
                     </Nav.Item>

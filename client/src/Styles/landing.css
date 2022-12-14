@@ -100,7 +100,7 @@ input[type=number] {
     height: 650px;
 } */
 .LandingImage{
-    background-image: linear-gradient(to right, rgba(3,3,4,1),rgba(66,105,158,0.4)  ) ,url('../Assets/projectTeam.jpg');
+    background-image: linear-gradient(to right, rgba(3,3,4,1),rgba(55,94,147,0.4)  ) ,url('../Assets/projectTeam.jpg');
     background-size: cover;
     /* height: 65% !important; */
     width: 100%;
