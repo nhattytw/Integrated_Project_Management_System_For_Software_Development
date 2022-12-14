@@ -2,11 +2,22 @@ const Joi = require('joi')
 const errorFunction = require('../utils/errorFunction')
 
 const validation = Joi.object({
-      fullName: Joi
+      firstName: Joi
             .string()
-            .min(5)
-            .max(70)
+            .min(3)
+            .max(15)
             .trim(true)
+            .required(),
+      lastName: Joi
+            .string()
+            .min(3)
+            .max(15)
+            .trim(true)
+            .required(),
+      dob: Joi
+            .date(),
+      phoneNumber: Joi
+            .number()
             .required(),
       email: Joi
             .string()
@@ -25,14 +36,29 @@ const validation = Joi.object({
             .min(8)
             .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/)
             .required(),
+      position: Joi
+            .string()
+            .max(25)
+            .trim(true)
+            .required(),
+      gitHubAccount: Joi
+            .string()
+            .max(100)
+            .trim(true)
+            .required(),
 })
 
 const signupValidation = async (req, res, next) => {
       const payload = {
-            fullName: req.body.fullName,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            // dob: req.body.dob,
+            phoneNumber: req.body.phoneNumber,
             email: req.body.email,
             userName: req.body.userName,
             password: req.body.password,
+            position: req.body.position,
+            gitHubAccount: req.body.gitHubAccount,
       }
 
       const { error } = validation.validate(payload)
