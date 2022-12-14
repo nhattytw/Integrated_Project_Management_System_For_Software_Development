@@ -1,10 +1,18 @@
 const mongoose = require('mongoose')
 const Joi = require('joi')
+const { date } = require('joi')
 
 const userSchema = new mongoose.Schema({
-      fullName: {
+      firstName: {
             type: String,
             // required: true
+      },
+      lastName: {
+            type: String,
+            // required: true
+      },
+      dob: {
+            type: date
       },
       email: {
             type: String,

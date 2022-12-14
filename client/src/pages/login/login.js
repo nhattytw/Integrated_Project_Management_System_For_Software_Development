@@ -21,7 +21,7 @@ import people from '../../Assets/BuissnessPeople.png'
                             <Button  size="lg" variant="secondary" className="login-btn">
                                 Login
                             </Button>
-                            <a href="#" style={{textAlign:"center"}}>Forgot password ?</a>
+                            <a href="#" style={{textAlign:"center"}}>Forgot Password ?</a>
                          </Form.Group>
                             </Col>
                         </Row>
