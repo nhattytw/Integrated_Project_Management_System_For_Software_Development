@@ -9,4 +9,4 @@ const wbsSchema = mongoose.Schema(
     }
 )
 // const WBS = mongoose.model("WBS",WbsSchema)
-module.exports = mongoose.model('wbs', wbsSchema)
+module.exports = mongoose.model('WBS', wbsSchema)

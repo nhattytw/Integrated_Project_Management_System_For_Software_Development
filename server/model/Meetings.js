@@ -10,4 +10,5 @@ const MeetingsSchema = mongoose.Schema({
 })
 // If frequency is set to weekly the system is required to compute the next meeting date and give cancelation option, Status can be active,canceled and resheduled. 
 // frequency is weekly,daily or one time
-const Meeting = mongoose.model("Meeting",MeetingsSchema)
+
+module.exports=mongoose.model("Meeting",MeetingsSchema);

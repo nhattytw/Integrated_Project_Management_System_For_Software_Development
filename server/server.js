@@ -15,10 +15,11 @@ app.use(cors())
 //Routes
 const auth = require('./routes/auth')
 const user = require('./routes/user')
+const item = require('./routes/item')
 
 app.use('/api', auth)
 app.use('/api', user)
-
+app.use('/api',item)
 //Backend server 
 const PORT = process.env.PORT || 5000;
 

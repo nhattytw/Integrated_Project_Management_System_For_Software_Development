@@ -8,7 +8,7 @@ const itemSchema = mongoose.Schema(
 
     }
 )
-// const Items = mongoose.model('item', itemSchema);
 
+module.exports=mongoose.model("Item",itemSchema);
 // When building a route for this model its best to accpet the tasks array,Title,ECT,Task status separetly and posting the database separetly,
 // this comment is vague be sure to ask a question before messing with it !! 

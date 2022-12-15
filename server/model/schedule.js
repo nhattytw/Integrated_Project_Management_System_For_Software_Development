@@ -6,7 +6,7 @@ const scheduleSchema = mongoose.Schema({
     },
     wbs: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'wbs'
+        ref: 'WBS'
     }],
     projectEstimatedComplitionTime: {
         type: Number,
