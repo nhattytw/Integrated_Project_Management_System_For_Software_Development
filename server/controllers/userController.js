@@ -144,6 +144,8 @@ const searchUser = async (req, res) => {
       try {
             const { userName } = req.body
 
+            console.log(userName)
+
             const existingUser = await user
                   .findOne({
                         userName: userName

@@ -1,9 +1,16 @@
 const mongoose = require('mongoose');
 
+
 const itemSchema = mongoose.Schema(
     {
         task:[{title:String,tasks:[],alottedTime:Date}],    
-        EstimatedCompletionTime:Date,// ECT project manager enters the this for every task and the  system adds it up and stores the date
+        StartingDate:{
+            type:Date
+        },
+        EstimatedCompletionTime:
+        {
+            type:Date
+        },// ECT project manager enters the this for every task and the  system adds it up and stores the date
         taskStatus:String
 
     }

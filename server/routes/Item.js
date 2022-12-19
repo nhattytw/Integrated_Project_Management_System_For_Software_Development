@@ -3,6 +3,8 @@ const router = express.Router()
 const {addItems} = require('../controllers/itemController')
 
 router.post(
-    'item/addItem',
+    '/item/addItem',
     addItems
 )
+
+module.exports = router
