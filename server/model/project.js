@@ -12,10 +12,15 @@ const projectSchema = new mongoose.Schema({
     },
     status: {
         type: String,
+        enum:["active","completed","canceled"],
+        default:"active"
     },
-    projectManager: {
-        type: String,
-    },
+    projectManager:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'userInfo'
+    }
+    
+    ,
     duration: {
         type: Number,
     },

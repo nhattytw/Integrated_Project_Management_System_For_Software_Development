@@ -17,11 +17,13 @@ const auth = require('./routes/auth')
 const user = require('./routes/user')
 const item = require('./routes/Item')
 const issue = require('./routes/Issue')
+const project = require('./routes/Project')
 
 app.use('/api', auth)
 app.use('/api', user)
 app.use('/api',item)
 app.use('/api',issue)
+app.use('/api',project)
 //Backend server 
 const PORT = process.env.PORT || 5000;
 
