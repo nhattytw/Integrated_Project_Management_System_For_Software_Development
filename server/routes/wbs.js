@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const {addItems} = require('../controllers/itemController')
+const {addWbs} = require('../controllers/WbsController')
 
 router.post(
-    '/item/addItem',
-    addItems
+    '/wbs/addWbs',
+    addWbs
 )
 
 module.exports = router

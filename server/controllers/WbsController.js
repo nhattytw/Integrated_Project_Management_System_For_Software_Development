@@ -2,18 +2,20 @@ const connectToDB = require('../utils/dbConnect');
 const items = require('../model/item');
 const user = require('../model/userInfo');
 const errorFunction = require('../utils/errorFunction')
-const item = require("../model/item");
+const item = require("../model/wbs");
 
 // Date format mm/dd/yy or yy/dd/mm, retrival is in yy/mm/dd 
-const addItems =  async(req,res)=>{
+const addWbs =  async(req,res)=>{
     connectToDB();
     try
     {
     
+       
         const {task, startingDate,EstimatedCompletionTime,taskStatus} =  req.body
-        const startDate = new Date(startingDate)
+        const startDate = new Date("10/10/10")
         const Est = new Date(EstimatedCompletionTime)
         
+        console.log(req.body)
         const InsertItems = new item({
             task:task,
             StartingDate:startDate,
@@ -38,4 +40,4 @@ const addItems =  async(req,res)=>{
     }
 }
 
-module.exports = { addItems }
+module.exports = { addWbs }

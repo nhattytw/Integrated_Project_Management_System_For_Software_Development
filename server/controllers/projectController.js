@@ -1,6 +1,7 @@
 const connectToDB = require('../utils/dbConnect');
 const project = require('../model/project');
-const User = require('../model/userInfo')
+const User = require('../model/userInfo');
+
 
 const CreateProject = async (req,res)=>{
     connectToDB()
@@ -45,4 +46,29 @@ const CreateProject = async (req,res)=>{
     console.log(error.message)
 }
 }
-module.exports = { CreateProject }
+const ActiveProjectList= (req,res)=>{
+    connectToDB()
+    
+    try {
+
+        const activeProject = project.find().populate("projectManager","fullName email").where("status").equals("active").lean(true).exec((err,result)=>{
+            if(err){
+                console.log("error")
+            }
+            else{
+                const jsonContnet=JSON.stringify(result)
+                
+                    res.send(jsonContnet)
+            }
+        })
+
+        
+    } catch (error) {
+        console.log(error)
+        
+    }
+    
+    
+
+}
+module.exports = { CreateProject,ActiveProjectList}
