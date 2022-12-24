@@ -1,13 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const { addWbs } = require('../controllers/wbsController')
+const { addItems } = require('../controllers/itemController')
 
 // @route    GET api/getUsers
 // @desc     Return all Registered users
 // @access   Private
 router.post(
-    '/wbs/addWbs',
-    addWbs
+    '/item/addItem',
+    addItems
 )
+//use the above comment for every route
 
 module.exports = router
