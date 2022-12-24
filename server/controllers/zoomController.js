@@ -7,13 +7,13 @@ const messageFunction = require('../utils/messageFunction')
 // Automatic delete if a meeting is time passed? or just listMeetings
 
 const payload = {
-      iss: process.env.API_KEY, //your API KEY
+      iss: process.env.ZOOM_API_KEY, //your API KEY
       exp: new Date().getTime() + 5000,
 }
 
 const token = jwt.sign(
       payload,
-      process.env.API_SECRET
+      process.env.ZOOM_API_SECRET
 ) //your API SECRET HERE
 
 // @desc     Create Zoom Meeting
@@ -158,7 +158,7 @@ const getMeeting = (req, res) => {
 // @desc     Create meeting's invite links
 // @access   Public
 const inviteLinks = (req, res) => {
-
+      // check if necessary
 }
 
 // @desc     Delete a Zoom Meeting
