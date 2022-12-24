@@ -1,8 +1,21 @@
 const express = require("express");
 const router = express.Router();
-const {CreateProject,ActiveProjectList} = require("../controllers/projectController");
+const { CreateProject, ActiveProjectList } = require("../controllers/projectController");
 
-router.post('/project/createProject',CreateProject)
-router.get('/project/ActiveProject',ActiveProjectList);
+// @route    POST api/Issues/PostIssue
+// @desc     Add issue
+// @access   Private
+router.post(
+      '/project/createProject',
+      CreateProject
+)
+
+// @route    POST api/Issues/PostIssue
+// @desc     Add issue
+// @access   Private
+router.get(
+      '/project/ActiveProject',
+      ActiveProjectList
+);
 
 module.exports = router

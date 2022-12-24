@@ -1,6 +1,8 @@
 const connectToDB = require('../utils/dbConnect');
 const issues = require('../model/issues')
 
+// @desc     Create Issue and Post
+// @access   Public
 const PostIssue = async (req,res)=>{
     connectToDB()
     try {
