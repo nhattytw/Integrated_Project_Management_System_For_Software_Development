@@ -42,7 +42,7 @@ const Landing = ()=>{
         <LinkContainer to="/Dashboard "><button id="btn-get-started">Get Started</button></LinkContainer>
         </Row>
       </Container>
-      <Container className='container'>
+      <Container className='container' style={{height:"100vh"}}>
         <Row className='flexlist'>
           <Col data-aos="fade-right"  data-aos-duration="2000" className="flexitem"> 
             <Card className="cardH">

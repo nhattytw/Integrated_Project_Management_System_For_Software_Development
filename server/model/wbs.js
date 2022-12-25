@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const wbsSchema = mongoose.Schema(
     {
         
-            task:[{title:String,tasks:[],alottedTime:Date}],    
+            task:[{title:String,tasks:[],alottedTime:Date,taskStatus:String}],    
             StartingDate:{
                 type:Date
             },
@@ -11,7 +11,7 @@ const wbsSchema = mongoose.Schema(
             {
                 type:Date
             },// ECT project manager enters the this for every task and the  system adds it up and stores the date
-            taskStatus:String
+            
     
         
     }

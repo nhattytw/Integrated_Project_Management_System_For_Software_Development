@@ -8,6 +8,9 @@ const issuesSchema = mongoose.Schema({
     postedBy: {
         type: String,
     },
+    comment:{
+        comments:[]
+    },
     status: {
         type: String,
         enum:['Active','Resolved','pending'],
