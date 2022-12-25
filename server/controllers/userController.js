@@ -1,7 +1,10 @@
+require('dotenv').config({ path: './config/config.env' })
 const user = require('../model/userInfo')
-const errorFunction = require('../utils/errorFunction')
-const { securePassword, validatePassword } = require('../utils/securePassword')
+const messageFunction = require('../utils/messageFunction')
+const jwt = require('jsonwebtoken')
 const connectToDB = require('../utils/dbConnect')
+const { securePassword,
+      validatePassword } = require('../utils/securePassword')
 
 // @desc     Register user
 // @access   Public
@@ -18,7 +21,7 @@ const signup = async (req, res) => {
                   return res
                         .status(403)
                         .json(
-                              errorFunction(true, "Username Already Exists")
+                              messageFunction(true, 'Username Already Exists')
                         )
             } else {
                   const hashedPassword = await securePassword(password)
@@ -39,13 +42,18 @@ const signup = async (req, res) => {
                         return res
                               .status(201)
                               .json(
-                                    errorFunction(false, "User Created", newUser)
+                                    messageFunction(
+                                          false,
+                                          'User Created',
+                                          newUser
+                                    )
                               )
                   } else {
                         return res
                               .status(403)
                               .json(
-                                    errorFunction(true, "Failed to Create User")
+                                    messageFunction(
+                                          true, 'Failed to Create User')
                               )
                   }
             }
@@ -54,7 +62,7 @@ const signup = async (req, res) => {
             return res
                   .status(500)
                   .json(
-                        errorFunction(true, "Failed Adding User")
+                        messageFunction(true, 'Failed Adding User')
                   )
       }
 }
@@ -74,7 +82,7 @@ const signin = async (req, res) => {
                   return res
                         .status(400)
                         .json(
-                              errorFunction(true, "Username Not Found")
+                              messageFunction(true, 'Username or Password Incorrect')
                         )
             } else {
                   const hashedPassword = existingUser.password
@@ -85,27 +93,49 @@ const signin = async (req, res) => {
 
                   if (!validatedPassword) {
                         return res
-                              .status(401)
+                              .status(400)
                               .json(
-                                    errorFunction(true, "Username/Password Incorrect")
+                                    messageFunction(true, 'Username or Password Incorrect')
                               )
                   }
-                  // Add Authentication Method Here
-                  console.log("Signedin")
-                  return res
-                        .status(200)
-                        .json(
-                              errorFunction(true, "You've Logged in")
-                        )
-                  // Until Here
-                  // Then maybe have a way to work with a verifyAuthentication.js
+                  const payload = {
+                        id: existingUser._id,
+                        userName: existingUser.userName
+                  }
+
+                  jwt.sign(
+                        payload,
+                        process.env.JWT_SECRET,
+                        {
+                              expiresIn: '6h', // For 6 hours
+                        },
+                        (error, token) => {
+                              if (error)
+                                    return res
+                                          .status(401)
+                                          .json(
+                                                messageFunction(true, 'Unauthorized')
+                                          )
+
+                              console.log('Signedin')
+                              return res
+                                    .status(200)
+                                    .json(
+                                          messageFunction(
+                                                false,
+                                                `You've Logged in.`,
+                                                token
+                                          )
+                                    )
+                        }
+                  )
             }
       } catch (error) {
             console.error(error.message)
             return res
                   .status(500)
                   .json(
-                        errorFunction(true, "Failed Logging In, Please Try Again.")
+                        messageFunction(true, 'Failed Logging In, Please Try Again.')
                   )
       }
 }
@@ -122,17 +152,24 @@ const getUsersInfo = async (_req, res) => {
                   return res
                         .status(400)
                         .json(
-                              errorFunction(true, "No Users Found.")
+                              messageFunction(true, 'No Users Found.')
                         )
             } else {
                   // Show Users Information
                   // Data - existingUsers
-                  return res.json(existingUsers)
+                  return res
+                        .status(200)
+                        .json(
+                              messageFunction(false,
+                                    'Users Information',
+                                    existingUsers
+                                    )
+                        )
             }
       } catch (error) {
             console.error(error.message)
             return res.status(500).json(
-                  errorFunction(true, "Failed To Fetch Users, Please Try Again.")
+                  messageFunction(true, 'Failed To Fetch Users, Please Try Again.')
             )
       }
 }
@@ -155,17 +192,23 @@ const searchUser = async (req, res) => {
                   return res
                         .status(400)
                         .json(
-                              errorFunction(true, "No User Found.")
+                              messageFunction(true, 'No User Found.')
                         )
             } else {
                   // Show User Information
                   // Data - existingUser
-                  return res.json(existingUser)
+                  return res
+                        .status(200)
+                        .json(
+                              messageFunction(false,
+                                    'User Information',
+                                    existingUser)
+                        )
             }
       } catch (error) {
             console.error(error.message)
             return res.status(500).json(
-                  errorFunction(true, "Failed To Fetch User, Please Try Again.")
+                  messageFunction(true, 'Failed To Fetch User, Please Try Again.')
             )
       }
 }
@@ -194,11 +237,11 @@ const updateUserInfo = async (req, res) => {
                   return res
                         .status(403)
                         .json(
-                              errorFunction(true, "Password Incorrect. Cannot Update.")
+                              messageFunction(true, 'Password Incorrect. Cannot Update.')
                         )
             } else {
                   try {
-                        await user.updateOne(
+                        const response = await user.updateOne(
                               { userName: existingUser.userName },
                               {
                                     $set: {
@@ -215,13 +258,17 @@ const updateUserInfo = async (req, res) => {
                         return res
                               .status(201)
                               .json(
-                                    errorFunction(false, "Successfully Updated User Data.")
+                                    messageFunction(
+                                          false,
+                                          'Successfully Updated User Data.',
+                                          response
+                                    )
                               )
                   } catch (error) {
                         return res
                               .status(403)
                               .json(
-                                    errorFunction(true, "Updating User Data Failed.")
+                                    messageFunction(true, 'Updating User Data Failed.')
                               )
                   }
             }
@@ -230,12 +277,13 @@ const updateUserInfo = async (req, res) => {
             return res
                   .status(500)
                   .json(
-                        errorFunction(true, "Updating User Data Failed. Please Try Again.")
+                        messageFunction(true, 'Updating User Data Failed. Please Try Again.')
                   )
       }
 }
 
-
+// @desc     Update User Password
+// @access   Public
 const updateUserPassword = async (req, res) => {
       connectToDB()
       try {
@@ -250,7 +298,7 @@ const updateUserPassword = async (req, res) => {
                   return res
                         .status(400)
                         .json(
-                              errorFunction(true, "Username Not Found")
+                              messageFunction(true, 'Username Not Found')
                         )
             } else {
                   const hashedOldPassword = existingUser.password
@@ -264,7 +312,7 @@ const updateUserPassword = async (req, res) => {
                         return res
                               .status(403)
                               .json(
-                                    errorFunction(true, "Old Password Incorrect")
+                                    messageFunction(true, 'Old Password Incorrect')
                               )
                   }
 
@@ -279,11 +327,11 @@ const updateUserPassword = async (req, res) => {
                         return res
                               .status(406)
                               .json(
-                                    errorFunction(true, "New Password cannot be same as the old one.")
+                                    messageFunction(true, 'New Password cannot be same as the old one.')
                               )
                   } else {
                         try {
-                              await user.updateOne(
+                              const response = await user.updateOne(
                                     { userName: existingUser.userName },
                                     {
                                           $set: {
@@ -294,13 +342,17 @@ const updateUserPassword = async (req, res) => {
                               return res
                                     .status(201)
                                     .json(
-                                          errorFunction(false, "Successfully Updated Password.",)
+                                          messageFunction(
+                                                false,
+                                                'Successfully Updated Password.',
+                                                response
+                                          )
                                     )
                         } catch (error) {
                               return res
                                     .status(403)
                                     .json(
-                                          errorFunction(true, "Updating Password Failed.")
+                                          messageFunction(true, 'Updating Password Failed.')
                                     )
                         }
 
@@ -311,7 +363,7 @@ const updateUserPassword = async (req, res) => {
             return res
                   .status(500)
                   .json(
-                        errorFunction(true, "Updating Password Failed. Please Try Again.")
+                        messageFunction(true, 'Updating Password Failed. Please Try Again.')
                   )
       }
 }

@@ -1,4 +1,7 @@
 import nodemailer from "nodemailer"
+// const nodemailer = require('nodemailer')
+// change the above from import to const
+
 const projectCreationEmailNotifications=()=>{
     var transporter = nodemailer.createTransport({
       service: 'gmail',

@@ -1,4 +1,4 @@
-const errorFunction = (errorBit, msg, data) => {
+const messageFunction = (errorBit, msg, data) => {
       if (errorBit)
             return {
                   is_error: errorBit,
@@ -12,4 +12,4 @@ const errorFunction = (errorBit, msg, data) => {
             }
 }
 
-module.exports = errorFunction
+module.exports = messageFunction

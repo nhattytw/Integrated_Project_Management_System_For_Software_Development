@@ -12,15 +12,13 @@ const projectSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum:["active","completed","canceled"],
-        default:"active"
+        enum: ["active", "completed", "canceled"],
+        default: "active"
     },
-    projectManager:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'userInfo'
-    }
-    
-    ,
+    projectManager: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'userInfo'
+    },
     duration: {
         type: Number,
     },
@@ -29,6 +27,6 @@ const projectSchema = new mongoose.Schema({
         ref: 'wbs'
     }]
     // Schedule:
-})
+}, { timestamps: true })
 
 module.exports = mongoose.model('projectInfo', projectSchema)

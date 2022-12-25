@@ -11,6 +11,6 @@ const scheduleSchema = mongoose.Schema({
     projectEstimatedComplitionTime: {
         type: Number,
     },
-})
+}, { timestamps: true })
 
 module.exports = mongoose.model('scheduleInfo', scheduleSchema)

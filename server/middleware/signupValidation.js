@@ -1,5 +1,5 @@
 const Joi = require('joi')
-const errorFunction = require('../utils/errorFunction')
+const messageFunction = require('../utils/messageFunction')
 
 const validation = Joi.object({
       firstName: Joi
@@ -66,7 +66,7 @@ const signupValidation = async (req, res, next) => {
             return res
                   .status(406)
                   .json(
-                        errorFunction(true, `Error in User Input Data: , ${error.message}`)
+                        messageFunction(true, `Error in User Input Data: , ${error.message}`)
                   )
       else
             next()

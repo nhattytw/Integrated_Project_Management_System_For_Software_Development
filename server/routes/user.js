@@ -3,19 +3,19 @@ const router = express.Router()
 const searchUserValidation = require('../middleware/searchUserValidation')
 const signinValidation = require('../middleware/signinValidation')
 const passValidation = require('../middleware/passwordValidation')
+const verifyAuthentication = require('../middleware/verifyAuthentication')
 const {
       searchUser,
       getUsersInfo,
       updateUserInfo,
       updateUserPassword, } = require('../controllers/userController')
-// const verifyAuthentication = require('../middleware/verifyAuthentication')
 
 // @route    GET api/getUsers
 // @desc     Return all Registered users
 // @access   Private
 router.get(
       '/user/getUsers',
-      //verifyAuthentication.js,
+      verifyAuthentication,
       getUsersInfo
 )
 
@@ -25,7 +25,7 @@ router.get(
 router.post(
       '/user/searchUser',
       searchUserValidation,
-      //verifyAuthentication.js,
+      verifyAuthentication,
       searchUser
 )
 
@@ -34,7 +34,7 @@ router.post(
 // @access   Private
 router.put(
       '/user/updateUserInfo',
-      //verifyAuthentication.js,
+      verifyAuthentication,
       signinValidation,
       searchUserValidation,
       updateUserInfo
@@ -45,7 +45,7 @@ router.put(
 // @access   Private
 router.put(
       '/user/updatePassword',
-      //verifyAuthentication.js,
+      verifyAuthentication,
       searchUserValidation,
       passValidation,
       updateUserPassword
