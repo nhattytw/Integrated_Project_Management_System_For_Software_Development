@@ -19,7 +19,6 @@ const zoom = require('./routes/zoom')
 const issue = require('./routes/issue')
 const project = require('./routes/project')
 const wbs = require('./routes/wbs')
-const item = require('./routes/item')
 const teams = require('./routes/teams')
 
 app.use('/api', auth)
@@ -29,7 +28,6 @@ app.use('/api',wbs)
 app.use('/api',issue)
 app.use('/api',project)
 app.use('/api',teams)
-app.use('/api', item)
 
 //Backend server 
 const PORT = process.env.PORT || 5000
