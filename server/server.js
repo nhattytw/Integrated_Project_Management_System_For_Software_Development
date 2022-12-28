@@ -1,5 +1,4 @@
 require('dotenv').config({ path: './config/config.env' })
-const mongoose = require('mongoose')
 const express = require('express')
 const cors = require('cors');
 const bodyParser = require('body-parser')
@@ -7,7 +6,6 @@ const app = express()
 
 // Parse application/json
 app.use(bodyParser.json())
-mongoose.set('strictQuery', false);
 // Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
       extended: true
