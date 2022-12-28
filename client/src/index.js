@@ -27,7 +27,8 @@ const router = new createBrowserRouter([{
 {
   path:'/Dashboard',
   element:<Dashboard />
-}
+},
+
 
 ])
 root.render(

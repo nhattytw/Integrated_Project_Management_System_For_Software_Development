@@ -24,9 +24,19 @@ const projectSchema = new mongoose.Schema({
     },
     wbs: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'wbs'
-    }]
-    // Schedule:
+        ref: 'WBS'
+    }],
+    Schedule:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'scheduleInfo'
+    }],
+    Dependency:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'dependency'
+        }
+    ]
+    
 }, { timestamps: true })
 
 module.exports = mongoose.model('projectInfo', projectSchema)

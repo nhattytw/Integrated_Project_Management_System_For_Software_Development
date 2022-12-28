@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
-
-const mongoose = require('mongoose');
-
+//date format yy/mm/dd
 const wbsSchema = mongoose.Schema({
 
     task: [{
@@ -10,7 +8,7 @@ const wbsSchema = mongoose.Schema({
         },
         tasks: [],
         alottedTime: {
-            type: Date
+            type: Number
         }, 
     }],
     StartingDate: {

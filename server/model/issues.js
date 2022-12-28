@@ -13,7 +13,7 @@ const issuesSchema = mongoose.Schema({
     status: {
         type: String,
         enum: ['Active', 'Resolved', 'Pending'],
-        default: "Acti"
+        default: "Active"
     },
     notify: {
         type: String,

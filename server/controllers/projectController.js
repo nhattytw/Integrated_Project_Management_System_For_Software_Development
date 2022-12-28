@@ -1,6 +1,7 @@
 const connectToDB = require('../utils/dbConnect');
 const project = require('../model/project');
 const User = require('../model/userInfo');
+const mongoose = require('mongoose')
 
 // @desc     Create Project
 // @access   Public
@@ -70,5 +71,24 @@ const ActiveProjectList = (req, res) => {
 
     }
 }
+const assignWbsToProject = (req,res)=>{
+    //once a wbs is created the id will be returned  that will be passed in the request to this module
+    let {id,projectName} = req.body
+    connectToDB()
+     id = new mongoose.mongo.ObjectId(id)
+     pid = new mongoose.mongo.ObjectId("63aaec05762b4d5ec5bbb8cc")
+console.log(pid)
+    project.findOneAndUpdate({projectName:projectName},{wbs:pid},{new:true},(err,doc)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            console.log(doc)
+        }
+    })
+ 
 
-module.exports = { CreateProject, ActiveProjectList }
+    res.send("update")
+}
+
+module.exports = { CreateProject, ActiveProjectList,assignWbsToProject }

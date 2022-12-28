@@ -1,7 +1,7 @@
 const connectToDB = require('../utils/dbConnect');
 const items = require('../model/item');
 const user = require('../model/userInfo');
-const errorFunction = require('../utils/errorFunction')
+const errorFunction = require('../utils/messageFunction')
 const item = require("../model/wbs");
 
 // @desc     Add WBS
@@ -17,7 +17,7 @@ const addWbs = async (req, res) => {
         console.log(req.body)
         const InsertItems = new item({
             task: task,
-            StartingDate: startDate,
+            StartingDate: startingDate,
             EstimatedCompletionTime: Est,
             taskStatus: taskStatus
         });
@@ -27,7 +27,9 @@ const addWbs = async (req, res) => {
                 res.status(403).json("Task failed")
             }
             else {
-                res.status(201)
+                res.status(201).json({
+                    id:result._id
+                })
             }
         })
     } catch (err) {
