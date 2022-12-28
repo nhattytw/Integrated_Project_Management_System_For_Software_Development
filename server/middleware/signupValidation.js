@@ -15,7 +15,8 @@ const validation = Joi.object({
             .trim(true)
             .required(),
       dob: Joi
-            .date(),
+            .date()
+            .required(),
       phoneNumber: Joi
             .number()
             .required(),
@@ -52,7 +53,7 @@ const signupValidation = async (req, res, next) => {
       const payload = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
-            // dob: req.body.dob,
+            dob: req.body.dob,
             phoneNumber: req.body.phoneNumber,
             email: req.body.email,
             userName: req.body.userName,
@@ -60,8 +61,8 @@ const signupValidation = async (req, res, next) => {
             position: req.body.position,
             gitHubAccount: req.body.gitHubAccount,
       }
-
       const { error } = validation.validate(payload)
+
       if (error)
             return res
                   .status(406)

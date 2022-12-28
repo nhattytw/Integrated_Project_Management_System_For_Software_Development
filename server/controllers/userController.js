@@ -163,7 +163,7 @@ const getUsersInfo = async (_req, res) => {
                               messageFunction(false,
                                     'Users Information',
                                     existingUsers
-                                    )
+                              )
                         )
             }
       } catch (error) {

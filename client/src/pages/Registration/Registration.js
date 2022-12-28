@@ -48,7 +48,7 @@ export default function RegistrationPage() {
                 ...state,
                 dob: dateofbirth
             })
-            
+
             var formBody = [];
             for (var property in state) {
                 var encodedKey = encodeURIComponent(
@@ -117,8 +117,8 @@ export default function RegistrationPage() {
                     <Col>
                         <Form>
                             <Form.Label>First Name</Form.Label>
-                            <Form.Control t
-                                ype='"text'
+                            <Form.Control
+                                type='"text'
                                 placeholder='First Name'
                                 name="firstName"
                                 value={state.firstName}
