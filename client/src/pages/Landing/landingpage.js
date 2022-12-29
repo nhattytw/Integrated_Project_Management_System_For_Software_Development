@@ -25,9 +25,11 @@ const Landing = () => {
     <>
 
       <Container fluid className='LandingImage intro' style={{ height: "100vh" }}>
-        <Row className>
+        <div className="header">
+        <Row >
           <Col className='c1'>
-            <h4 className='intro-h4' >Now you can manage your projects,teams and constraints,
+            <h4 className='intro-h4' >
+              Now you can manage your projects,teams and constraints,
               with ease and efficency to accomplish the best work.
             </h4>
           </Col>
@@ -38,18 +40,22 @@ const Landing = () => {
               Lorem ipsum dolors sit amet, consectetur adipiscing elit. In dignissim tempus lorem nec dignissim. In lobortis est vitae lacus rhoncus hendrerit. Donec non quam sed urna ultrices varius. Pellentesque id vestibulum nibh.
             </p>
           </Col>
-        </Row>
+   
         <Row>
-
           <LinkContainer to="/Dashboard ">
             <button id="btn-get-started">
               Get Started
             </button>
           </LinkContainer>
+
         </Row>
+        </Row>
+        </div>
       </Container>
-      <Container className='container' style={{height:"100vh"}}>
-        <Row className='flexlist'>
+      <Container className='container' style={{height:"100vh", margin:"0px 0px 0px 300px"}}>
+         <h3>Procratio is a web-based,list-making,scheduling and project management application</h3>
+         <p></p>
+        <Row className='flexlist' style={{margin:"200px 0px 0px 0px"}}>
           <Col data-aos="fade-right" data-aos-duration="2000" className="flexitem">
             <Card className="cardH">
               <Card.Img variant="top" src={image} className="img-height icon" />
@@ -92,9 +98,15 @@ const Landing = () => {
             </Card>
           </Col>
         </Row>
+        
       </Container>
 
       <Container data-aos="fade-right">
+        <Row>
+          <Col>
+            
+          </Col>
+        </Row>
         <Row>
           <Col style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
             <h2 >Our features</h2>

@@ -13,6 +13,7 @@ import React, { useEffect } from 'react';
 import AdminPanel from './AdminPanel';
 import Assignments from './Assignments/Assingments';
 import Communications from './Communication';
+import SettingPage from './Setting';
 import { useState } from 'react';
 
 // add first best solution  
@@ -22,12 +23,14 @@ const pages = {
   "AdminPanel": <AdminPanel />,
   "Projects": <Projects />,
   "Communication": <Communications />,
+  "Setting":<SettingPage />
 }
 
 
 const PageDisplay = (page) => {
   console.log(page)
 }
+const height = 100;
 const headerStyles = {
   padding: 18,
   fontSize: 20,
@@ -45,7 +48,9 @@ const handleSignout = () => {
 
 }
 
+
 const NavToggle = ({ expand, onChange }) => {
+ 
   return (
     <Navbar appearance="subtle" className="nav-toggle">
       <Nav>
@@ -57,10 +62,7 @@ const NavToggle = ({ expand, onChange }) => {
 
         >
           <Nav.Item>Help</Nav.Item>
-          <Nav.Item>
-            {/* need a settings page for selecting updating user info and update password options along with the respective pages */}
-            Settings
-          </Nav.Item>
+
           <Nav.Item
             onClick={handleSignout}
           >
@@ -82,7 +84,7 @@ const Dashboard = () => {
   const [page, SetPage] = useState("AdminPanel")
   const [expand, setExpand] = React.useState(true);
   return (
-    <div className="show-fake-browser sidebar-page"  >
+    <div className="show-fake-browser sidebar-page" >
       <Container  >
         <Sidebar
           style={{ display: 'flex', flexDirection: 'column', position: "sticky !important" }}
@@ -129,6 +131,14 @@ const Dashboard = () => {
                   Communication
 
                 </Nav.Item>
+                <Nav.Item
+                  eventKey="4-1"
+                  icon={<CogIcon />}
+                  onClick={() => { SetPage("Setting") }}
+                >
+                  Setting
+
+                </Nav.Item>
 
               </Nav>
             </Sidenav.Body>
@@ -136,7 +146,7 @@ const Dashboard = () => {
           <NavToggle expand={expand} onChange={() => setExpand(!expand)} />
         </Sidebar>
 
-        <Container >
+        <Container style={{height:"100vh"}}>
           <Content>
             {pages[page]}
           </Content>

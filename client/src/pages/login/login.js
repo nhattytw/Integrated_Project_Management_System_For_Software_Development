@@ -3,6 +3,7 @@ import { NavBar } from "../../Components/nav/nav";
 import { Form } from "react-bootstrap"
 import people from '../../Assets/BuissnessPeople.png'
 import { useState } from "react";
+import { LinkContainer } from "react-router-bootstrap";
 
 export default function Login() {
 
@@ -100,7 +101,10 @@ export default function Login() {
                                 >
                                     Login
                                 </Button>
+                                <LinkContainer to='/forgetpassword'>
                                 <a href="#" style={{ textAlign: "center" }}>Forgot Password ?</a>
+                                
+                                </LinkContainer>
                             </Form.Group>
                         </Col>
                     </Row>
