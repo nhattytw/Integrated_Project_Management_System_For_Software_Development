@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 
 // @desc     Create Project
 // @access   Public
+//stored initalize project and assign a project Manager 
 const CreateProject = async (req, res) => {
     connectToDB()
     try {
@@ -47,6 +48,7 @@ const CreateProject = async (req, res) => {
 
 // @desc     Get Active Projects
 // @access   Public
+//finds a list of projects that are not completed or not been canceled
 const ActiveProjectList = (req, res) => {
     connectToDB()
     try {
@@ -71,20 +73,21 @@ const ActiveProjectList = (req, res) => {
 
     }
 }
+//assign a Work Break down structure for an existing project. this is an update operation and it checks that the project exists
 const assignWbsToProject = (req,res)=>{
     //once a wbs is created the id will be returned  that will be passed in the request to this module
     let {id,projectName} = req.body
     connectToDB()
      id = new mongoose.mongo.ObjectId(id)
-     pid = new mongoose.mongo.ObjectId("63aaec05762b4d5ec5bbb8cc")
+     
 console.log(pid)
-    project.findOneAndUpdate({projectName:projectName},{wbs:pid},{new:true},(err,doc)=>{
+    project.findOneAndUpdate({projectName:projectName},{wbs:id},{new:true},(err,doc)=>{
         if(err){
             console.log(err)
         }
         else{
             console.log(doc)
-        }
+        }   
     })
  
 

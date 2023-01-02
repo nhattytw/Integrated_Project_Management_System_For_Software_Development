@@ -7,13 +7,14 @@ const wbsSchema = mongoose.Schema({
             type: String,
         },
         tasks: [],
-        alottedTime: {
-            type: Number
-        }, 
+  
+        StartingDate: {
+            type: Date
+        },
+        EndingDate: {
+            type: Date
+        },
     }],
-    StartingDate: {
-        type: Date
-    },
     EstimatedCompletionTime:
     {
         type: Date
@@ -21,6 +22,11 @@ const wbsSchema = mongoose.Schema({
     taskStatus: {
         type: String,
     },
+    Schedule:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'scheduleInfo'
+    }],
+
 
 }, { timestamps: true })
 // const WBS = mongoose.model("WBS",WbsSchema)

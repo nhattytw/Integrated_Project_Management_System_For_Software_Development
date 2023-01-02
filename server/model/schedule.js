@@ -1,12 +1,14 @@
 const mongoose = require("mongoose")
 
 const scheduleSchema = mongoose.Schema({
-    titles:[],
-    expectedCompletionTime:{
-        type:Date
-    }
-
-
+    projectName:String,
+    projectSchedule:[
+        {
+            task:String,
+            start:Date,
+            end:Date
+        }
+    ]
 
 }, { timestamps: true })
 

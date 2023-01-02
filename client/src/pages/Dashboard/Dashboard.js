@@ -3,10 +3,10 @@ import CogIcon from '@rsuite/icons/legacy/Cog';
 import AngleLeftIcon from '@rsuite/icons/legacy/AngleLeft';
 import AngleRightIcon from '@rsuite/icons/legacy/AngleRight';
 import DashboardIcon from '@rsuite/icons/Dashboard';
-import PageIcon from "@rsuite/icons/Page"//for payroll page to be removed
 import ProjectIcon from "@rsuite/icons/Project" //for project page
 import SentToUserIcon from "@rsuite/icons/SentToUser" //for communications page
 import PinIcon from "@rsuite/icons/Pin";
+import PeoplesMapIcon from '@rsuite/icons/PeoplesMap';
 import "rsuite/dist/rsuite.min.css";
 import Projects from './Projects';
 import React, { useEffect } from 'react';
@@ -15,6 +15,7 @@ import Assignments from './Assignments/Assingments';
 import Communications from './Communication';
 import SettingPage from './Setting';
 import { useState } from 'react';
+import Teams from './Teams';
 
 // add first best solution  
 // page navigation pliminary logic
@@ -23,13 +24,12 @@ const pages = {
   "AdminPanel": <AdminPanel />,
   "Projects": <Projects />,
   "Communication": <Communications />,
-  "Setting":<SettingPage />
+  "Setting":<SettingPage />,
+  "Teams":<Teams />
 }
 
 
-const PageDisplay = (page) => {
-  console.log(page)
-}
+
 const height = 100;
 const headerStyles = {
   padding: 18,
@@ -113,9 +113,10 @@ const Dashboard = () => {
                 </Nav.Item>
 
                 <Nav.Item eventKey="3-1"
-                  icon={<PageIcon />}
+                  icon={<PeoplesMapIcon />}
+                  onClick={() => { SetPage("Teams")}}
                 >
-                  Payroll
+                  Teams
                 </Nav.Item>
                 <Nav.Item eventKey="3-2"
                   icon={<PinIcon />}

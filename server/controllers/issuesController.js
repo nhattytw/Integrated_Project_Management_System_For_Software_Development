@@ -3,11 +3,12 @@ const issues = require('../model/issues')
 
 // @desc     Create Issue and Post
 // @access   Public
+// Issues are problems and questions developers have. with notification types
 const PostIssue = async (req,res)=>{
     connectToDB()
     try {
         const {issue,postedBy,notify} = req.body
-        console.log(req.body)
+        
         const issueItem = new issues(
             {
                 issue:issue,
@@ -24,7 +25,7 @@ const PostIssue = async (req,res)=>{
             }
 
         })
-        
+        res.send("saved")
     } catch (error) {
         console.log(error)
     }
