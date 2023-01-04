@@ -1,13 +1,54 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import "bootstrap/dist/css/bootstrap.min.css";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
+import LoginPage from "./pages/login/login";
+import RegistrationPage from "./pages/Registration/Registration";
+import ForgotPassword from "./pages/Landing/forgotPassword";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import {
+  ContextProvider,
+  AssignmentContext,
+  AssignmentContextProvider,
+} from "./Context/context";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+const router = new createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/Registration",
+    element: <RegistrationPage />,
+  },
+  {
+    path: "/Dashboard",
+    element: <Dashboard />,
+  },
+  {
+    path: "/forgetpassword",
+    element: <ForgotPassword />,
+  },
+]);
 root.render(
   <React.StrictMode>
-    <App />
+    <ContextProvider>
+      <RouterProvider router={router} />
+    </ContextProvider>
   </React.StrictMode>
 );
 

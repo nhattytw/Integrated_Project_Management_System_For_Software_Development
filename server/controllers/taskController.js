@@ -1,5 +1,6 @@
 const connectToDB = require("../utils/dbConnect");
 const taskModel = require("../model/tasks");
+const user = require("../model/userInfo");
 const messageFunction = require("../utils/messageFunction");
 
 // @desc    Assign and get tasks
@@ -10,8 +11,9 @@ const PostTask = async (req, res) => {
   try {
     // developer n
     const {
-      task,
+      title,
       description,
+      developer,
       status,
       estimatedCompletionTime,
       comments,
@@ -20,16 +22,19 @@ const PostTask = async (req, res) => {
 
     const existingTask = await taskModel
       .findOne({
-        task: task,
+        title: title,
       })
       .lean(true);
+
+    const dev = await user.findOne({ userName: developer }).lean(true);
 
     if (existingTask) {
       return res.status(403).json(messageFunction(true, "Task exists"));
     } else {
       const newTask = new taskModel({
-        task: task,
+        title: title,
         description: description,
+        developer: dev,
         status: status,
         estimatedCompletionTime: estimatedCompletionTime,
         comments: comments,
@@ -52,19 +57,31 @@ const PostTask = async (req, res) => {
 
 // @desc     Get All Assigned Tasks
 // @access   Public
-const getAssignedTasks = async (_req, res) => {
+const getAssignedTasks = (req, res) => {
   connectToDB();
   try {
-    const existingTasks = await taskModel.find();
+    const dev = user.findOne({ userName: developer }).lean(true);
+    const assignedTasks = taskModel
+      .find()
+      .populate("title", "developer", "status")
+      .where("developer")
+      .equals(dev)
+      .lean(true)
+      .exec((err, result) => {
+        if (err) {
+          console.log("error");
+        } else {
+          const jsonContent = JSON.stringify(result);
+          res.send(jsonContent);
+        }
+      });
 
-    if (!existingTasks) {
+    if (!assignedTasks) {
       return res.status(400).json(messageFunction(true, "No Tasks Assigned."));
     } else {
-      // Show Task Information
-      // Data - existingTask
       return res
         .status(200)
-        .json(messageFunction(false, "Assigned Tasks", existingTasks));
+        .json(messageFunction(false, "Assigned Tasks", assignedTasks));
     }
   } catch (error) {
     console.error(error.message);
@@ -77,11 +94,11 @@ const getAssignedTasks = async (_req, res) => {
 const updateTaskStatus = async (req, res) => {
   connectToDB();
   try {
-    const { task, status } = req.body;
+    const { title, status } = req.body;
 
     const existingTask = await taskModel
       .findOne({
-        task: task,
+        title: title,
       })
       .lean(true);
 
@@ -92,7 +109,7 @@ const updateTaskStatus = async (req, res) => {
     } else {
       try {
         const response = await taskModel.updateOne(
-          { task: existingTask.task },
+          { title: existingTask.title },
           {
             $set: {
               status: status,

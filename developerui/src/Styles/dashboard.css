@@ -1,0 +1,29 @@
+body,html{
+    margin: 0px;
+    padding: 0px;
+}
+#btn-get-started{
+    height: 50px;
+    width: 150px;
+    cursor: Pointer;
+    font-family: Oxygen;
+    border: 1px solid #fff;
+    background-color: rgba(66,105,158);
+    color: #fff;
+    
+}
+.summary > h3,h5,button{
+    margin: 0px 0px 0px 5px;
+    
+}
+
+.secondary{
+        color: rgb(153, 153, 153);
+}
+.Navcontainer{
+   
+    background: #FFFFFF;
+    box-shadow:  20px 20px 60px #d9d9d9,
+                 -20px -20px 60px #ffffff;
+}
+
