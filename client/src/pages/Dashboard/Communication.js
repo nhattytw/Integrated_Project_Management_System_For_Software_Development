@@ -183,6 +183,7 @@ const ScheduledMeetings = () => {
                                 <th>Start time</th>
                                 <th>Completion time</th>
                                 <th>date</th>
+                                <th>link</th>
                             </tr>
                         </thead>
                     </Table>

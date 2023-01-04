@@ -87,46 +87,54 @@ const Dashboard = () => {
     <div className="show-fake-browser sidebar-page" >
       <Container  >
         <Sidebar
-          style={{ display: 'flex', flexDirection: 'column', position: "sticky !important" }}
+          style={{ display: 'flex', flexDirection: 'column', position: "sticky !important" ,backgroundColor:"rgba(66,105,158)"}}
           width={expand ? 260 : 56}
           collapsible
           className="Navcontainer"
+        
 
         >
           <Sidenav.Header >
             <div style={headerStyles}>
-              <span style={{ display: 'flex', flexDirection: 'column', position: "sticky !important", marginLeft: 12 }}> procurat.io</span>
+              <span style={{ display: 'flex', flexDirection: 'column', position: "sticky !important", marginLeft: 12 }}> procurat.io  
+              
+              </span>
+             
             </div>
           </Sidenav.Header>
-          <Sidenav expanded={expand} defaultOpenKeys={['3']} appearance="subtle" >
-            <Sidenav.Body >
-              <Nav>
+            <hr style={{border:"2px solid #fff"}}/  >
+          <Sidenav expanded={expand} defaultOpenKeys={['3']} appearance="subtle"  style={{color:"white"}}>
+            <Sidenav.Body style={{color:"white"}}>
+              <Nav style={{color:"white"}}>
                 <Nav.Item eventKey="1" icon={<DashboardIcon />}
                   onClick={() => { SetPage("AdminPanel") }}
+                  style={{color:"white"}}
+                  color='#fff'
                 >
                   Dashboard
                 </Nav.Item>
-                <Nav.Item eventKey="2" icon={<ProjectIcon />}
+                <Nav.Item eventKey="2" icon={<ProjectIcon color='#fff'/>}
                   onClick={() => { SetPage("Projects") }}
                 >
                   Project
                 </Nav.Item>
 
                 <Nav.Item eventKey="3-1"
-                  icon={<PeoplesMapIcon />}
+                  icon={<PeoplesMapIcon color='#fff'/>}
                   onClick={() => { SetPage("Teams")}}
+
                 >
                   Teams
                 </Nav.Item>
                 <Nav.Item eventKey="3-2"
-                  icon={<PinIcon />}
+                  icon={<PinIcon color='#fff'/>}
 
                   onClick={() => { SetPage("Assignments") }}
                 >Assignments
                 </Nav.Item>
                 <Nav.Item
                   eventKey="4-1"
-                  icon={<SentToUserIcon />}
+                  icon={<SentToUserIcon color='#fff'/>}
                   onClick={() => { SetPage("Communication") }}
                 >
                   Communication
@@ -134,7 +142,7 @@ const Dashboard = () => {
                 </Nav.Item>
                 <Nav.Item
                   eventKey="4-1"
-                  icon={<CogIcon />}
+                  icon={<CogIcon color='#fff'/>}
                   onClick={() => { SetPage("Setting") }}
                 >
                   Setting
@@ -147,7 +155,7 @@ const Dashboard = () => {
           <NavToggle expand={expand} onChange={() => setExpand(!expand)} />
         </Sidebar>
 
-        <Container style={{height:"100vh"}}>
+        <Container style={{minHeight:"100vh",maxHeight:"fit-content"}}>
           <Content>
             {pages[page]}
           </Content>

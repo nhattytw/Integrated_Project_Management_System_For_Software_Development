@@ -1,6 +1,6 @@
-const connectToDB = require('../utils/dbConnect');
-const user = require('../model/userInfo');
-const messageFunction = require('../utils/messageFunction')
+const connectToDB = require("../utils/dbConnect");
+const user = require("../model/userInfo");
+const errorFunction = require("../utils/messageFunction");
 const item = require("../model/wbs");
 
 // @desc     Add WBS
@@ -14,26 +14,27 @@ const addWbs = async (req, res) => {
         // const startDate = new Date("10/10/10")
         // const Est = new Date(EstimatedCompletionTime)
 
-        console.log(req.body)
-        const InsertItems = new item({
-            task: task,
-            taskStatus: taskStatus
+    console.log(req.body);
+    const InsertItems = new item({
+      task: task,
+      StartingDate: startingDate,
+      EstimatedCompletionTime: Est,
+      taskStatus: taskStatus,
+    });
+
+    InsertItems.save((err, result) => {
+      if (err) {
+        res.status(403).json("Task failed");
+      } else {
+        res.status(201).json({
+          id: result._id,
         });
-
-        InsertItems.save((err, result) => {
-            if (err) {
-                res.status(403).json("Task failed")
-            }
-            else {
-                res.status(201).json({
-                    id:result._id
-                })
-            }
-        })
+      }
+    });
         res.send("OK")
-    } catch (err) {
-        console.log(err)
-    }
-}
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-module.exports = { addWbs }
+module.exports = { addWbs };

@@ -7,15 +7,15 @@ import { teams } from "../../API/Teams";
 import { assignments } from "../../API/Assignments";
 import { issues } from "../../API/Issues";
 
-
+//add padding to the cards
 const MeetingSummary = ()=>
 {
     return(
         <Container>
             <Row>
+                <h3>Upcoming Meetings</h3>
                 <Col>
-                <Card>
-                
+                <Card >
                 <Card.Body>
                     <Card.Title>meeting with font end team</Card.Title>
                     <Card.Text>
@@ -85,7 +85,7 @@ const BudgetGraph = ()=>{
                     <XAxis dataKey="name"/>
                     <YAxis />
                     <Legend />
-                    <Bar dataKey="budget" fill="#8884d8" />
+                    <Bar dataKey="budget" fill="rgba(66,105,158)" />
                     <Bar dataKey="spent" fill="#82ca9d" />
                 </BarChart>
                 
@@ -111,9 +111,9 @@ const ActiveProjects = ()=>
                 {ProjectBudgetData.map((project)=>{
                     return(
                     <Col >
-                    <Card bg="dark" border="dark" className="ProjectDesc" style={{color:"#fff"}}> 
+                    <Card border="dark" className="ProjectDesc" style={{color:"#fff",backgroundColor:"rgba(66,105,158)"}}> 
                         <Card.Title><h3>{project.name}</h3></Card.Title>
-                        <Card.Subtitle><h5 className="secondary">{project.budget}</h5></Card.Subtitle>
+                        <Card.Subtitle><h5 className="secondary" style={{color:"#fff"}}>{project.budget}</h5></Card.Subtitle>
                         <Card.Body><p>Short Describtion of the project </p></Card.Body>
                         <Button variant="light" style={{margin:"0px 10px 10px 10px"}}>Go to project</Button>
                     </Card>
@@ -192,11 +192,12 @@ const Parent=()=>{
             <Row>
                 <Col><h3>Dashboard</h3></Col>
             </Row>
-        <Row>
+            <Row>
                 <Col>
-                    <MeetingSummary />
+                    <ActiveProjects />
                 </Col>
             </Row>
+    
             <Row>
             <Col><h3>Budget Summary</h3></Col>
             </Row>
@@ -211,7 +212,7 @@ const Parent=()=>{
             </Row>
             <Row>
                 <Col>
-                    <ActiveProjects />
+                    <MeetingSummary />
                 </Col>
             </Row>
             <Row>

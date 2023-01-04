@@ -1,8 +1,9 @@
 import {Container,Col,Row,Button, ButtonGroup, Table,ProgressBar} from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
+import { Modal } from 'react-bootstrap';
 import { Activeprojects } from '../../API/Activeprojects'
 import "rsuite/dist/rsuite.min.css";
-import {Nav,Content} from 'rsuite'
+import {Nav} from 'rsuite'
 import AdvancedAnalyticsIcon from '@rsuite/icons/AdvancedAnalytics' ;
 import PlusIcon from '@rsuite/icons/Plus';
 import BarChartIcon from '@rsuite/icons/BarChart';
@@ -55,10 +56,6 @@ const CreateProject = ()=>{
                         <Form.Label>Duration(months)</Form.Label>
                         <Form.Control type="number"/>
 
-                        <Form.Label>Project manager</Form.Label>
-                        <Form.Select>
-                            <option>project manager</option>
-                        </Form.Select>
                     </Form.Group>
                 </Col>
             </Row>
@@ -150,9 +147,67 @@ const ProjectStatus = ()=>{
     </Table>
         )
     }
-    const CreateWbs = ()=>{
+    const TaskModal = (props)=>{
         return(
-            <h1>Wbs</h1>
+            <Modal
+            {...props}
+            size="lg"
+            >
+                
+                <Modal.Header closeButton >
+                    <Modal.Title>
+                        Add subtasks
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Row>
+                        <Col sm={6}> 
+                        <span>
+                        <Form.Control type='text'></Form.Control>
+                       
+                        
+                        </span>
+                        
+                        </Col>
+                        <Col> <Button>Add subtask</Button></Col>
+                        <Button onClick={props.onHide} style={{margin:'30px 0px 0px 0px'}}>Create subtasks</Button>         
+                    </Row>
+                </Modal.Body>
+            </Modal>
+        )
+
+    }
+
+    const CreateWbs = ()=>{
+        const [show,setShow] = useState(false)
+      
+        return(
+            <div>
+                <h1>Wbs</h1>
+            <Container>
+                <Col sm={6}>
+                    <Form.Label>Title</Form.Label>
+                    <Form.Control type='text'></Form.Control>
+                    <Button style={{marginTop:"10px"}} onClick={()=>{setShow(true)}}>Add sub tasks</Button> 
+                    <TaskModal 
+                    show={show}
+                    onHide={()=>{setShow(false)}}
+                    >
+
+                    </TaskModal>
+                    <br />
+                    <Form.Label>Start Date</Form.Label>
+                    <Form.Control type='text'></Form.Control>
+                    <Form.Label>End Date</Form.Label>
+                    <Form.Control type='text'></Form.Control>
+                    <div style={{marginTop:"10px"}}>
+                    <Button>Add</Button> 
+                    <Button>Next</Button>
+                    </div>
+                    
+                </Col>
+            </Container>
+            </div>
             )
         }
         const Schedule = ()=>{

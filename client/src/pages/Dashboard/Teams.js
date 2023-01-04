@@ -1,46 +1,43 @@
-import {Container,Row,Col,Form,Table,Card} from 'react-bootstrap';
+import {Container,Row,Col,Form,Table,Card,Button} from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
 import {Nav} from 'rsuite'
+import PeoplesMapIcon from '@rsuite/icons/PeoplesMap';
 const some = [1,2,3,4,5,5,3,23,42,34,23,2342,34,423,4234,2342,34,423,4234]
 
-const AssignProjectToTeam = ()=>{
+const TeamNav = ()=>{
+    return(
+        <Container>
+        <Row>
+            <Col>
+                <Nav appearance='tabs' >
+                    <Nav.Item icon={<PeoplesMapIcon />} >Create Teams</Nav.Item>
+                   
+                    {/* <Nav.Item onSelect={() => { setCommunications("ScheduleMeetings") }}>Schedule Meeting</Nav.Item> */}
+    
+                </Nav>
+            </Col>
+        </Row>
+    </Container>
+)
+    
+}
+const CreateTeams = ()=>{
     return(
         <Container>
             <Row>
-                
-                <Col xs={3}>
-                    <Form.Label>Select Project</Form.Label>
-                    <Dropdown>
-                        <Dropdown.Toggle >Select project</Dropdown.Toggle>
-                    </Dropdown>
+                <Col>
+                <Form>
+                    <Form.Control type='text'></Form.Control>
+                </Form>
                 </Col>
-                <Col xs={3}> 
-                <Form.Label>Select team</Form.Label>
-                    <Dropdown>
-                        <Dropdown.Toggle >Select team</Dropdown.Toggle>
-                    </Dropdown>
+                <Col>
+                    <Button>add</Button>
                 </Col>
-               
             </Row>
-            <Row style={{margin:"10px 0px 10px 0px"}}>
-                <h3>assigned project</h3>
-
-            </Row>
-            <Row>
-            {
-                some.map((x)=>{
-                    return(
-
-                        <Col>
-                            <Card>
-                                <Card.Body>
-                                    Lorem
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    )
-                })
-            }
+            <Row style={{margin:"20px 0px 0px 0px"}}>
+                <Table>
+                    <th>username</th>
+                </Table>
             </Row>
         </Container>
     )
@@ -49,7 +46,8 @@ const Teams = ()=>{
     return(
         <>
         <TeamNav />
-        <AssignProjectToTeam />
+       
+        <CreateTeams />
         
         </>
     )
