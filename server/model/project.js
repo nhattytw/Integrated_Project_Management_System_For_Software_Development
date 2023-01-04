@@ -26,16 +26,7 @@ const projectSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'WBS'
     }],
-    Schedule:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'scheduleInfo'
-    }],
-    Dependency:[
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'dependency'
-        }
-    ]
+
     
 }, { timestamps: true })
 

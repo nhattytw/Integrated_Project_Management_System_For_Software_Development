@@ -8,6 +8,7 @@ const { securePassword,
 
 // @desc     Register user
 // @access   Public
+// signup a user, the platform is meant for project managers and developers
 const signup = async (req, res) => {
       connectToDB()
       try {
@@ -69,6 +70,7 @@ const signup = async (req, res) => {
 
 // @desc     Signin user
 // @access   Public
+//for registered users to access their data.
 const signin = async (req, res) => {
       connectToDB()
       try {

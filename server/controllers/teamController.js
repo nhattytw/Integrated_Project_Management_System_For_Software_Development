@@ -4,6 +4,8 @@ const project = require("../model/project")
 
 // @desc     Create Teams
 // @access   Public
+//create teams and assign projects to those teams. 
+//memebers must exist and project must be created before hand
 const CreateTeams = (req, res) => {
     connectToDB()
     try {
