@@ -28,7 +28,7 @@ const CreateTeams = (req, res) => {
             })
 
         console.log(memebers)
-        res.send("b1")
+        res.send("Teams Created")
 
     } catch (error) {
         console.log(error)

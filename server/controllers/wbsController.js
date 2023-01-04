@@ -6,6 +6,7 @@ const item = require("../model/wbs");
 // @desc     Add WBS
 // @access   Public
 //create a work break down structure for a project. once the wbs has been created it returns an associated id
+//task is an array of objects, and each object contains a start and finish date
 const addWbs = async (req, res) => {
     connectToDB();
     //  yy/mm/dd 

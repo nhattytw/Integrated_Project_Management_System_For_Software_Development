@@ -4,7 +4,7 @@ const messageFunction = require("../utils/messageFunction");
 
 // @desc    Assign and get tasks
 // @access  public
-
+//assign specific tasks to developers, in teams assigned to a certain project
 const PostTask = async (req, res) => {
   connectToDB();
   try {
@@ -73,7 +73,7 @@ const getAssignedTasks = async (_req, res) => {
       .json(messageFunction(true, "Failed To Fetch Tasks, Please Try Again."));
   }
 };
-
+// change task status to completed.
 const updateTaskStatus = async (req, res) => {
   connectToDB();
   try {
