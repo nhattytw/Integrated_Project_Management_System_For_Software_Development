@@ -18,6 +18,8 @@ const token = jwt.sign(
 
 // @desc     Create Zoom Meeting
 // @access   Public
+//request the zoom api to create a meeting and adding participants
+//registered with company email
 const createMeeting = (req, res) => {
       // email = 'nathnael.tesfaye.hh4142@gmail.com'  // your zoom developer email account
 
@@ -72,6 +74,7 @@ const createMeeting = (req, res) => {
 
 // @desc     Get All Zoom Meetings
 // @access   Public
+//lists all active meetings
 const listMeetings = (_req, res) => {
       var options = {
             method: 'GET',

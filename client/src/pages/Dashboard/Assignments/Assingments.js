@@ -47,17 +47,6 @@ const AssignemtsNav=()=>{
                             <option>Team 2</option>
                         </Form.Select>
 
-                        <Form.Label>Unassigened Tasks</Form.Label>
-                        <div>
-                            
-                            <CheckTreePicker
-                            defaultExpandAll
-                            cascade={cascade}
-                            defaultValue={[2, 38]}
-                        
-                            style={{ width: 650 }}
-                             />
-                             </div>
                         
 
                         </Form.Group>

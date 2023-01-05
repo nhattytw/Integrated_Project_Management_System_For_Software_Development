@@ -6,8 +6,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route,RouterProvider, createBrowserRouter } from "react-router-dom";
 import  LoginPage from './pages/login/login';
 import RegistrationPage from './pages/Registration/Registration';
+import ForgotPassword from './pages/Landing/forgotPassword';
 import Dashboard from "./pages/Dashboard/Dashboard"
 import { ContextProvider,AssignmentContext,AssignmentContextProvider } from './Context/context';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -28,7 +30,10 @@ const router = new createBrowserRouter([{
   path:'/Dashboard',
   element:<Dashboard />
 },
-
+{
+  path:'/forgetpassword',
+  element:<ForgotPassword />
+},
 
 ])
 root.render(
