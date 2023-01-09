@@ -3,9 +3,9 @@ const Context = React.createContext();
 const AssignmentContext =React.createContext();
 
 const ContextProvider = ({ children }) =>{
-    const [Tabs,setTabs] = useState("CreateProject")
-    const [Assignment,setAssignment] = useState("AssignTaskToTeam")
-    const [Communications,setCommunications] = useState("ScheduledMeetings")
+    const [Tabs,setTabs] = useState("ActiveProjects")
+    const [Assignment,setAssignment] = useState("PendingAssignments")
+    const [Communications,setCommunications] = useState("active")
     
             return(
 
@@ -14,4 +14,4 @@ const ContextProvider = ({ children }) =>{
                 </Context.Provider>
             )
 }
-export {Context,ContextProvider,AssignmentContext}
+export {Context,ContextProvider}

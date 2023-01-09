@@ -140,9 +140,9 @@ const Schedule = () => {
   return <h1>schedule</h1>;
 };
 const pages = {
-  ActiveProjects: ActiveProjects,
-  ProjectStatus: ProjectStatus,
-  Schedule: Schedule,
+  "ActiveProjects": ActiveProjects,
+  "ProjectStatus": ProjectStatus,
+  "Schedule": Schedule,
 };
 const Projects = () => {
   const { Tabs, setTabs } = useContext(Context);

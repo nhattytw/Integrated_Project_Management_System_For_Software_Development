@@ -71,7 +71,7 @@ const WorkStatus = () => {
               <>
                 <h6>{issue.project}</h6>
                 <ul>
-                  {issue.issue.map((i) => {
+                  {issue.comment.map((i) => {
                     return <li>{i}</li>;
                   })}
                 </ul>

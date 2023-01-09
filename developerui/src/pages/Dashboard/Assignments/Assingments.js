@@ -15,6 +15,14 @@ const AssignemtsNav = () => {
       <Row>
         <Col>
           <Nav appearance="tabs">
+          <Nav.Item
+              icon={<PauseRoundIcon />}
+              onSelect={() => {
+                setAssignment("PendingAssignments");
+              }}
+            >
+              Pending Assignments
+            </Nav.Item>
             <Nav.Item
               icon={<CheckRoundIcon />}
               onSelect={() => {
@@ -23,14 +31,7 @@ const AssignemtsNav = () => {
             >
               Completed Assignments
             </Nav.Item>
-            <Nav.Item
-              icon={<PauseRoundIcon />}
-              onSelect={() => {
-                setAssignment("PendingAssignments");
-              }}
-            >
-              Pending Assignments
-            </Nav.Item>
+
           </Nav>
         </Col>
       </Row>
@@ -39,7 +40,27 @@ const AssignemtsNav = () => {
 };
 
 const PendingAssignments = () => {
-  return <h4>Completed Assignments</h4>;
+  return (
+    <Container>
+    <Row>
+      <Col>
+        <h4>Completed task</h4>
+        <Table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Task</th>
+              <th>Assigned Team</th>
+              <th>Date Assigend</th>
+              <th>Date Completed</th>
+              <th></th>
+            </tr>
+          </thead>
+        </Table>
+      </Col>
+    </Row>
+  </Container>
+  )
 };
 const CompletedAssignments = () => {
   return (
@@ -65,12 +86,12 @@ const CompletedAssignments = () => {
   );
 };
 const pages = {
-  PendingAssignments: PendingAssignments,
-  CompletedAssgnement: CompletedAssignments,
+  "PendingAssignments": PendingAssignments,
+  "CompletedAssgnement": CompletedAssignments,
 };
+
 const Assignments = () => {
   const { Assignment, setAssignment } = useContext(Context);
-  console.log(Assignment);
   return (
     <>
       <AssignemtsNav />

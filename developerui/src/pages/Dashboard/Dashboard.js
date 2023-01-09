@@ -18,15 +18,16 @@ import { useState } from 'react';
 
 // add first best solution  
 // page navigation pliminary logic
+
+
 const pages = {
-  "Assignments": <Assignments />,
+                  
   "AdminPanel": <AdminPanel />,
   "Projects": <Projects />,
   "Communication": <Communications />,
+  "Assignment":<Assignments />,
   "Setting":<SettingPage />
 }
-
-
 const PageDisplay = (page) => {
   console.log(page)
 }
@@ -87,10 +88,11 @@ const Dashboard = () => {
     <div className="show-fake-browser sidebar-page" >
       <Container  >
         <Sidebar
-          style={{ display: 'flex', flexDirection: 'column', position: "sticky !important" }}
+          style={{ display: 'flex', flexDirection: 'column', position: "sticky !important",backgroundColor:"rgba(66,105,158)"}}
           width={expand ? 260 : 56}
           collapsible
           className="Navcontainer"
+
 
         >
           <Sidenav.Header >
@@ -112,21 +114,20 @@ const Dashboard = () => {
                   Project
                 </Nav.Item>
 
-                <Nav.Item eventKey="3-1"
-                  icon={<PageIcon />}
-                >
-                  Payroll
-                </Nav.Item>
+         
                 <Nav.Item eventKey="3-2"
                   icon={<PinIcon />}
 
-                  onClick={() => { SetPage("Assignments") }}
+                  onClick={() => { SetPage("Assignment") }}
                 >Assignments
                 </Nav.Item>
                 <Nav.Item
                   eventKey="4-1"
                   icon={<SentToUserIcon />}
-                  onClick={() => { SetPage("Communication") }}
+                  onClick={() => { 
+                    SetPage("Communication")
+                
+                }}
                 >
                   Communication
 
@@ -146,7 +147,8 @@ const Dashboard = () => {
           <NavToggle expand={expand} onChange={() => setExpand(!expand)} />
         </Sidebar>
 
-        <Container style={{height:"100vh"}}>
+        <Container style={{minHeight:"100vh",maxHeight:'fit-content'}}>
+          
           <Content>
             {pages[page]}
           </Content>
