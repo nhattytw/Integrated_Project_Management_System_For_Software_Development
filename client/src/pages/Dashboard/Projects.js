@@ -148,6 +148,33 @@ const ProjectStatus = ()=>{
         )
     }
     const TaskModal = (props)=>{
+        const [task,setTask] = useState([{task:''}])
+        const handleChange = (index,event)=>{
+            let data = [...task]
+            data[index][event.target.name] = event.target.value
+            setTask(data)
+        }
+        const addFields = ()=>{
+            let newField = {task:''}
+            setTask([...task,newField])
+        }
+        const Submit=(props)=>{
+            
+       
+            return props.onHide
+        }
+        const removeFields=(index)=>{
+            if(task.length === 1){
+                setTask([{task:''}])
+            }
+            else{
+                let data = [...task]
+                data.splice(index,1)
+                setTask(data)
+
+            }
+
+        }
         return(
             <Modal
             {...props}
@@ -162,15 +189,43 @@ const ProjectStatus = ()=>{
                 <Modal.Body>
                     <Row>
                         <Col sm={6}> 
-                        <span>
-                        <Form.Control type='text'></Form.Control>
-                       
-                        
-                        </span>
+                        <Form>
+                        {task.map((input,index)=>{
+                            return(
+                                
+                                <Row key={index} style={{margin:"5px 0px 0px 0px"}}>
+                                <Col xs={6}>
+                                <Form.Control type='text' name='task'
+                                value={input.task}
+                                onChange={event=>handleChange(index,event)}
+                                
+                                >
+
+                                </Form.Control>
+                                
+                                </Col>
+                                <Col xs lg="2">
+                                    <ButtonGroup>
+                                     <Button onClick={addFields} style={{margin:"0px 5px 0px 0px"}}>Add subtask</Button>
+                                    <Button onClick={()=>removeFields(index)} variant="danger" >remove subtask</Button>
+
+
+                                    </ButtonGroup>
+
+                                </Col>
+
+                                </Row>
+
+                            )
+                        })}
+                        </Form>
                         
                         </Col>
-                        <Col> <Button>Add subtask</Button></Col>
-                        <Button onClick={props.onHide} style={{margin:'30px 0px 0px 0px'}}>Create subtasks</Button>         
+                        <Button onClick={()=>{Submit(props)}} 
+                        style={{margin:'30px 0px 0px 0px'}}
+                        >
+                            Create subtasks
+                            </Button>         
                     </Row>
                 </Modal.Body>
             </Modal>
@@ -183,8 +238,13 @@ const ProjectStatus = ()=>{
       
         return(
             <div>
-                <h1>Wbs</h1>
+                <h1>Work Break Down Structure</h1>
             <Container>
+                <Col sm={6}>
+                    <Form.Select>
+                        <option>Select project</option>
+                    </Form.Select>
+                </Col>
                 <Col sm={6}>
                     <Form.Label>Title</Form.Label>
                     <Form.Control type='text'></Form.Control>
@@ -202,7 +262,6 @@ const ProjectStatus = ()=>{
                     <Form.Control type='text'></Form.Control>
                     <div style={{marginTop:"10px"}}>
                     <Button>Add</Button> 
-                    <Button>Next</Button>
                     </div>
                     
                 </Col>
