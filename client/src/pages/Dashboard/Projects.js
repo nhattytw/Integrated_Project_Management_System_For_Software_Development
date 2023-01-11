@@ -1,7 +1,7 @@
 import {Container,Col,Row,Button, ButtonGroup, Table,ProgressBar} from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import { Modal } from 'react-bootstrap';
-import { Activeprojects } from '../../API/Activeprojects'
+import { Activeprojects,postProject } from '../../API/Project'
 import "rsuite/dist/rsuite.min.css";
 import {Nav} from 'rsuite'
 import AdvancedAnalyticsIcon from '@rsuite/icons/AdvancedAnalytics' ;
@@ -41,6 +41,21 @@ const ProjectNav = ()=>
 }
 
 const CreateProject = ()=>{ 
+    const [formData,setFormData] = useState(
+    {
+    projectname:'', 
+    projectRepository:'', 
+    budget:'',  
+    duration:'',
+    descripion:'' 
+    })
+    const handleChange=(event)=>{
+        let newData = Object.assign(formData,{[event.target.name]:event.target.value})
+        
+       setFormData(newData)
+
+    }
+
     return(
         <Container>
             <Form>
@@ -50,11 +65,11 @@ const CreateProject = ()=>{
                 
                     <Form.Group>
                         <Form.Label>project Name</Form.Label>
-                        <Form.Control type="text"/>
+                        <Form.Control type="text" name="projectname" onChange={handleChange} />
                         <Form.Label>Budget</Form.Label>
-                        <Form.Control type="number"/>
+                        <Form.Control type="number" name="budget" onChange={handleChange}/>
                         <Form.Label>Duration(months)</Form.Label>
-                        <Form.Control type="number"/>
+                        <Form.Control type="number" name='duration' onChange={handleChange}/>
 
                     </Form.Group>
                 </Col>
@@ -62,21 +77,22 @@ const CreateProject = ()=>{
             <Row>
                 <Col>
                 <Form.Label>GitHub Repo</Form.Label>
-                <Form.Control type='text' />
+                <Form.Control type='text' name="projectRepository" onChange={handleChange}/>
                 <Form.Label>Project Discription</Form.Label>
-                <Form.Control as="textarea"/>
+                <Form.Control as="textarea" name="descripion" onChange={handleChange}/>
                 </Col>
+                <Row>
                 <Col>
-                <Form.Label>GitHub Organization</Form.Label>
-                <Form.Control type='text' />
-                <div style={{margin:"40px 0px 0px 30px", justifyContent:"end"}}>
-                <Button variant="dark">Submit</Button>
+                <div style={{margin:"10px 0px 0px 0px", justifyContent:"end"}}>
+                <Button variant="dark" onClick={()=>postProject(formData)}>Submit</Button>
                 <Button variant="dark">Clear</Button>
 
                 </div>
             
 
                 </Col>
+
+                </Row>
     
         
             </Row>
