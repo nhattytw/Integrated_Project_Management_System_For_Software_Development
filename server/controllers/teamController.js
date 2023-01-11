@@ -75,7 +75,17 @@ const assignProjectToTeam = (req,res)=>{
     })
     
     
-    
 }
-
-module.exports = { CreateTeams,assignProjectToTeam }
+const getDevelopers=(req,res)=>{
+    connectToDB()
+    users.find().select("email userName position phoneNumber gitHubAccount").where("position").in(['Frontend Developer', 'Backend Developer']).exec((err,result)=>{
+        if(err){
+            res.send("something went wrong")
+        }
+        else{
+            const jsonContent = JSON.stringify(result)
+            res.send(jsonContent)
+        }
+    })
+}
+module.exports = { CreateTeams,assignProjectToTeam,getDevelopers }

@@ -59,7 +59,7 @@ const ActiveProjectList = (req, res) => {
     try {
         const activeProject = project.find().populate(
             "projectManager",
-            "fullName email"
+            "wbs"
         ).where("status")
             .equals("active")
             .lean(true)
@@ -68,9 +68,9 @@ const ActiveProjectList = (req, res) => {
                     console.log("error")
                 }
                 else {
-                    const jsonContnet = JSON.stringify(result)
+                    const jsonContent = JSON.stringify(result)
 
-                    res.send(jsonContnet)
+                    res.send(jsonContent)
                 }
             })
     } catch (error) {
