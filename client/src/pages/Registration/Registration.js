@@ -1,72 +1,50 @@
 import { Container, Col, Row, Form, Button, ButtonGroup } from 'react-bootstrap'
-// import { renderMatches } from 'react-router-dom';
 import { NavBar } from '../../Components/nav/nav';
-import { useState } from "react";
+import { useState, useEffect } from "react";
+// import { renderMatches } from 'react-router-dom';
 
 
 export default function RegistrationPage() {
     const base_url = 'http://localhost:9000/api'
 
-    const Months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const Positions = ['Project Manager', 'Frontend Developer', 'Backend Developer'];
 
-    const [dateState, setDateState] = useState({
-        month: '12',
-        date: '31',
-        year: '2000',
-    })
+    const [agree, setAgree] = useState(false)
+    const [dateState, setDateState] = useState(new Date())
 
-    const dateofbirth = dateState.year + '-' + dateState.month + '-' + dateState.date
+    const handleChecked = (event) => {
+        setAgree(
+            event.target.checked
+        )
+    }
 
     const [state, setState] = useState({
         firstName: "",
         lastName: "",
-        dob: dateofbirth,
+        dob: dateState,
         phoneNumber: "",
         email: "",
         userName: "",
         password: "",
         position: "Project Manager",
-        gitHubAccount: ""
+        gitHubAccount: "",
+        secret: ""
 
     })
 
-    const handleDateChange = (event) => {
-        const { name, value } = event.target
-
-        setDateState({
-            ...dateState,
-            [name]: value,
-        })
-
-    }
-
     const handleSubmit = async (e) => {
-        // Prevent Default
+        e.preventDefault()
+
+        var formBody = JSON.stringify(state)
+
         try {
-            setState({
-                ...state,
-                dob: dateofbirth
-            })
-
-            var formBody = [];
-            for (var property in state) {
-                var encodedKey = encodeURIComponent(
-                    property
-                )
-                var encodedValue = encodeURIComponent(
-                    state[property]
-                )
-                formBody.push(encodedKey + "=" + encodedValue)
-            }
-            formBody = formBody.join("&")
-
             const response = await fetch(
                 base_url + `/signup`,
                 {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
                     },
                     body: formBody
                 },
@@ -74,22 +52,40 @@ export default function RegistrationPage() {
             const data = await response.json()
 
             if (data.message === "User Created") {
-
+                handleCancel()
                 alert('Registration successful')
-                window.location.href = '/login'  // User react router to go here
+                window.location.href = '/login'  // Better Way to do this
             } else {
                 alert(data.message)
             }
-
         }
         catch (error) {
-            console.log(error)
+            console.log(error) // Better Way to show this
             throw error
         }
     }
 
     const handleCancel = () => {
+        setState({
+            ...state,
+            firstName: "",
+            lastName: "",
+            dob: dateState,
+            phoneNumber: "",
+            email: "",
+            userName: "",
+            password: "",
+            position: "Project Manager",
+            gitHubAccount: "",
+            secret: ""
+        })
+    }
 
+    const handleDateChange = (event) => {
+        setDateState({
+            dateState: event.target.value
+        })
+        handleChange(event)
     }
 
     const handleChange = (event) => {
@@ -101,24 +97,35 @@ export default function RegistrationPage() {
         })
     }
 
+    useEffect(() => {
+        const isValid = agree
+
+        if (isValid) {
+            document.getElementById("submitButton")
+                .removeAttribute("disabled")
+        } else {
+            document.getElementById("submitButton")
+                .setAttribute("disabled", true)
+        }
+    })
+
     return (
         <div>
             <NavBar />
 
             <Container className='login'>
 
-                <Row>
-                    <Col><h3>Peronal Details</h3>
-                        <hr />
+                <Row style={{ padding: "10px 0px 0px 0px" }}>
+                    <Col>
+                        <h3> Peronal Details </h3>
                     </Col>
                 </Row>
-                <Row>
-
+                <Row style={{ padding: "10px 0px 0px 0px" }}>
                     <Col>
                         <Form>
                             <Form.Label>First Name</Form.Label>
                             <Form.Control
-                                type='"text'
+                                type='text'
                                 placeholder='First Name'
                                 name="firstName"
                                 value={state.firstName}
@@ -130,7 +137,7 @@ export default function RegistrationPage() {
                         <Form>
                             <Form.Label>Last Name</Form.Label>
                             <Form.Control
-                                type='"text'
+                                type='text'
                                 placeholder='Last Name'
                                 name="lastName"
                                 value={state.lastName}
@@ -139,62 +146,43 @@ export default function RegistrationPage() {
                         </Form>
                     </Col>
                 </Row>
-                {/* restrict date range based on month some have 30 and others have 31 */}
 
-                <Row>
+                <Row style={{ padding: "10px 0px 0px 0px" }}>
+                    <Col>
+                        <Form.Label placeholder='months' >Date Of Birth</Form.Label>
+                        <Form.Control
+                            type="date"
+                            id="start"
+                            name="dob"
+                            value={dateState.toLocaleDateString}
+                            onChange={handleDateChange}
+                            min="1975-01-01"
+                            max="2050-12-31"
+                        />
+                    </Col>
                     <Col>
                         <Form>
-                            <Form.Group className='mb-3'>
-                                <Form.Label placeholder='months' >Date Of Birth</Form.Label>
-                                <Form.Select
-                                    onChange={handleDateChange}
-                                    name="month"
-                                >
-                                    {Months.map((month, index) => {
-                                        return (
-                                            <option
-                                                key={month.value}
-                                                value={index + 1}
-                                            >
-                                                {month}
-                                            </option>
-                                        )
-                                    })}
-                                </Form.Select>
-                            </Form.Group>
+                            <Form.Label>Secret Key</Form.Label>
+                            <Form.Control
+                                type='password'
+                                placeholder='Secret Key'
+                                name="secret"
+                                autoComplete="off"
+                                value={state.secret}
+                                onChange={handleChange}
+                            />
                         </Form>
                     </Col>
 
-
                 </Row>
-                <Row>
-                    <Col>
-                        <Form.Control
-                            type='text'
-                            placeholder='Date'
-                            name="date"
-                            value={dateState.date}
-                            onChange={handleDateChange}
-                        ></Form.Control>
-                    </Col>
-                    <Col>
-                        <Form.Control
-                            type='text'
-                            placeholder='Year'
-                            name="year"
-                            value={dateState.year}
-                            onChange={handleDateChange}
-                        ></Form.Control>
-                    </Col>
 
-                </Row>
-                <Row>
+                <Row style={{ padding: "10px 0px 0px 0px" }}>
                     <Col>
                         <h3>Account Details</h3>
-                        <hr />
                     </Col>
                 </Row>
-                <Row>
+
+                <Row style={{ padding: "10px 0px 0px 0px" }}>
                     <Col>
                         <Form>
                             <Form.Label>Phone Number</Form.Label>
@@ -204,6 +192,7 @@ export default function RegistrationPage() {
                                 name="phoneNumber"
                                 value={state.phoneNumber}
                                 onChange={handleChange}
+                            // a way to check this
                             />
                         </Form>
                     </Col>
@@ -221,7 +210,7 @@ export default function RegistrationPage() {
                     </Col>
 
                 </Row>
-                <Row>
+                <Row style={{ padding: "10px 0px 0px 0px" }}>
                     <Col>
                         <Form>
                             <Form.Label>Username</Form.Label>
@@ -248,7 +237,7 @@ export default function RegistrationPage() {
                         </Form>
                     </Col>
                 </Row>
-                <Row>
+                <Row style={{ padding: "10px 0px 0px 0px" }}>
                     <Col>
                         <Form>
                             <Form.Group className='mb-3'>
@@ -280,18 +269,34 @@ export default function RegistrationPage() {
                         </Form>
                     </Col>
                 </Row>
-                <Row style={{ padding: "12px 0px 0px 0px" }}>
+                <Row style={{ padding: "10px 0px 0px 0px" }}>
+                    <Col>
+                        <input
+                            type="checkbox"
+                            name="agree"
+                            id="agree"
+                            onClick={handleChecked}
+                        />
+                        <label
+                            style={{ padding: "10px 0px 0px 10px" }}
+                            htmlFor="agree"
+                        >
+                            I agree to the terms and conditions. "Link to terms and conditions"
+                        </label>
+                    </Col>
                     <Col style={{ padding: "0px 0px 0px 10px" }}>
                         <ButtonGroup style={{ float: "right", padding: "0px 30px 0px 0px" }}>
                             <Button
                                 variant='dark'
                                 style={{ margin: "0px 8px 0px 0px" }}
                                 onClick={handleSubmit}
+                                id="submitButton"
                             >
                                 Register
                             </Button>
                             <Button
                                 variant='dark'
+                                style={{ margin: "0px 8px 0px 0px" }}
                                 onClick={handleCancel}
                             >
                                 Cancel
@@ -299,6 +304,7 @@ export default function RegistrationPage() {
                         </ButtonGroup>
                     </Col>
                 </Row>
+
             </Container>
         </div>
     )

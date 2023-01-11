@@ -1,18 +1,12 @@
-require("dotenv").config({ path: "./config/config.env" });
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const app = express();
+require('dotenv').config({ path: './config/config.env' })
+const express = require('express')
+const cors = require('cors')
+const app = express()
 
 // Parse application/json
-app.use(bodyParser.json());
-// Parse application/x-www-form-urlencoded
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
-app.use(cors());
+app.use(express.json())
+
+app.use(cors())
 
 //Routes
 const auth = require("./routes/auth");
@@ -35,8 +29,8 @@ app.use("/api", teams);
 app.use("/api", tasks);
 
 //Backend server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  console.log(`Server running on port ${PORT}`)
+})
