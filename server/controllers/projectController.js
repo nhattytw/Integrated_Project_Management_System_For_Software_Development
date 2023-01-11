@@ -1,7 +1,8 @@
 const connectToDB = require('../utils/dbConnect');
 const project = require('../model/project');
 const User = require('../model/userInfo');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const { default: createRespository } = require('../middleware/githubOperations');
 
 // @desc     Create Project
 // @access   Public
@@ -9,10 +10,11 @@ const mongoose = require('mongoose')
 const CreateProject = async (req, res) => {
     connectToDB()
     try {
-        const { projectname, projectRepository, budget, projectManager, duration } = req.body
-        const projectmanager = User.findOne({ userName: projectManager }, (err, Managerresult) => {
+        const { projectname, projectRepository, budget, duration,descripion } = req.body
+        
+        const projectmanager = User.findOne({ userName: "test111" }, (err, Managerresult) => {
             if (err) {
-                console.log(err)
+                res.send("error occured")
             }
             else {
                 const ExistingProject = project.findOne({ projectName: projectname }).exec(async (err, Projectresult) => {
@@ -31,10 +33,13 @@ const CreateProject = async (req, res) => {
                                 projectRepository: projectRepository,
                                 projectManager: Managerresult._id,
                                 budget: budget,
-                                duration: duration
+                                duration: duration,
+                                descripion:descripion
                             })
 
                             newProject.save()
+                            console.log("project saved")
+                           // createRespository(projectRepository,descripion)
                             res.send("operation successful")
                         }
                     }

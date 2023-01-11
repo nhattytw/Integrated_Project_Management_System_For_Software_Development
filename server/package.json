@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/nhattytw/Integrated_Project_Management_System_For_Software_Development#readme",
   "dependencies": {
+    "@octokit/rest": "^19.0.5",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

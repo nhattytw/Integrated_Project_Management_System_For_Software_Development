@@ -1,14 +1,14 @@
 require('dotenv').config({ path: './config/config.env' })
-const Octokit = require("octokit")
+const { Octokit } = require("@octokit/rest");
 
-const createRespository =  async (repositoryName)=>{
-    const octokitSDK =  new Octokit.Octokit({
+const createRespository =  async (repositoryName,description)=>{
+    const octokitSDK =  new Octokit({
         auth:process.env.GIT_HUB_FGAT
     })
      await octokitSDK.request('POST /orgs/{org}/repos', {
         org: 'RoblexIPMS',
         name: repositoryName,
-        description: 'This is your first repository',
+        description: description,
         homepage: 'https://github.com',
         'private': true,
         has_issues: true,
@@ -17,4 +17,4 @@ const createRespository =  async (repositoryName)=>{
       })
 }
 
-createRespository("IPMSAKILE1")
+module.exports = createRespository

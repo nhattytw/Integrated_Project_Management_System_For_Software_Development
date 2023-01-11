@@ -30,7 +30,7 @@ const PostIssue = async (req,res)=>{
         console.log(error)
     }
 }
-const setIssueResolved = async (req,res){
+const setIssueResolved = async (req,res)=>{
     connectToDB()
     try {
         const {issue,status,title} = req.body

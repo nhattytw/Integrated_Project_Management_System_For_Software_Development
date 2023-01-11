@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { CreateTeams } = require("../controllers/teamController")
+const { CreateTeams,assignProjectToTeam } = require("../controllers/teamController")
 
 // @route    GET api/getUsers
 // @desc     Return all Registered users
@@ -9,5 +9,8 @@ router.post(
       '/Teams/newTeam',
       CreateTeams
 )
-
+router.put(
+      '/Teams/assignProject',
+      assignProjectToTeam
+)
 module.exports = router

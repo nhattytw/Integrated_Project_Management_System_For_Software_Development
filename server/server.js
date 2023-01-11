@@ -22,7 +22,7 @@ const issue = require("./routes/issue");
 const project = require("./routes/project");
 const wbs = require("./routes/wbs");
 const teams = require("./routes/teams");
-const dependecy = require("./routes/dependency");
+
 const tasks = require("./routes/tasks");
 
 app.use("/api", auth);
@@ -32,7 +32,6 @@ app.use("/api", wbs);
 app.use("/api", issue);
 app.use("/api", project);
 app.use("/api", teams);
-app.use("/api", dependecy);
 app.use("/api", tasks);
 
 //Backend server
