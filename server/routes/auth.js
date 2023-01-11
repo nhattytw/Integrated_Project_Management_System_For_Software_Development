@@ -5,7 +5,7 @@ const { signup,
 const signupValidation = require('../middleware/signupValidation')
 const signinValidation = require('../middleware/signinValidation')
 
-// @route    GET api/signup
+// @route    POST api/signup
 // @desc     Registered user
 // @access   Private
 router.post(
@@ -14,7 +14,7 @@ router.post(
       signup
 )
 
-// @route    GET api/signin
+// @route    POST api/signin
 // @desc     Signin into account
 // @access   Private
 router.post(
