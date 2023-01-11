@@ -1,16 +1,10 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 const base_Path = 'http://localhost:9000/api'
-export const Activeprojects = [
-    {
-        projectname:"bantu",
-        projectDuration:"12 months",
-        Assignedteam:"Team1",
-        Activetasks:[{"Subsystem decompositon":"2 months"},{"Attendace Subsystem":"2 months"}],
-        completedTasks:["Login","register"]
-        
-    }
-]
 
+
+const urlFetch= (url)=>{
+    return fetch(url)
+}
 export const postProject=(project)=>{
     // console.log(project)
     const post_Api = base_Path.concat('/project/createProject')
@@ -29,5 +23,22 @@ export const postProject=(project)=>{
     .catch((error) => {
         console.error('Error:', error);
     });
+
+}
+
+export const Activeproject = async ()=>{
+    const activeProjectRequestURL = base_Path.concat('/project/ActiveProject')
+    try{
+        const res = await urlFetch(activeProjectRequestURL)
+        const data = await res.json()
+        return data
+        
+    }catch(error){
+
+    } 
+
+ 
+
+   
 
 }

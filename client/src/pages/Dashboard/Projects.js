@@ -1,7 +1,7 @@
 import {Container,Col,Row,Button, ButtonGroup, Table,ProgressBar} from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import { Modal } from 'react-bootstrap';
-import { Activeprojects,postProject } from '../../API/Project'
+import { Activeproject,postProject } from '../../API/Project'
 import "rsuite/dist/rsuite.min.css";
 import {Nav} from 'rsuite'
 import AdvancedAnalyticsIcon from '@rsuite/icons/AdvancedAnalytics' ;
@@ -10,9 +10,11 @@ import BarChartIcon from '@rsuite/icons/BarChart';
 import ListIcon from '@rsuite/icons/List';
 import TimeIcon from '@rsuite/icons/Time';
 import ContenetDisplay from '../../Components/ConentDisplay/ConentDisplay';
-import { useState,useContext } from 'react';
+import { useState,useContext, useEffect } from 'react';
 import Example from '../../Components/charts/PieChart'
+import axios from 'axios';
 import { Context,ContextProvider } from '../../Context/context';
+
 // project manager is not required to enter the wbs,schedule and status upon creation.
 //wbs will come from later modules and the schedule will be dervied from the wbs
 
@@ -101,44 +103,62 @@ const CreateProject = ()=>{
         </Container>
     )
 }
-const ActiveProjects = ()=>{
+const ActiveProjects =  ()=>{
+    const [Openprojects,setOpenProjects] = useState([])
+    const url ='http://localhost:9000/api/project/ActiveProject'
+    useEffect( ()=>{
+        axios.get(url).then((response)=>{
+            setOpenProjects(response.data)
+        })
+    
+      
+    },[])
     return(
         <Container>
-            <Row>
-                <Col >
-                <Row>
-                    <h3>Budget</h3>
-                    <Example></Example>
-                </Row>
-                </Col>  
+            {/* {console.log(Openprojects)} */}
+            {Openprojects.map((project)=>{
                 
-                <Col>
-                    <h3>Project Details</h3>
-                    <ul>
-                    <li><h6>project name:Bantu</h6></li>
-                    <li><h6>status:active</h6></li>
-                    <li><h6>Repo:github repo link</h6></li> 
-                    </ul>
+                return(
+                    <Container >
+                    <Row key={project._id}>
+                    <h3 style={{textAlign:'center'}}>{project.projectName}</h3>
+ 
+                    <Col>
                     
+                        <h3 style={{margin:'0px 0px 10px 0px '}}>Project Details</h3>
+                        <ul>
+                        <li><h6>project Name:{project.projectName}</h6></li>
+                        <li><h6>status:{project.status}</h6></li>
+                        <li><h6>Project Repository:{project.projectRepository}</h6></li> 
+                        </ul>
+                        
+    
+                    </Col>
+                    <Col>
+                        <Example></Example>
+                    </Col>
+                    </Row>
 
-                </Col>
-                <Col>
-              
-                    <h3>Team memebers:</h3>
-                    <ul>
-                    <li><h6>abc</h6></li>
-                    <li><h6>def</h6></li>
-                    <li><h6>ghi</h6></li> 
-                    </ul>
-               
-                </Col>
+                    </Container>
 
-            </Row>
+
+                )
+            })}
         </Container>
         
         )
     }
 const ProjectStatus = ()=>{
+    const [Openprojects,setOpenProjects] = useState([])
+    const url ='http://localhost:9000/api/project/ActiveProject'
+    useEffect( ()=>{
+        axios.get(url).then((response)=>{
+            setOpenProjects(response.data)
+            console.log(response.data)
+        })
+     
+      
+    },[])
     return(
         <Table>
         <thead>

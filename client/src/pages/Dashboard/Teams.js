@@ -1,4 +1,6 @@
 import {Container,Row,Col,Form,Table,Card,Button} from 'react-bootstrap';
+import { useState,useEffect } from 'react';
+import axios from 'axios';
 import Dropdown from 'react-bootstrap/Dropdown';
 import {Nav} from 'rsuite'
 import PeoplesMapIcon from '@rsuite/icons/PeoplesMap';
@@ -22,6 +24,16 @@ const TeamNav = ()=>{
     
 }
 const CreateTeams = ()=>{
+    const [developers,setDevelopers] = useState([])
+    const url ='http://localhost:9000/api/Teams/getDeveloper'
+    useEffect( ()=>{
+        axios.get(url).then((response)=>{
+            setDevelopers(response.data)
+            console.log(response.data)
+        })
+     
+      
+    },[])
     return(
         <Container>
             <Row>
@@ -31,13 +43,33 @@ const CreateTeams = ()=>{
                 </Form>
                 </Col>
                 <Col>
-                    <Button>add</Button>
+                    <Button>Search</Button>
                 </Col>
             </Row>
             <Row style={{margin:"20px 0px 0px 0px"}}>
                 <Table>
                     <th>username</th>
+                    <th>email</th>
+                    <th>Position</th>
+                    <th>GitHub</th>
+                    <th></th>
+                    <tbody>
+                        {developers.map((obj)=>{
+                            return(
+                                <tr>
+                                    <td>{obj.userName}</td>
+                                    <td>{obj.email}</td>
+                                    <td>{obj.position}</td>
+                                    <td>{obj.gitHubAccount}</td>
+                                    <td><Form.Check></Form.Check></td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
                 </Table>
+                <Col >
+                    <Button>Add to team</Button>
+                </Col>
             </Row>
         </Container>
     )
