@@ -29,11 +29,18 @@ const CreateTeams = ()=>{
     useEffect( ()=>{
         axios.get(url).then((response)=>{
             setDevelopers(response.data)
-            console.log(response.data)
+            
         })
      
       
     },[])
+    const onCheckBoxClicked=(event)=>{
+       
+            console.log(event.target)
+
+     
+
+    }
     return(
         <Container>
             <Row>
@@ -61,14 +68,14 @@ const CreateTeams = ()=>{
                                     <td>{obj.email}</td>
                                     <td>{obj.position}</td>
                                     <td>{obj.gitHubAccount}</td>
-                                    <td><Form.Check></Form.Check></td>
+                                    <td><Form.Check onCheck value={obj.userName}></Form.Check></td>
                                 </tr>
                             )
                         })}
                     </tbody>
                 </Table>
-                <Col >
-                    <Button>Add to team</Button>
+                <Col>
+                    <Button style={{float:"right"}}>Add to team</Button>
                 </Col>
             </Row>
         </Container>

@@ -98,6 +98,23 @@ const Landing = () => {
             </Card>
           </Col>
         </Row>
+        <Row>
+        <Card className="cardH">
+              <Card.Img variant="top" src={calander} className="img-height icon" />
+
+              <Card.Body>
+                <Card.Text>
+                  <p>
+                    A real-time application, or RTA, is an application that functions within a time frame that the user senses as immediate or current. The latency must be less than a defined value, usually measured in seconds. The use of real-time applications is part of real-time computing.
+
+                    To determine if a specific application qualifies as real time is a function of its worst-case execution time. WCET is the maximum amount of time a defined task or set of tasks requires on a given hardware platform.
+
+
+                  </p>
+                </Card.Text>
+              </Card.Body>
+            </Card>
+        </Row>
         
       </Container>
 

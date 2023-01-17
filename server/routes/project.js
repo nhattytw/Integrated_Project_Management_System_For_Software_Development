@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { CreateProject, ActiveProjectList,assignWbsToProject} = require("../controllers/projectController");
+const { CreateProject, ActiveProjectList,assignWbsToProject,wbsUnassigedProjects} = require("../controllers/projectController");
 
 // @route    POST api/project/createProject
 // @desc     Add project
@@ -21,5 +21,6 @@ router.get(
 // @desc     Add wbs to an existing project
 // @access   Private
 router.put('/project/assignWbs',assignWbsToProject)
+router.get('/project/wbsNotSet',wbsUnassigedProjects)
 
 module.exports = router

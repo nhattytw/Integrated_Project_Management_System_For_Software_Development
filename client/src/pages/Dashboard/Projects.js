@@ -154,7 +154,7 @@ const ProjectStatus = ()=>{
     useEffect( ()=>{
         axios.get(url).then((response)=>{
             setOpenProjects(response.data)
-            console.log(response.data)
+            
         })
      
       
@@ -196,8 +196,9 @@ const ProjectStatus = ()=>{
         }
         const Submit=(props)=>{
             
-       
-            return props.onHide
+            let newData = Object.assign(props.wbs,{'tasks':task})   
+            props.Addwbs(newData)
+            props.onHide(false)
         }
         const removeFields=(index)=>{
             if(task.length === 1){
@@ -271,33 +272,61 @@ const ProjectStatus = ()=>{
 
     const CreateWbs = ()=>{
         const [show,setShow] = useState(false)
+        const [wbs,setWbs] = useState({})
+        const [task,setTask] = useState([])
+        const [projects,setProjects] = useState([])
+
+        const url ='http://localhost:9000/api/project/wbsNotSet'
+        useEffect( ()=>{
+             axios.get(url).then((response)=>{
+                setProjects(response.data)
+           
+                
+            })
+         
+          
+        },[])
+        const createWbs = (event)=>{
+            let newData = Object.assign(wbs,{[event.target.name]:event.target.value})
+            setWbs(newData)
+        }   
+        const submitWbs = ()=>{
+            console.log(wbs)
+        }
       
         return(
             <div>
                 <h1>Work Break Down Structure</h1>
             <Container>
                 <Col sm={6}>
-                    <Form.Select>
-                        <option>Select project</option>
+                    <Form.Label>Select Project</Form.Label>
+                    <Form.Select name="projectName" onChange={(e)=>{createWbs(e)}}>
+                        {projects.map((data)=>{
+                            return(
+                            <option >{data.projectName}</option>
+                            )
+                        })}
                     </Form.Select>
                 </Col>
                 <Col sm={6}>
                     <Form.Label>Title</Form.Label>
-                    <Form.Control type='text'></Form.Control>
+                    <Form.Control type='text' name="title" onChange={(e)=>{createWbs(e)}}></Form.Control>
                     <Button style={{marginTop:"10px"}} onClick={()=>{setShow(true)}}>Add sub tasks</Button> 
                     <TaskModal 
                     show={show}
                     onHide={()=>{setShow(false)}}
+                    Addwbs={setWbs}
+                    wbs={wbs}
                     >
 
                     </TaskModal>
                     <br />
                     <Form.Label>Start Date</Form.Label>
-                    <Form.Control type='text'></Form.Control>
+                    <Form.Control type='date' name="StartingDate" onChange={(e)=>{createWbs(e)}}></Form.Control>
                     <Form.Label>End Date</Form.Label>
-                    <Form.Control type='text'></Form.Control>
+                    <Form.Control type='date'  name="EndingDate" onChange={(e)=>{createWbs(e)}}></Form.Control>
                     <div style={{marginTop:"10px"}}>
-                    <Button>Add</Button> 
+                    <Button onClick={()=>{submitWbs()}}>Add</Button> 
                     </div>
                     
                 </Col>

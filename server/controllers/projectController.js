@@ -78,6 +78,24 @@ const ActiveProjectList = (req, res) => {
 
     }
 }
+const wbsUnassigedProjects=(req,res)=>{
+    connectToDB()
+    project.find().select('wbs projectName').where('wbs').in([[]]).lean(true).exec((err,result)=>{
+        
+        if(err){
+            console.log(err)
+        }
+        else{
+              
+              const jsonData = JSON.stringify(result)
+              res.send(jsonData)
+
+               
+            }
+        })
+        
+      
+}
 //assign a Work Break down structure for an existing project. this is an update operation and it checks that the project exists
 const assignWbsToProject = (req,res)=>{
     //once a wbs is created the id will be returned  that will be passed in the request to this module
@@ -92,6 +110,7 @@ console.log(pid)
         }
         else{
             console.log(doc)
+           
         }   
     })
  
@@ -99,4 +118,4 @@ console.log(pid)
     res.send("update")
 }
 
-module.exports = { CreateProject, ActiveProjectList,assignWbsToProject }
+module.exports = { CreateProject, ActiveProjectList,assignWbsToProject,wbsUnassigedProjects }
