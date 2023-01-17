@@ -9,27 +9,25 @@ export default function Login() {
 
     const base_url = 'http://localhost:9000/api'
 
+    const [state, setState] = useState({
+        userName: "",
+        password: ""
+    })
+
     const handleSubmit = async (e) => {
         // Prevent Default
+        e.preventDefault()
+
         try {
-            var formBody = [];
-            for (var property in state) {
-                var encodedKey = encodeURIComponent(
-                    property
-                )
-                var encodedValue = encodeURIComponent(
-                    state[property]
-                )
-                formBody.push(encodedKey + "=" + encodedValue)
-            }
-            formBody = formBody.join("&")
+            var formBody = JSON.stringify(state)
 
             const response = await fetch(
                 base_url + `/signin`,
                 {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
                     },
                     body: formBody
                 },
@@ -42,22 +40,18 @@ export default function Login() {
                     'Bearer ' + data.data
                 )
                 alert('Login successful')
-                window.location.href = '/dashboard'  // User react router to go here
+                // Use react router here and based on user go to respective dashboards
+                // [Violation] Forced reflow while executing JavaScript took 31ms
+                window.location.href = '/dashboard'
             } else {
                 alert(data.message)
             }
-
         }
         catch (error) {
-            console.log(error)
+            console.log(error) //better way
             throw error
         }
     }
-
-    const [state, setState] = useState({
-        userName: "",
-        password: ""
-    })
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -102,8 +96,8 @@ export default function Login() {
                                     Login
                                 </Button>
                                 <LinkContainer to='/forgetpassword'>
-                                <a href="#" style={{ textAlign: "center" }}>Forgot Password ?</a>
-                                
+                                    <a href="#" style={{ textAlign: "center" }}>Forgot Password ?</a>
+
                                 </LinkContainer>
                             </Form.Group>
                         </Col>
