@@ -96,26 +96,5 @@ const wbsUnassigedProjects=(req,res)=>{
         
       
 }
-//assign a Work Break down structure for an existing project. this is an update operation and it checks that the project exists
-const assignWbsToProject = (req,res)=>{
-    //once a wbs is created the id will be returned  that will be passed in the request to this module
-    let {id,projectName} = req.body
-    connectToDB()
-     id = new mongoose.mongo.ObjectId(id)
-     
-console.log(pid)
-    project.findOneAndUpdate({projectName:projectName},{wbs:id},{new:true},(err,doc)=>{
-        if(err){
-            console.log(err)
-        }
-        else{
-            console.log(doc)
-           
-        }   
-    })
- 
 
-    res.send("update")
-}
-
-module.exports = { CreateProject, ActiveProjectList,assignWbsToProject,wbsUnassigedProjects }
+module.exports = { CreateProject, ActiveProjectList,wbsUnassigedProjects }

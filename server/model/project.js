@@ -22,10 +22,10 @@ const projectSchema = new mongoose.Schema({
     duration: {
         type: Number,
     },
-    wbs: [{
+    wbs: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'WBS'
-    }],
+    },
     descripion:{
         type:String
     }

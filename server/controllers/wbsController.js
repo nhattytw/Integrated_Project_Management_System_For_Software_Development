@@ -2,6 +2,7 @@ const connectToDB = require("../utils/dbConnect");
 const user = require("../model/userInfo");
 const errorFunction = require("../utils/messageFunction");
 const item = require("../model/wbs");
+const project = require("../model/project")
 
 // @desc     Add WBS
 // @access   Public
@@ -11,31 +12,30 @@ const addWbs = async (req, res) => {
     connectToDB();
     //  yy/mm/dd 
     try {
-        const { task,EstimatedCompletionTime,taskStatus } = req.body
-        // const startDate = new Date("10/10/10")
-        // const Est = new Date(EstimatedCompletionTime)
+        const { Task,ProjectName } = req.body
 
-    console.log(req.body);
+
+      
     const InsertItems = new item({
-      task: task,
-      StartingDate: startingDate,
-      EstimatedCompletionTime: Est,
-      taskStatus: taskStatus,
+      task: Task,    
     });
 
     InsertItems.save((err, result) => {
       if (err) {
         res.status(403).json("Task failed");
+        console.log(err)
       } else {
-        res.status(201).json({
-          id: result._id,
-        });
+      project.findOneAndUpdate({projectName:ProjectName},{wbs:result._id},{new:true})
+       console.log("success")
+       res.send("ok")
       }
     });
-        res.send("OK")
+
+        
   } catch (err) {
     console.log(err);
   }
 };
+    
 
 module.exports = { addWbs };
