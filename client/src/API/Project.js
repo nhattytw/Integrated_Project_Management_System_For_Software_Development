@@ -26,19 +26,3 @@ export const postProject=(project)=>{
 
 }
 
-export const Activeproject = async ()=>{
-    const activeProjectRequestURL = base_Path.concat('/project/ActiveProject')
-    try{
-        const res = await urlFetch(activeProjectRequestURL)
-        const data = await res.json()
-        return data
-        
-    }catch(error){
-
-    } 
-
- 
-
-   
-
-}

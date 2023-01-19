@@ -4,6 +4,7 @@ import { Modal } from 'react-bootstrap';
 import { Activeproject,postProject } from '../../API/Project'
 import "rsuite/dist/rsuite.min.css";
 import {Nav} from 'rsuite'
+import { addWbs } from '../../API/wbs';
 import AdvancedAnalyticsIcon from '@rsuite/icons/AdvancedAnalytics' ;
 import PlusIcon from '@rsuite/icons/Plus';
 import BarChartIcon from '@rsuite/icons/BarChart';
@@ -199,6 +200,7 @@ const ProjectStatus = ()=>{
             let newData = Object.assign(props.wbs,{'tasks':task})   
             props.Addwbs(newData)
             props.onHide(false)
+
         }
         const removeFields=(index)=>{
             if(task.length === 1){
@@ -234,7 +236,9 @@ const ProjectStatus = ()=>{
                                 <Col xs={6}>
                                 <Form.Control type='text' name='task'
                                 value={input.task}
+                                autoComplete="off"
                                 onChange={event=>handleChange(index,event)}
+
                                 
                                 >
 
@@ -275,6 +279,8 @@ const ProjectStatus = ()=>{
         const [wbs,setWbs] = useState({})
         const [task,setTask] = useState([])
         const [projects,setProjects] = useState([])
+        const [Data,setData]=useState([])
+        const [Default,setDefault] =  useState("")
 
         const url ='http://localhost:9000/api/project/wbsNotSet'
         useEffect( ()=>{
@@ -291,8 +297,30 @@ const ProjectStatus = ()=>{
             setWbs(newData)
         }   
         const submitWbs = ()=>{
-            console.log(wbs)
+            const{ projectName } = wbs
+            console.log(Data)
+            addWbs(Data,projectName)
         }
+        const addWbsEntry = ()=>{
+            const {title,tasks,StartingDate,EndingDate} = wbs 
+           
+            const temp_data = {}
+            const temp_tasks = []
+            let newData = []
+            tasks.map((t)=>{
+            temp_tasks.push(t["task"])
+           })
+        temp_data["tasks"] = temp_tasks
+        temp_data["StartingDate"] = StartingDate
+        temp_data["EndingDate"] = EndingDate
+        temp_data["title"] = title  
+        setData([...Data,temp_data])
+        setDefault("")
+        console.log(Data)
+       
+       
+        }
+
       
         return(
             <div>
@@ -310,7 +338,7 @@ const ProjectStatus = ()=>{
                 </Col>
                 <Col sm={6}>
                     <Form.Label>Title</Form.Label>
-                    <Form.Control type='text' name="title" onChange={(e)=>{createWbs(e)}}></Form.Control>
+                    <Form.Control type='text' name="title"  onChange={(e)=>{createWbs(e)}}></Form.Control>
                     <Button style={{marginTop:"10px"}} onClick={()=>{setShow(true)}}>Add sub tasks</Button> 
                     <TaskModal 
                     show={show}
@@ -326,7 +354,8 @@ const ProjectStatus = ()=>{
                     <Form.Label>End Date</Form.Label>
                     <Form.Control type='date'  name="EndingDate" onChange={(e)=>{createWbs(e)}}></Form.Control>
                     <div style={{marginTop:"10px"}}>
-                    <Button onClick={()=>{submitWbs()}}>Add</Button> 
+                    <Button onClick={()=>{addWbsEntry()}}>Add</Button> 
+                    <Button onClick={()=>{submitWbs()}}>Submit</Button> 
                     </div>
                     
                 </Col>
