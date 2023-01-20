@@ -8,11 +8,10 @@ const { securePassword,
 
 // @desc     Register user
 // @access   Public
-// signup a user, the platform is meant for project managers and developers
 const signup = async (req, res) => {
       connectToDB()
       try {
-            const { firstName, lastName, dob, phoneNumber, email, userName, password, position, gitHubAccount } = req.body
+            const { firstName, lastName, dob, phoneNumber, email, userName, password, position, gitHubAccount, secret } = req.body
 
             const existingUser = await user.findOne({
                   userName: userName
@@ -26,6 +25,7 @@ const signup = async (req, res) => {
                         )
             } else {
                   const hashedPassword = await securePassword(password)
+                  const hashedSecret = await securePassword(secret)
 
                   const newUser = new user({
                         firstName: firstName,
@@ -36,7 +36,8 @@ const signup = async (req, res) => {
                         userName: userName,
                         password: hashedPassword,
                         position: position,
-                        gitHubAccount: gitHubAccount
+                        gitHubAccount: gitHubAccount,
+                        secret: hashedSecret
                   })
 
                   if (await newUser.save()) {
@@ -68,9 +69,8 @@ const signup = async (req, res) => {
       }
 }
 
-// @desc     Signin user
+// @desc     Signin for registered users
 // @access   Public
-//for registered users to access their data.
 const signin = async (req, res) => {
       connectToDB()
       try {
@@ -126,7 +126,7 @@ const signin = async (req, res) => {
                                           messageFunction(
                                                 false,
                                                 `You've Logged in.`,
-                                                token
+                                                { token, userName }
                                           )
                                     )
                         }
@@ -370,11 +370,98 @@ const updateUserPassword = async (req, res) => {
       }
 }
 
+// @desc     Update User Password
+// @access   Public
+const forgotPassword = async (req, res) => {
+      connectToDB()
+      try {
+            const { userName, password, secret } = req.body
+
+            const existingUser = await user.findOne({
+                  userName: userName
+            }).lean(true)
+
+            if (!existingUser) {
+                  return res
+                        .status(400)
+                        .json(
+                              messageFunction(true, 'Username Not Found')
+                        )
+            } else {
+                  const hashedOldSecret = existingUser.secret
+                  const hashedOldPassword = existingUser.password
+
+                  const validatedSecret = await validatePassword(
+                        secret,
+                        hashedOldSecret
+                  )
+
+                  if (!validatedSecret) {
+                        return res
+                              .status(403)
+                              .json(
+                                    messageFunction(true, 'Secret Key Incorrect')
+                              )
+                  }
+
+                  const hashedNewPassword = await securePassword(password)
+
+                  const validatedPasswords = await validatePassword(
+                        password,
+                        hashedOldPassword
+                  )
+
+                  if (validatedPasswords) {
+                        return res
+                              .status(406)
+                              .json(
+                                    messageFunction(true, 'New Password cannot be same as the old one.')
+                              )
+                  } else {
+                        try {
+                              const response = await user.updateOne(
+                                    { userName: existingUser.userName },
+                                    {
+                                          $set: {
+                                                password: hashedNewPassword
+                                          }
+                                    }
+                              )
+                              return res
+                                    .status(201)
+                                    .json(
+                                          messageFunction(
+                                                false,
+                                                'Successfully Resetted Password.',
+                                                response
+                                          )
+                                    )
+                        } catch (error) {
+                              return res
+                                    .status(403)
+                                    .json(
+                                          messageFunction(true, 'Resetting Password Failed.')
+                                    )
+                        }
+
+                  }
+            }
+      } catch (error) {
+            console.error(error.message)
+            return res
+                  .status(500)
+                  .json(
+                        messageFunction(true, 'Resetting Password Failed. Please Try Again.')
+                  )
+      }
+}
+
 module.exports = {
       signup,
       signin,
       getUsersInfo,
       searchUser,
       updateUserInfo,
-      updateUserPassword
+      updateUserPassword,
+      forgotPassword
 }

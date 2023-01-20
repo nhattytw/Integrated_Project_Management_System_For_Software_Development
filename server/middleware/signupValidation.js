@@ -47,6 +47,11 @@ const validation = Joi.object({
             .max(100)
             .trim(true)
             .required(),
+      secret: Joi
+            .string()
+            .min(5)
+            .max(20)
+            .required(),
 })
 
 const signupValidation = async (req, res, next) => {
@@ -60,6 +65,7 @@ const signupValidation = async (req, res, next) => {
             password: req.body.password,
             position: req.body.position,
             gitHubAccount: req.body.gitHubAccount,
+            secret: req.body.secret,
       }
       const { error } = validation.validate(payload)
 
