@@ -35,14 +35,15 @@ const CreateTeams = async (req, res) => {
     connectToDB()
     try {
         const { teamName, memebers } = req.body
+        
     
         const newTeam = new teams({
             teamName: teamName,
             members: memebers,
           
         })
-        // newTeam.save()
-        getMailList(memebers)
+        newTeam.save()
+       // getMailList(memebers)
         res.send("Teams Created")
 
     } catch (error) {
