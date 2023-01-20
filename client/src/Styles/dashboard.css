@@ -26,4 +26,10 @@ body,html{
     box-shadow:  25px 25px 51px #868686,
                  -25px -25px 51px #ffffff;
 }
-
+.NavItem{
+    color:#fff !important
+}
+.NavItem:hover{
+    color:rgba(66,105,158) !important;
+    background-color: #fff !important;
+}

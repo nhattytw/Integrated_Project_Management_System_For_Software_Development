@@ -109,41 +109,45 @@ const Dashboard = () => {
                 <Nav.Item eventKey="1" icon={<DashboardIcon />}
                   onClick={() => { SetPage("AdminPanel") }}
                   style={{color:"white"}}
-                  color='#fff'
+                  
+                  className='NavItem'
                 >
                   Dashboard
                 </Nav.Item>
-                <Nav.Item eventKey="2" icon={<ProjectIcon color='#fff'/>}
+                <Nav.Item eventKey="2" icon={<ProjectIcon />}
                   onClick={() => { SetPage("Projects") }}
+                  className='NavItem'
                 >
                   Project
                 </Nav.Item>
 
                 <Nav.Item eventKey="3-1"
-                  icon={<PeoplesMapIcon color='#fff'/>}
+                  icon={<PeoplesMapIcon />}
                   onClick={() => { SetPage("Teams")}}
-
+                  className='NavItem'
                 >
                   Teams
                 </Nav.Item>
                 <Nav.Item eventKey="3-2"
-                  icon={<PinIcon color='#fff'/>}
-
+                  icon={<PinIcon />}
+                  className='NavItem'
                   onClick={() => { SetPage("Assignments") }}
                 >Assignments
                 </Nav.Item>
                 <Nav.Item
                   eventKey="4-1"
-                  icon={<SentToUserIcon color='#fff'/>}
+                  icon={<SentToUserIcon />}
                   onClick={() => { SetPage("Communication") }}
+                  className='NavItem'
                 >
                   Communication
 
                 </Nav.Item>
                 <Nav.Item
                   eventKey="4-1"
-                  icon={<CogIcon color='#fff'/>}
+                  icon={<CogIcon />}
                   onClick={() => { SetPage("Setting") }}
+                  className='NavItem'
                 >
                   Setting
 

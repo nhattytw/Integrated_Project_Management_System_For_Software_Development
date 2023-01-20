@@ -1,10 +1,13 @@
 import {Container,Row,Col,Form,Table,Card,Button} from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { useState,useEffect } from 'react';
 import axios from 'axios';
 import Dropdown from 'react-bootstrap/Dropdown';
 import {Nav} from 'rsuite'
 import PeoplesMapIcon from '@rsuite/icons/PeoplesMap';
-const some = [1,2,3,4,5,5,3,23,42,34,23,2342,34,423,4234,2342,34,423,4234]
+import CheckIcon from '@rsuite/icons/Check';
+import CloseIcon from '@rsuite/icons/Close';
+import { PostTeams } from '../../API/Teams';
 
 const TeamNav = ()=>{
     return(
@@ -25,6 +28,10 @@ const TeamNav = ()=>{
 }
 const CreateTeams = ()=>{
     const [developers,setDevelopers] = useState([])
+    const [memebers,setMembers] = useState([])
+    const [show, setShow] = useState(false);
+    const [Team,setTeam] = useState({})
+   
     const url ='http://localhost:9000/api/Teams/getDeveloper'
     useEffect( ()=>{
         axios.get(url).then((response)=>{
@@ -34,12 +41,47 @@ const CreateTeams = ()=>{
      
       
     },[])
-    const onCheckBoxClicked=(event)=>{
-       
-            console.log(event.target)
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
-     
+    const handleNameInput = (event)=>{
 
+    }
+    const handleSubmit = ()=>{
+        const TeamName = document.getElementById('teamName')
+        const data = Object.assign({memebers:memebers},{[TeamName.id]:TeamName.value})
+         PostTeams(data)
+        handleClose()
+    }
+     const CreateTeam=(props)=>{
+        return(
+  
+            <Modal show={show} onHide={handleClose} animation={false}>
+            <Modal.Header closeButton>
+              <Modal.Title>Team Name</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form>
+                    <Form.Control type='text' placeholder='Enter team name' id='teamName' autoComplete='false'></Form.Control>
+                    <Button style={{margin:'4px 0px 0px 0px'}} onClick={handleSubmit}>save</Button>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+
+            </Modal.Footer>
+          </Modal>
+        )
+     }
+    const onBtnClicked=(username)=>{
+            const newMemembers = [...memebers,username]
+            setMembers(newMemembers)
+           
+    }
+    const onCreateTeam=()=>{
+       handleShow()
     }
     return(
         <Container>
@@ -68,16 +110,19 @@ const CreateTeams = ()=>{
                                     <td>{obj.email}</td>
                                     <td>{obj.position}</td>
                                     <td>{obj.gitHubAccount}</td>
-                                    <td><Form.Check onCheck value={obj.userName}></Form.Check></td>
+                                    <td><Button onClick={()=>{onBtnClicked(obj.userName)}} >Select</Button></td>
+                                    <td><Button >Remove</Button></td>
                                 </tr>
                             )
                         })}
                     </tbody>
+                    
                 </Table>
                 <Col>
-                    <Button style={{float:"right"}}>Add to team</Button>
+                    <Button style={{float:"right"}} onClick={handleShow}>Create Team</Button>
                 </Col>
             </Row>
+            <CreateTeam />
         </Container>
     )
 }
