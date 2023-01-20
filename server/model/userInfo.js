@@ -22,12 +22,16 @@ const userSchema = new mongoose.Schema({
       password: {
             type: String,
       },
+      secret: {
+            type: String,
+      },
       position: {
             type: String,
       },
       gitHubAccount: {
             type: String,
       },
+      
 }, { timestamps: true })
 
 module.exports = mongoose.model('userInfo', userSchema)

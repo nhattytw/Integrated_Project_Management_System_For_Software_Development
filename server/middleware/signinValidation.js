@@ -5,8 +5,6 @@ const validation = Joi.object({
       userName: Joi
             .string()
             .alphanum()
-            .min(5)
-            .max(10)
             .trim(true)
             .required(),
       password: Joi

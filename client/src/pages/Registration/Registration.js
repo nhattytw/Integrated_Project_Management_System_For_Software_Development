@@ -2,6 +2,7 @@ import { Container, Col, Row, Form, Button, ButtonGroup } from 'react-bootstrap'
 import { NavBar } from '../../Components/nav/nav';
 import { useState, useEffect } from "react";
 // import { renderMatches } from 'react-router-dom';
+import { Alert } from 'react-bootstrap';
 
 
 export default function RegistrationPage() {
@@ -53,11 +54,20 @@ export default function RegistrationPage() {
 
             if (data.message === "User Created") {
                 handleCancel()
-                alert('Registration successful')
+                setMessage("Registration successful!")
+                setVariant("success")
+                setShow(true)
+                
                 window.location.href = '/login'  // Better Way to do this
             } else {
-                alert(data.message)
+                setMessage(data.message)
+                setVariant("danger")
+                setShow(true)
             }
+            
+            setTimeout(() => {
+                setShow(false)
+            }, "3000")
         }
         catch (error) {
             console.log(error) // Better Way to show this
@@ -109,9 +119,19 @@ export default function RegistrationPage() {
         }
     })
 
+    const [variant, setVariant] = useState('success')
+    const [show, setShow] = useState(false)
+    const [message, setMessage] = useState()
+
     return (
         <div>
             <NavBar />
+
+            <Alert show={show} variant={variant}>
+                <p style={{ textAlign: 'center' }}>
+                    {message}
+                </p>
+            </Alert>
 
             <Container className='login'>
 
