@@ -14,7 +14,7 @@ const addWbs = async (req, res) => {
     try {
         const { Task,ProjectName } = req.body
 
-
+      console.log(ProjectName)
       
     const InsertItems = new item({
       task: Task,    
@@ -25,8 +25,15 @@ const addWbs = async (req, res) => {
         res.status(403).json("Task failed");
         console.log(err)
       } else {
-      project.findOneAndUpdate({projectName:ProjectName},{wbs:result._id},{new:true})
-       console.log("success")
+      project.findOneAndUpdate({projectName:ProjectName},{wbs:result._id},{new:true}).exec((err,result)=>{
+        if(err){
+          console.log(err)
+        }
+        else{
+          console.log(result)
+        }
+      })
+       console.log(result._id)
        res.send("ok")
       }
     });

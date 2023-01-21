@@ -34,6 +34,7 @@ const CreateProject = async (req, res) => {
                                 projectManager: Managerresult._id,
                                 budget: budget,
                                 duration: duration,
+                                wbs:null,
                                 descripion:descripion
                             })
 
@@ -57,22 +58,16 @@ const CreateProject = async (req, res) => {
 const ActiveProjectList = (req, res) => {
     connectToDB()
     try {
-        const activeProject = project.find().populate(
-            "projectManager",
-            "wbs"
-        ).where("status")
-            .equals("active")
-            .lean(true)
-            .exec((err, result) => {
-                if (err) {
-                    console.log("error")
-                }
-                else {
+        const activeProject = project.find().populate('projectManager').populate('wbs')
+            .then((result) => {
+                if (result) {
+                    console.log(result)
                     const jsonContent = JSON.stringify(result)
-
                     res.send(jsonContent)
                 }
-            })
+              
+            }).catch(error=>console.log(error))
+
     } catch (error) {
         console.log(error)
 
@@ -80,7 +75,7 @@ const ActiveProjectList = (req, res) => {
 }
 const wbsUnassigedProjects=(req,res)=>{
     connectToDB()
-    project.find().select('wbs projectName').where('wbs').in([[]]).lean(true).exec((err,result)=>{
+    project.find().select('wbs projectName').where('wbs').equals(null).lean(true).exec((err,result)=>{
         
         if(err){
             console.log(err)
