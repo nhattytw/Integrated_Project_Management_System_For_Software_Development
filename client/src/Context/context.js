@@ -7,10 +7,11 @@ const ContextProvider = ({ children }) =>{
     const [Assignment,setAssignment] = useState("AssignTaskToTeam")
     const [Communications,setCommunications] = useState("ScheduledMeetings")
     const [Team,setTeams] = useState("createTeams")
+    const[Detail,setDetail] = useState({})
     
             return(
 
-                <Context.Provider value={{Tabs,setTabs,Assignment,setAssignment,Communications,setCommunications,Team,setTeams}}>
+                <Context.Provider value={{Tabs,setTabs,Assignment,setAssignment,Communications,setCommunications,Team,setTeams,Detail,setDetail}}>
                     {children}
                 </Context.Provider>
             )

@@ -33,3 +33,29 @@ body,html{
     color:rgba(66,105,158) !important;
     background-color: #fff !important;
 }
+
+.customBoard{
+    padding: 20px;
+    background-color: #ececec;
+    width: 30%;
+    float:left;
+
+}
+.customBoardItem{
+    margin: 0px 0px 8px 0px;
+    padding: 5px 0px 0px 8px
+}
+.doneBoard
+{
+    margin-left: 10px;
+    padding: 20px;
+    background-color: #ececec;
+    width: 30%;
+    float:left;
+
+}
+.doneBoardItem{
+    margin: 0px 0px 8px 0px;
+    padding: 5px 0px 0px 8px
+
+}

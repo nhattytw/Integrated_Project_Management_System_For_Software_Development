@@ -1,4 +1,4 @@
-import {Container,Col,Row,Button, ButtonGroup, Table,ProgressBar} from 'react-bootstrap'
+import {Container,Col,Row,Button, ButtonGroup, Table,ProgressBar,Card} from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import { Modal } from 'react-bootstrap';
 import { Activeproject,postProject } from '../../API/Project'
@@ -15,6 +15,9 @@ import { useState,useContext, useEffect } from 'react';
 import Example from '../../Components/charts/PieChart'
 import axios from 'axios';
 import { Context,ContextProvider } from '../../Context/context';
+import { MyBoard } from '../../Components/Khanban Board/KhanBan';
+
+
 
 // project manager is not required to enter the wbs,schedule and status upon creation.
 //wbs will come from later modules and the schedule will be dervied from the wbs
@@ -32,9 +35,8 @@ const ProjectNav = ()=>
         <Nav appearance='tabs' >
             <Nav.Item icon={<PlusIcon />} onSelect={()=>{setTabs("CreateProject")}}>Create Project</Nav.Item>
             <Nav.Item icon={<AdvancedAnalyticsIcon/>}  onSelect={()=>{setTabs("ActiveProjects")}}>Active Projects</Nav.Item>
-            <Nav.Item icon={<BarChartIcon />} onSelect={()=>{setTabs("ProjectStatus")}}>Project Status</Nav.Item>
             <Nav.Item icon={<ListIcon />} onSelect={()=>{setTabs("CreateWbs")}}>Create WBS</Nav.Item>
-            <Nav.Item icon={<TimeIcon />} onSelect={()=>{setTabs("Schedule")}} >Schedule </Nav.Item>
+            
         </Nav>
     </Col>
 </Row>
@@ -104,86 +106,177 @@ const CreateProject = ()=>{
         </Container>
     )
 }
+const SummaryPage = ()=>{
+    const {Detail,setDetail} = useContext(Context)
+    const Project_Details = [Detail]
+    const {wbs} = Detail;
+    const Tasks = wbs.task
+    console.log(Tasks)
+
+    return(
+        <>
+            <Container>
+            <h1>Project Summary</h1>
+
+                {Project_Details.map((detail)=>{
+                    return(
+
+                            <Row>
+                                <Col>
+                                <Card style={{width:"62vh",height:"30vh"}}>
+                                    <Row>
+                                        <Col>
+                                        <div style={{margin:'0px 0px 0px 20px'}}>
+                                        <h3>Budget</h3>
+                                        <Example />
+                                        </div>
+                                        </Col>
+                                        <Col xs={6}>
+                                        <div style={{padding:'0px 10px 0px 0px'}}>
+                                        <h3 style={{margin:'0px 0px 10px 0px'}}>Project Detail</h3>
+                                        <p>Project Name:{detail.projectName}</p>
+                                        <p>Starting Date:{detail.status}</p>
+                                        <p>Project Repository Name:{detail.projectRepository}</p>
+                                        <p>Duration:{detail.duration}</p>
+                                        <p>Created At:{detail.createdAt}</p>
+                                        <p>Description:{detail.descripion}</p>
+                                        <p>progress</p>
+                                        <ProgressBar variant="success" now={60} label={60}></ProgressBar>
+
+                                        </div>
+                                        
+                                        </Col>
+
+                                    </Row>
+                                   
+
+                                    
+                                </Card>
+                                </Col>
+
+
+                                <Col>
+                                <Card className='schedule'>
+                                        <Table borderless>
+                                            <tr>
+                                               
+                                                <th>task</th>
+                                                <th>Starting Date</th>
+                                                <th>Ending Date</th>
+                                                
+                                            </tr>
+                                            {Tasks.map((task)=>{
+                                                return(
+                                                    <tr>
+                                                        <td>{task.title}</td>
+                                                        <td>{task.StartingDate}</td>
+                                                        <td>{task.EndingDate}</td>
+
+                                                    </tr>
+
+                                                )
+                                            })}
+                                        </Table>
+
+                                </Card>
+                               
+                                </Col>
+  
+                            </Row>
+                    
+                    )
+                })}
+                <Row>
+                <Col>
+                <h3>Tasks</h3>
+                <Container className='customBoard' xs={2}>
+                    <h5>To-Do</h5>
+                    {Tasks.map((task)=>{
+                        return(
+                    <Card className='customBoardItem'>
+                        <h6>{task.title}</h6>
+                        <ul>
+                            {task.tasks.map((t)=>{
+                                return(
+                                    <li>{t}</li>
+                                )
+                            })}
+                        </ul>
+                    </Card>
+                            
+                        )
+                    })}
+                </Container>
+                <Container className='doneBoard'>
+                    <h5>Done</h5>
+                    <Card className="doneBoardItem">
+                        <h4>task title</h4>
+                        <ul>
+                            <li>task1</li>
+                            <li>task2</li>
+                            <li>task3</li>
+                        </ul> 
+                    </Card>
+                </Container>
+                </Col>
+
+                </Row>
+                
+            </Container>
+        </>
+
+    )
+}
 const ActiveProjects =  ()=>{
+    const {Tabs,setTabs} = useContext(Context)
     const [Openprojects,setOpenProjects] = useState([])
+    const {Detail,setDetail} = useContext(Context)
     const url ='http://localhost:9000/api/project/ActiveProject'
+   
     useEffect( ()=>{
         axios.get(url).then((response)=>{
             setOpenProjects(response.data)
         })
-    
-      
+        
+        
     },[])
+    const testClick = ()=>{
+        setTabs("SummaryPage")
+    }
     return(
         <Container>
             {/* {console.log(Openprojects)} */}
-            {Openprojects.map((project)=>{
+
                 
-                return(
-                    <Container >
-                    <Row key={project._id}>
-                    <h3 style={{textAlign:'center'}}>{project.projectName}</h3>
- 
-                    <Col>
+                    <Table borderless size='sm'>
+                        <tr>
+                            <th>Project Name</th>
+                        </tr>
+                        <tbody>
+
+                        {Openprojects.map((project)=>{
+                            return(
+                                <tr>
+                                    <td>{project.projectName}</td>
+                                    <td><Button variant="dark" onClick={()=>{
+                                        setDetail(project)
+                                        testClick()}}
+                                        >See Details</Button></td>
+                                </tr>
+                            )
+                        })}
+                        </tbody>
+                    </Table>
                     
-                        <h3 style={{margin:'0px 0px 10px 0px '}}>Project Details</h3>
-                        <ul>
-                        <li><h6>project Name:{project.projectName}</h6></li>
-                        <li><h6>status:{project.status}</h6></li>
-                        <li><h6>Project Repository:{project.projectRepository}</h6></li> 
-                        </ul>
-                        
-    
-                    </Col>
-                    <Col>
-                        <Example></Example>
-                    </Col>
-                    </Row>
-
-                    </Container>
 
 
-                )
-            })}
+               
+         
         </Container>
         
         )
     }
-const ProjectStatus = ()=>{
-    const [Openprojects,setOpenProjects] = useState([])
-    const url ='http://localhost:9000/api/project/ActiveProject'
-    useEffect( ()=>{
-        axios.get(url).then((response)=>{
-            setOpenProjects(response.data)
-            
-        })
-     
-      
-    },[])
-    return(
-        <Table>
-        <thead>
-            <tr>
-            <th>#</th>
-            <th>project Name</th>
-            <th>Start date</th>
-            <th>Completion date</th>
-            <th>Progress</th>
-            <th>note</th>
-            </tr>
-        </thead>
-        <tr>
-            <td>1</td>
-            <td>bantu</td>
-            <td>12/12/12</td>
-            <td>12/1/14</td>
-            <td><div style={{padding:"3px 0px 0px 0px"}}><ProgressBar now={60} variant="success"  label={60}></ProgressBar></div></td>
-            
-            <td>on schedule</td>
-        </tr>
-    </Table>
-        )
-    }
+
     const TaskModal = (props)=>{
         const [task,setTask] = useState([{task:''}])
         const handleChange = (index,event)=>{
@@ -298,7 +391,7 @@ const ProjectStatus = ()=>{
         }   
         const submitWbs = ()=>{
             const{ projectName } = wbs
-            console.log(Data)
+            
             addWbs(Data,projectName)
         }
         const addWbsEntry = ()=>{
@@ -316,7 +409,7 @@ const ProjectStatus = ()=>{
         temp_data["title"] = title  
         setData([...Data,temp_data])
         setDefault("")
-        console.log(Data)
+        
        
        
         }
@@ -329,6 +422,7 @@ const ProjectStatus = ()=>{
                 <Col sm={6}>
                     <Form.Label>Select Project</Form.Label>
                     <Form.Select name="projectName" onChange={(e)=>{createWbs(e)}}>
+                        <option></option>
                         {projects.map((data)=>{
                             return(
                             <option >{data.projectName}</option>
@@ -363,17 +457,13 @@ const ProjectStatus = ()=>{
             </div>
             )
         }
-        const Schedule = ()=>{
-            return(
-                <h1>schedule</h1>
-                )
-            }
+
             const pages = {
                 "CreateProject":CreateProject,
                 "ActiveProjects": ActiveProjects,
-                "ProjectStatus":ProjectStatus ,
                 "CreateWbs":CreateWbs,
-                "Schedule":Schedule
+                "SummaryPage":SummaryPage
+               
     
     
 }
