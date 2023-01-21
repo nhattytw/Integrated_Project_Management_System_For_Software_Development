@@ -2,12 +2,13 @@ import { Container, Col, Row, Form, Button, ButtonGroup } from 'react-bootstrap'
 import { NavBar } from '../../Components/nav/nav';
 import { useState, useEffect } from "react";
 // import { renderMatches } from 'react-router-dom';
+import { Alert } from 'react-bootstrap';
 
 
 export default function RegistrationPage() {
     const base_url = 'http://localhost:9000/api'
 
-    const Positions = ['Project Manager', 'Frontend Developer', 'Backend Developer'];
+    const Positions = ['Project Manager', 'Frontend Developer', 'Backend Developer', 'Mobile Developer'];
 
     const [agree, setAgree] = useState(false)
     const [dateState, setDateState] = useState(new Date())
@@ -17,7 +18,7 @@ export default function RegistrationPage() {
             event.target.checked
         )
     }
-
+    
     const [state, setState] = useState({
         firstName: "",
         lastName: "",
@@ -27,9 +28,7 @@ export default function RegistrationPage() {
         userName: "",
         password: "",
         position: "Project Manager",
-        gitHubAccount: "",
-        secret: ""
-
+        gitHubAccount: ""
     })
 
     const handleSubmit = async (e) => {
@@ -53,15 +52,25 @@ export default function RegistrationPage() {
 
             if (data.message === "User Created") {
                 handleCancel()
-                alert('Registration successful')
-                window.location.href = '/login'  // Better Way to do this
+                setMessage("Registration successful!")
+                setVariant("success")
+                setShow(true)
+
+                window.open('/login', '_self')
             } else {
-                alert(data.message)
+                setMessage(data.message)
+                setVariant("danger")
+                setShow(true)
             }
+
+            setTimeout(() => {
+                setShow(false)
+            }, "3000")
         }
         catch (error) {
-            console.log(error) // Better Way to show this
-            throw error
+            setMessage(error.message)
+            setVariant("danger")
+            setShow(true)
         }
     }
 
@@ -76,9 +85,9 @@ export default function RegistrationPage() {
             userName: "",
             password: "",
             position: "Project Manager",
-            gitHubAccount: "",
-            secret: ""
+            gitHubAccount: ""
         })
+
     }
 
     const handleDateChange = (event) => {
@@ -109,9 +118,19 @@ export default function RegistrationPage() {
         }
     })
 
+    const [variant, setVariant] = useState('success')
+    const [show, setShow] = useState(false)
+    const [message, setMessage] = useState()
+
     return (
         <div>
             <NavBar />
+
+            <Alert show={show} variant={variant}>
+                <p style={{ textAlign: 'center' }}>
+                    {message}
+                </p>
+            </Alert>
 
             <Container className='login'>
 
@@ -160,19 +179,7 @@ export default function RegistrationPage() {
                             max="2050-12-31"
                         />
                     </Col>
-                    <Col>
-                        <Form>
-                            <Form.Label>Secret Key</Form.Label>
-                            <Form.Control
-                                type='password'
-                                placeholder='Secret Key'
-                                name="secret"
-                                autoComplete="off"
-                                value={state.secret}
-                                onChange={handleChange}
-                            />
-                        </Form>
-                    </Col>
+                    <Col></Col>
 
                 </Row>
 

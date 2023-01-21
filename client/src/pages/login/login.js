@@ -4,10 +4,16 @@ import { Form } from "react-bootstrap"
 import people from '../../Assets/BuissnessPeople.png'
 import { useState } from "react";
 import { LinkContainer } from "react-router-bootstrap";
+import { Alert } from 'react-bootstrap';
 
 export default function Login() {
 
     const base_url = 'http://localhost:9000/api'
+
+    const [variant, setVariant] = useState('success')
+    const [show, setShow] = useState(false)
+    const [message, setMessage] = useState()
+
 
     const [state, setState] = useState({
         userName: "",
@@ -37,15 +43,28 @@ export default function Login() {
             if (data.message === "You've Logged in.") {
                 localStorage.setItem(
                     'Bearer',
-                    'Bearer ' + data.data
+                    'Bearer ' + data.data.token
                 )
-                alert('Login successful')
+                localStorage.setItem(
+                    'userName',
+                    data.data.userName
+                )
+                setMessage("Login successful!")
+                setVariant("success")
+                setShow(true)
+                
                 // Use react router here and based on user go to respective dashboards
                 // [Violation] Forced reflow while executing JavaScript took 31ms
                 window.location.href = '/dashboard'
             } else {
-                alert(data.message)
+                setMessage(data.message)
+                setVariant("danger")
+                setShow(true)
             }
+
+            setTimeout(() => {
+                setShow(false)
+            }, "3000")
         }
         catch (error) {
             console.log(error) //better way
@@ -63,7 +82,14 @@ export default function Login() {
     }
 
     return (
-        <>       <NavBar />
+        <>
+            <NavBar />
+
+            <Alert show={show} variant={variant}>
+                <p style={{ textAlign: 'center' }}>
+                    {message}
+                </p>
+            </Alert>
 
             <Form className="login">
                 <Container >

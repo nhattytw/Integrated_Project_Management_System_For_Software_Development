@@ -1,8 +1,25 @@
-// import nodemailer from "nodemailer"
 const nodemailer = require('nodemailer')
-// change the above from import to const
 
-const dev_added_to_team =`Subject: Welcome to the Team!
+const randomString = Math.random().toString(36).slice(-8)
+
+const forgot_password_secret_email = `Subject: Password Reset Key
+
+Dear User, 
+
+You must have forgotten your password. 
+
+We have contacted you because you have attemptted to change your password. 
+
+Secret Key: ${randomString}
+
+If its not you that initiated this, disgard this email. 
+
+We thank you for not sharing your password. 
+
+Best Regards, 
+Ahaz Software and Web Technologies
+`
+const dev_added_to_team = `Subject: Welcome to the Team!
 
 Dear Employee, 
 
@@ -14,9 +31,18 @@ Please take time to familiarize yourself with the specific objectives for our te
 
 As part of the team, we encourage open communication and collaboration between each other. Be sure to reach out to fellow teammates if you need assistance at any time or want feedback on any ideas. 
 
-Thank you again for joining our team! Let's work together and make great things happen!`
+Thank you again for joining our team! Let's work together and make great things happen!
 
-const shceduledMeeting =`Dear EMPLOYEE, 
+
+Best Regards,
+Ahaz Software and Web Technologies
+`
+
+// When adding this modify Date and Time along with Join link and set it in the text like random string
+
+const scheduledMeeting = `Subject: Meeing Reminder
+
+Dear Employee, 
 
 This is to remind you of your upcoming meeting taking place on DATE at TIME.
 
@@ -25,41 +51,45 @@ The meeting will be held on ZOOM and check your IMPS notifications. Please make 
 
 Thank you very much. 
 
-Best regards, 
-Ahaz software solutions`
+Best Regards, 
+Ahaz Software and Web Technologies
+`
 
-const mailNotifications=(devList,type)=>{
+const mailNotifications = (devList, type) => {
   let text = ``
-  if (type === 'addToteam'){
+  if (type === 'addToteam') {
     text = dev_added_to_team
   }
-  else if (type === 'meeting'){
-    text = shceduledMeeting
+  else if (type === 'meeting') {
+    text = scheduledMeeting
   }
-    var transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'roblexetipms@gmail.com',
-        pass: 'ssvxsubbsfpfyjoy'
-      }
-    });
-    
-    var mailOptions = {
-      from: 'roblexetipms@gmail.com',
-      to: devList,
-      subject: {text},
-      text: text
-    };
-    
-    transporter.sendMail(mailOptions, function(error, info){
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
+  else if (type === 'forgotPass') {
+    text = forgot_password_secret_email
+  }
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'roblexetipms@gmail.com',
+      pass: 'ssvxsubbsfpfyjoy'
+    }
+  });
+
+  var mailOptions = {
+    from: 'roblexetipms@gmail.com',
+    to: devList,
+    subject: { text },
+    text: text
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error.message);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+
+  return randomString
 }
-
-
 
 module.exports = mailNotifications;
