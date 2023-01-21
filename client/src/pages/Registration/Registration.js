@@ -18,7 +18,7 @@ export default function RegistrationPage() {
             event.target.checked
         )
     }
-
+    
     const [state, setState] = useState({
         firstName: "",
         lastName: "",
@@ -56,7 +56,7 @@ export default function RegistrationPage() {
                 setVariant("success")
                 setShow(true)
 
-                window.open('/login')
+                window.open('/login', '_self')
             } else {
                 setMessage(data.message)
                 setVariant("danger")
@@ -87,6 +87,7 @@ export default function RegistrationPage() {
             position: "Project Manager",
             gitHubAccount: ""
         })
+
     }
 
     const handleDateChange = (event) => {
