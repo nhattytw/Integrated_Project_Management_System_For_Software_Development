@@ -11,7 +11,7 @@ const { securePassword,
 const signup = async (req, res) => {
       connectToDB()
       try {
-            const { firstName, lastName, dob, phoneNumber, email, userName, password, position, gitHubAccount, secret } = req.body
+            const { firstName, lastName, dob, phoneNumber, email, userName, password, position, gitHubAccount } = req.body
 
             const existingUser = await user.findOne({
                   userName: userName
@@ -25,7 +25,6 @@ const signup = async (req, res) => {
                         )
             } else {
                   const hashedPassword = await securePassword(password)
-                  const hashedSecret = await securePassword(secret)
 
                   const newUser = new user({
                         firstName: firstName,
@@ -37,7 +36,7 @@ const signup = async (req, res) => {
                         password: hashedPassword,
                         position: position,
                         gitHubAccount: gitHubAccount,
-                        secret: hashedSecret
+                        secret: ""
                   })
 
                   if (await newUser.save()) {
