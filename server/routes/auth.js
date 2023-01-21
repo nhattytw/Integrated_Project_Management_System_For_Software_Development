@@ -2,7 +2,8 @@ const express = require('express')
 const router = express.Router()
 const { signup,
       signin,
-      forgotPassword } = require('../controllers/userController')
+      forgotPassword, 
+      sendKey} = require('../controllers/userController')
 const signupValidation = require('../middleware/signupValidation')
 const forgotPasswordValidation = require('../middleware/forgotPasswordValidation')
 const signinValidation = require('../middleware/signinValidation')
@@ -32,6 +33,14 @@ router.put(
       '/forgotPassword',
       forgotPasswordValidation,
       forgotPassword
+)
+
+// @route    POST api/sendKey
+// @desc     Resets account password
+// @access   Private
+router.post(
+      '/sendKey',
+      sendKey
 )
 
 module.exports = router

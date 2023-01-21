@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const connectToDB = require('../utils/dbConnect')
 const { securePassword,
       validatePassword } = require('../utils/securePassword')
+const mailNotifications = require('../middleware/emailNotification')
 
 // @desc     Register user
 // @access   Public
@@ -369,12 +370,13 @@ const updateUserPassword = async (req, res) => {
       }
 }
 
-// @desc     Update User Password
+// @desc     Send Secret Key
 // @access   Public
-const forgotPassword = async (req, res) => {
+const sendKey = async (req, res) => {
       connectToDB()
+
       try {
-            const { userName, password, secret } = req.body
+            const { userName } = req.body
 
             const existingUser = await user.findOne({
                   userName: userName
@@ -387,8 +389,82 @@ const forgotPassword = async (req, res) => {
                               messageFunction(true, 'Username Not Found')
                         )
             } else {
+                  const userEmail = existingUser.email
+
+                  const secret = mailNotifications(userEmail, 'forgotPass')
+
+                  if (!secret) {
+                        return res
+                              .status(403)
+                              .json(
+                                    messageFunction(
+                                          true,
+                                          'Secret Key not set, Please reload the page.'
+                                    )
+                              )
+                  }
+
+                  try {
+                        const hashedSecret = await securePassword(secret)
+
+                        const response = await user.updateOne(
+                              { userName: existingUser.userName },
+                              {
+                                    $set: {
+                                          secret: hashedSecret
+                                    }
+                              }
+                        )
+                        return res
+                              .status(200)
+                              .json(
+                                    messageFunction(
+                                          false,
+                                          'Successfully Sent Secret Key.',
+                                          response
+                                    )
+                              )
+                  } catch (error) {
+                        return res
+                              .status(403)
+                              .json(
+                                    messageFunction(true, 'Setting Secret Key Failed.')
+                              )
+                  }
+
+            }
+      } catch (error) {
+            console.error(error.message)
+            return res
+                  .status(500)
+                  .json(
+                        messageFunction(true, 'Sending Secret Key Failed. Please Try Again.')
+                  )
+      }
+}
+
+// @desc     Update User Password
+// @access   Public
+const forgotPassword = async (req, res) => {
+      connectToDB()
+
+      try {
+            const { userName } = req.body
+
+            const existingUser = await user.findOne({
+                  userName: userName
+            }).lean(true)
+
+            if (!existingUser) {
+                  return res
+                        .status(400)
+                        .json(
+                              messageFunction(true, 'Username Not Found')
+                        )
+            } else {
+                  const { password, secret } = req.body
+
                   const hashedOldSecret = existingUser.secret
-                  const hashedOldPassword = existingUser.password
 
                   const validatedSecret = await validatePassword(
                         secret,
@@ -405,44 +481,30 @@ const forgotPassword = async (req, res) => {
 
                   const hashedNewPassword = await securePassword(password)
 
-                  const validatedPasswords = await validatePassword(
-                        password,
-                        hashedOldPassword
-                  )
-
-                  if (validatedPasswords) {
-                        return res
-                              .status(406)
-                              .json(
-                                    messageFunction(true, 'New Password cannot be same as the old one.')
-                              )
-                  } else {
-                        try {
-                              const response = await user.updateOne(
-                                    { userName: existingUser.userName },
-                                    {
-                                          $set: {
-                                                password: hashedNewPassword
-                                          }
+                  try {
+                        const response = await user.updateOne(
+                              { userName: existingUser.userName },
+                              {
+                                    $set: {
+                                          password: hashedNewPassword
                                     }
+                              }
+                        )
+                        return res
+                              .status(201)
+                              .json(
+                                    messageFunction(
+                                          false,
+                                          'Successfully Resetted Password.',
+                                          response
+                                    )
                               )
-                              return res
-                                    .status(201)
-                                    .json(
-                                          messageFunction(
-                                                false,
-                                                'Successfully Resetted Password.',
-                                                response
-                                          )
-                                    )
-                        } catch (error) {
-                              return res
-                                    .status(403)
-                                    .json(
-                                          messageFunction(true, 'Resetting Password Failed.')
-                                    )
-                        }
-
+                  } catch (error) {
+                        return res
+                              .status(403)
+                              .json(
+                                    messageFunction(true, 'Resetting Password Failed.')
+                              )
                   }
             }
       } catch (error) {
@@ -462,5 +524,6 @@ module.exports = {
       searchUser,
       updateUserInfo,
       updateUserPassword,
-      forgotPassword
+      forgotPassword,
+      sendKey
 }

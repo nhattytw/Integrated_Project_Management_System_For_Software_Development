@@ -1,4 +1,4 @@
-import { Container, Col, Row, Form, Button } from 'react-bootstrap'
+import { Container, Col, Row, Form, Button, ButtonGroup } from 'react-bootstrap'
 import { NavBar } from '../../Components/nav/nav';
 import { useState } from 'react';
 import { Alert } from 'react-bootstrap';
@@ -18,7 +18,7 @@ export default function ForgotPassword() {
 
     const [state, setState] = useState({
         userName: "",
-        password: validatedPassword.newPassword,
+        password: validatedPassword.confirmPassword,
         secret: ""
     })
 
@@ -30,8 +30,47 @@ export default function ForgotPassword() {
             [name]: value,
         })
     }
+    const handleSecret = async () => {
+
+        var formBody = JSON.stringify(state)
+
+        try {
+            const response = await fetch(
+                base_url + `/sendKey`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                    },
+                    body: formBody
+                },
+            )
+            const data = await response.json()
+
+            if (data.is_error === true) {
+                setMessage(data.message)
+                setVariant("danger")
+                setShow(true)
+            } else {
+                setMessage(data.message)
+                setVariant("success")
+                setShow(true)
+            }
+
+            setTimeout(() => {
+                setShow(false)
+            }, "3000")
+        }
+        catch (error) {
+            setMessage(error.message)
+            setVariant("danger")
+            setShow(true)
+        }
+    }
 
     const handleSubmit = async (event) => {
+        event.preventDefault()
 
         var formBody = JSON.stringify(state)
 
@@ -57,7 +96,7 @@ export default function ForgotPassword() {
                 setMessage("Password reset successful!")
                 setVariant("success")
                 setShow(true)
-                window.location.href = '/login'  // Better Way to do this
+                window.open('/login', '_self')
             }
 
             setTimeout(() => {
@@ -69,8 +108,6 @@ export default function ForgotPassword() {
             setMessage(error.message)
             setVariant("danger")
             setShow(true)
-            console.log(error) // Better Way to show this
-            throw error
         }
     }
 
@@ -104,7 +141,6 @@ export default function ForgotPassword() {
         if (conpass === newpass) {
             setVariant("success")
             setShow(true)
-            handleSubmit()
         }
         else {
             setMessage("Password doesn't match, password change failed!")
@@ -130,56 +166,90 @@ export default function ForgotPassword() {
 
             <Container >
                 <Form onSubmit={handleCheckPassword} className='forgotPass' style={{ padding: '100px' }}>
-                    <h4 >forgot password</h4>
-                    <Form.Label>Enter your user name</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name='userName'
-                        placeholder="Username"
-                        value={state.userName}
-                        onChange={handleChange}
-                    />
-                    <Form.Label>Enter secret</Form.Label>
-                    <Form.Control
-                        type="password"
-                        name="secret"
-                        placeholder="Secret"
-                        value={state.secret}
-                        onChange={handleChange}
-                    />
-                    <Form.Label>Enter password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        value={validatedPassword.newPassword}
-                        onChange={handlePass}
-                    />
-                    <Form.Label>Confirm new password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        name="confirmPassword"
-                        placeholder="Confirm password"
-                        value={validatedPassword.confirmPassword}
-                        onChange={handlePass}
-                    />
+                    <h4>Forgot Password</h4>
+                    <br />
+                    <Row>
+                        <Col>
+                            <Form.Label>Enter Username</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name='userName'
+                                placeholder="Username"
+                                value={state.userName}
+                                onChange={handleChange}
+                                tabindex="1"
+                            />
+                        </Col>
+                        <Col>
+                            <Form.Label>Enter New Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                name="password"
+                                placeholder="New Password"
+                                value={validatedPassword.newPassword}
+                                onChange={handlePass}
+                                tabindex="3"
+                            />
+                        </Col>
+                    </Row>
 
-                    <Button
-                        style={{ margin: "5px 0px 0px 0px" }}
-                        type="submit"
+                    <Row>
+                        <Col>
+                            <Form.Label>Enter Secret (Check your email)</Form.Label>
+                            <Form.Control
+                                type="password"
+                                name="secret"
+                                placeholder="The Secret that is sent in your email."
+                                value={state.secret}
+                                onChange={handleChange}
+                                tabindex="2"
+                            />
+                        </Col>
+                        <Col>
+                            <Form.Label>Confirm New Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                name="confirmPassword"
+                                placeholder="Confirm New Password"
+                                value={validatedPassword.confirmPassword}
+                                onChange={handlePass}
+                                tabindex="4"
+                            />
+                        </Col>
+                    </Row>
 
-                    >
-                        Confirm
-                    </Button>
+                    <Row>
+                        <Col>
+                            <Button
+                                variant='primary'
+                                onClick={handleSecret}
+                                style={{ margin: "5px 0px 0px 0px" }}
+                            >
+                                Get Key
+                            </Button>
+                        </Col>
+                        <Col>
+                            <ButtonGroup style={{ float: "right", padding: "0px 30px 0px 0px" }}>
 
-                    <Button
-                        variant='dark'
-                        style={{ margin: "5px 0px 0px 10px" }}
-                        onClick={handleCancel}
-                    >
-                        Cancel
-                    </Button>
+                                <Button
+                                    style={{ margin: "5px 0px 0px 0px" }}
+                                    type="submit"
+                                    onClick={handleSubmit}
+                                    tabindex="5"
+                                >
+                                    Confirm
+                                </Button>
 
+                                <Button
+                                    variant='dark'
+                                    style={{ margin: "5px 0px 0px 10px" }}
+                                    onClick={handleCancel}
+                                >
+                                    Cancel
+                                </Button>
+                            </ButtonGroup>
+                        </Col>
+                    </Row>
 
                 </Form>
             </Container>
