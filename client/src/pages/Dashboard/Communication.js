@@ -1,9 +1,9 @@
-import { Container, Col, Row, Form, Button, Table, Tab, Dropdown, ButtonGroup } from 'react-bootstrap'
+import { Container, Col, Row, Form, Button, Table, ButtonGroup } from 'react-bootstrap'
 // import Overlay from 'react-bootstrap';
 import { Nav } from 'rsuite'
 import NoticeIcon from '@rsuite/icons/Notice';
 import TimeIcon from '@rsuite/icons/Time';
-import EmailIcon from '@rsuite/icons/Email';
+// import EmailIcon from '@rsuite/icons/Email';
 import { Context } from '../../Context/context';
 import { useContext, useState, useEffect } from 'react';
 import ContenetDisplay from '../../Components/ConentDisplay/ConentDisplay';
@@ -24,7 +24,7 @@ const CommunicationsNav = () => {
                     <Nav appearance='tabs' >
                         <Nav.Item icon={<NoticeIcon />} onSelect={() => { setCommunications("ScheduledMeetings") }} >Scheduled Meetings</Nav.Item>
                         <Nav.Item icon={<TimeIcon />} onSelect={() => { setCommunications("ScheduleMeetings") }}>Schedule Meeting</Nav.Item>
-                        <Nav.Item icon={<EmailIcon />} onSelect={() => { setCommunications("Email") }}>Email</Nav.Item>
+                        {/* <Nav.Item icon={<EmailIcon />} onSelect={() => { setCommunications("Email") }}>Email</Nav.Item> */}
                     </Nav>
                 </Col>
             </Row>
@@ -286,52 +286,52 @@ const ScheduledMeetings = () => {
         result: []
     })
 
-    const handleLoad = async () => {
-        setState({
-            ...state,
-            userName: localStorage.getItem('userName'),
-        })
+    useEffect(() => {
+        const handleLoad = async () => {
+            setState({
+                ...state,
+                userName: localStorage.getItem('userName'),
+            })
 
-        try {
-            var formBody = JSON.stringify(state)
+            try {
+                var formBody = JSON.stringify(state)
 
-            const response = await fetch(
-                base_url + `/listMeetings`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Authorization': localStorage.getItem('Bearer')
+                const response = await fetch(
+                    base_url + `/listMeetings`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'Authorization': localStorage.getItem('Bearer')
+                        },
+                        body: formBody
                     },
-                    body: formBody
-                },
-            )
-            const data = await response.json()
+                )
+                const data = await response.json()
 
-            if (data.message === "List of Meetings") {
-                setState({
-                    ...state,
-                    result: data.data
-                })
-            } else {
-                setMessage(data.message)
+                if (data.message === "List of Meetings") {
+                    setState({
+                        ...state,
+                        result: data.data
+                    })
+                } else {
+                    setMessage(data.message)
+                    setVariant("danger")
+                    setShow(true)
+                }
+
+                setTimeout(() => {
+                    setShow(false)
+                }, "3000")
+            }
+            catch (error) {
+                setMessage(error.message)
                 setVariant("danger")
                 setShow(true)
             }
-
-            setTimeout(() => {
-                setShow(false)
-            }, "3000")
         }
-        catch (error) {
-            setMessage(error.message)
-            setVariant("danger")
-            setShow(true)
-        }
-    }
 
-    useEffect(() => {
         handleLoad()
     }, [])
 
@@ -359,7 +359,7 @@ const ScheduledMeetings = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {state.result.map((meeting, index) => (
+                                {state.result?.map((meeting, index) => (
                                     <tr data-index={index}>
                                         <td>{index + 1}</td>
                                         <td>{meeting.meetingId}</td>
@@ -379,7 +379,7 @@ const ScheduledMeetings = () => {
                                                         window.open(meeting.meetingStartUrl, "_blank")
                                                     }}
                                                 >
-                                                    Join
+                                                    Start
                                                 </Button>
                                             </ButtonGroup>
                                         </td>
@@ -394,39 +394,41 @@ const ScheduledMeetings = () => {
     )
 }
 
-const Email = () => {
-    return (
-        <Container>
-            <Row>
-                <Col><h3>Automated Email</h3></Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Form>
-                        <Form.Label>Subject</Form.Label>
-                        <Form.Control type="text"></Form.Control>
-                    </Form>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Form.Label>Subject</Form.Label>
-                    <Form.Control as="textarea"></Form.Control>
-                </Col>
-            </Row>
-            <Row>
-                <Col><Button>send   </Button></Col>
-            </Row>
-        </Container>
-    )
-}
+// Maybe make this for instant meeting for better look
+
+// const Email = () => {
+//     return (
+//         <Container>
+//             <Row>
+//                 <Col><h3>Automated Email</h3></Col>
+//             </Row>
+//             <Row>
+//                 <Col>
+//                     <Form>
+//                         <Form.Label>Subject</Form.Label>
+//                         <Form.Control type="text"></Form.Control>
+//                     </Form>
+//                 </Col>
+//             </Row>
+//             <Row>
+//                 <Col>
+//                     <Form.Label>Subject</Form.Label>
+//                     <Form.Control as="textarea"></Form.Control>
+//                 </Col>
+//             </Row>
+//             <Row>
+//                 <Col><Button>send   </Button></Col>
+//             </Row>
+//         </Container>
+//     )
+// }
 
 const Communications = () => {
     const { Communications, setCommunication } = useContext(Context)
     const pages = {
         "ScheduleMeetings": ScheduleMeetings,
         "ScheduledMeetings": ScheduledMeetings,
-        "Email": Email
+        // "Email": Email
     }
 
     return <Container>

@@ -119,7 +119,6 @@ const signin = async (req, res) => {
                                                 messageFunction(true, 'Unauthorized')
                                           )
 
-                              console.log('Signedin')
                               return res
                                     .status(200)
                                     .json(

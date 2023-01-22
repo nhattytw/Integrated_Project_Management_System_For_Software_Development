@@ -11,7 +11,7 @@ const User = require('../model/userInfo')
 
 const payload = {
       iss: process.env.ZOOM_API_KEY, // API KEY
-      exp: new Date().getTime() + 5000,
+      exp: new Date().getTime(),
 }
 
 const token = jwt.sign(
@@ -19,10 +19,11 @@ const token = jwt.sign(
       process.env.ZOOM_API_SECRET // API SECRET
 )
 
-// @desc     Create Zoom Meeting
-// @access   Public
 //request the zoom api to create a meeting and adding participants
 //registered with company email
+
+// @desc     Create Zoom Meeting
+// @access   Public
 const createMeeting = async (req, res) => {
       // email = 'nathnael.tesfaye.hh4142@gmail.com'  // Company email account that has a zoom developer
       const { duration, start_time, topic, userName } = req.body

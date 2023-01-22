@@ -123,6 +123,7 @@ export default function ForgotPassword() {
             password: "",
             secret: ""
         })
+        window.open('/login', '_self')
     }
 
     const handlePass = (event) => {

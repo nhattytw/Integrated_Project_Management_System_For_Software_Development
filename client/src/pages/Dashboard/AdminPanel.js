@@ -167,8 +167,8 @@ const Teams = ()=>
             <Accordion>
                 <Accordion.Header>{team.name}</Accordion.Header>
                 <Accordion.Body>
-                    <h3>memebers</h3>
-                    {team.memebers.map((memeber)=>{
+                    <h3>members</h3>
+                    {team.members.map((memeber)=>{
                         return(
                         <ul>
                             <li>{memeber}</li>

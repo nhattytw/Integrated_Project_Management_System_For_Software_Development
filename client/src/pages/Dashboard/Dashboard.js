@@ -11,7 +11,7 @@ import "rsuite/dist/rsuite.min.css";
 import Projects from './Projects';
 import React, { useEffect } from 'react';
 import AdminPanel from './AdminPanel';
-import Assignments from './Assignments/Assingments';
+import Assignments from './Assignments/Assignments';
 import Communications from './Communication';
 import SettingPage from './Setting';
 import { useState } from 'react';

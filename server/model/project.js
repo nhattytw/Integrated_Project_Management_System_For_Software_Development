@@ -28,6 +28,10 @@ const projectSchema = new mongoose.Schema({
     },
     descripion:{
         type:String
+    },
+    isAssignedTo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'teamAssignment'
     }
     
 }, { timestamps: true })

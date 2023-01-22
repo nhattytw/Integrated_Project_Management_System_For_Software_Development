@@ -37,11 +37,11 @@ const router = new createBrowserRouter([{
 
 ])
 root.render(
-  <React.StrictMode>
+  
     <ContextProvider>
         <RouterProvider router={router} />
     </ContextProvider>
-  </React.StrictMode>
+  
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -199,7 +199,7 @@ export default function RegistrationPage() {
                                 name="phoneNumber"
                                 value={state.phoneNumber}
                                 onChange={handleChange}
-                            // a way to check this
+                            // a way to check this ?
                             />
                         </Form>
                     </Col>

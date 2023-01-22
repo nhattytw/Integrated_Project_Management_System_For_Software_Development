@@ -55,7 +55,7 @@ export default function Login() {
                 
                 // Use react router here and based on user go to respective dashboards
                 // [Violation] Forced reflow while executing JavaScript took 31ms
-                window.location.href = '/dashboard'
+                window.open('/dashboard', '_self')
             } else {
                 setMessage(data.message)
                 setVariant("danger")
