@@ -1,6 +1,6 @@
 
 require('dotenv').config({ path: './config/config.env' })
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken/verify')
 
 module.exports = function (req, res, next) {
       // Format of TOKEN
@@ -21,7 +21,7 @@ module.exports = function (req, res, next) {
                         .status(401)
                         .send('Access Denied')
             try {
-                  const verified = jwt.verify(
+                  const verified = jwt(
                         token,
                         process.env.JWT_SECRET
                   )
