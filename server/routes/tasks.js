@@ -5,6 +5,7 @@ const {
   getAssignedTasks,
   updateTaskStatus,
   searchTasks,
+  postCompletedTasks,
 } = require("../controllers/taskController");
 
 //@route    Post api/task/PostTask
@@ -30,5 +31,6 @@ router.put("/task/updateTaskStatus", updateTaskStatus);
 //@access   private
 
 router.post("/task/searchTasks", searchTasks);
+router.post('/task/postCompletedTasks',postCompletedTasks)
 
 module.exports = router;
