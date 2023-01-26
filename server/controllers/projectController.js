@@ -6,6 +6,8 @@ const {
 } = require("../middleware/githubOperations");
 const messageFunction = require("../utils/messageFunction");
 
+
+
 //stored initalize project and assign a project Manager
 
 // @desc     Create Project
@@ -55,6 +57,7 @@ const CreateProject = async (req, res) => {
   }
 };
 
+
 //finds a list of projects that are not completed or not been canceled
 
 // @desc     Get Active Projects
@@ -95,7 +98,7 @@ const wbsUnassigedProjects = (req, res) => {
     });
 };
 
-// @desc     Get Team With No Assigned Project
+// @desc     Get Projects Without teams Assigned assiged to them
 // @access   Public
 const getProject = async (_req, res) => {
   connectToDB();
@@ -166,11 +169,40 @@ const getAssignedProject = async (_req, res) => {
       );
   }
 };
-
+const getProjectTasks = (req,res)=>
+{
+  const {projectName} = req.body
+  connectToDB()
+  Project.find({projectName:projectName}).select('wbs').populate('wbs').exec((err,result)=>{
+   if(err){
+    console.log(err)
+   }else{
+    const jsonData = JSON.stringify(result);
+    res.send(jsonData);
+   }
+  })
+  
+}
+const findProject=(req,res)=>{
+  connectToDB()
+  const{project} = req.body
+  console.log(req.body)
+  Project.find({projectName:project}).populate('wbs').select('wbs').exec((err,result)=>{
+    if(err){
+      console.log(err)
+    }
+    else{
+      const jsonData = JSON.stringify(result);
+      res.send(jsonData);
+    }
+  })
+}
 module.exports = {
   CreateProject,
   ActiveProjectList,
   wbsUnassigedProjects,
   getProject,
+  findProject,
   getAssignedProject,
+  getProjectTasks
 };

@@ -4,6 +4,7 @@ const Project = require("../model/project")
 const mailNotifications = require('../middleware/emailNotification')
 const users = require('../model/userInfo')
 const messageFunction = require('../utils/messageFunction')
+const User = require('../model/userInfo')
 
 
 // @desc     Get Team With No Assigned Project
@@ -141,6 +142,9 @@ const CreateTeams = async (req, res) => {
 
         })
         newTeam.save()
+        members.forEach((memeber)=>{
+            User.findOneAndUpdate({userName:memeber},{assignedTeam:teamName})
+        })
         // getMailList(members)
         res.send("Teams Created")
 

@@ -5,7 +5,9 @@ const {
       ActiveProjectList,
       wbsUnassigedProjects,
       getProject, 
-      getAssignedProject} = require("../controllers/projectController");
+      getAssignedProject,
+      getProjectTasks,
+      findProject} = require("../controllers/projectController");
 
 // @route    POST api/project/createProject
 // @desc     Add Project
@@ -45,6 +47,14 @@ router.get(
 router.get(
       '/project/getAssignedProject',
       getAssignedProject
+)
+router.get(
+      '/project/getProjectTasks',
+        getProjectTasks
+)
+router.post(
+      '/project/findProject',
+        findProject
 )
 
 module.exports = router
