@@ -21,7 +21,7 @@ const AssignemtsNav = () => {
             <Row>
                 <Col>
                     <Nav appearance='tabs' >
-                        <Nav.Item icon={<PeoplesIcon />} onSelect={() => { setAssignment("AssignTaskToTeam") }}>Assign task to team</Nav.Item>
+                        <Nav.Item icon={<PeoplesIcon />} onSelect={() => { setAssignment("AssignTaskToTeam") }}>Assign project to team</Nav.Item>
                         <Nav.Item icon={<CheckRoundIcon />} onSelect={() => { setAssignment("CompletedAssignments") }}>Completed Assignments</Nav.Item>
                         <Nav.Item icon={<PauseRoundIcon />} onSelect={() => { setAssignment("PendingAssignments") }}>Pending Assignments</Nav.Item>
 
@@ -40,6 +40,7 @@ const AssignTaskToTeam = () => {
     const [state, setState] = useState({
         projectName: "",
         teamName: "",
+        result: []
     })
 
     const handleChange = (event) => {
@@ -57,7 +58,6 @@ const AssignTaskToTeam = () => {
         var formBody = JSON.stringify(state)
 
         try {
-            console.log(formBody)
             const response = await fetch(
                 base_url + `/Teams/assignProject`,
                 {
@@ -76,7 +76,7 @@ const AssignTaskToTeam = () => {
                 setMessage("Project Assigned To Team!")
                 setVariant("success")
                 setShow(true)
-                this.handleLoad()
+                handleLoad()
             } else {
                 setMessage(data.message)
                 setVariant("danger")
@@ -94,99 +94,119 @@ const AssignTaskToTeam = () => {
         }
     }
 
-
-    useEffect(() => {
-        const handleLoad = async () => {
-
-            try {
-                const teamResponse = await fetch(
-                    base_url + `/Teams/getTeam`,
-                    {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin': '*',
-                            'Authorization': localStorage.getItem('Bearer')
-                        },
+    const handleLoad = async () => {
+        try {
+            const teamResponse = await fetch(
+                base_url + `/Teams/getTeam`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Authorization': localStorage.getItem('Bearer')
                     },
-                )
-                const projectResponse = await fetch(
-                    base_url + `/project/getProject`,
-                    {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin': '*',
-                            'Authorization': localStorage.getItem('Bearer')
-                        },
+                },
+            )
+            const projectResponse = await fetch(
+                base_url + `/project/getProject`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Authorization': localStorage.getItem('Bearer')
                     },
-                )
+                },
+            )
 
-                const teamData = await teamResponse.json()
-                const projectData = await projectResponse.json()
+            const assignedResponse = await fetch(
+                base_url + `/Teams/getAssignedTeam`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Authorization': localStorage.getItem('Bearer')
+                    },
+                }
+            )
+            const asssignedData = await assignedResponse.json()
+            const teamData = await teamResponse.json()
+            const projectData = await projectResponse.json()
 
-                if (teamData.message === "Team Information" && projectData.message === "Project Information") {
-                    var teamResult = []
+            if (asssignedData.message === "Team Information" && teamData.message === "Team Information" && projectData.message === "Project Information") {
+                var teamResult = []
 
-                    teamData.data.forEach(element => {
-                        teamResult.push(element)
-                    })
+                teamData.data.forEach(element => {
+                    teamResult.push(element)
+                })
 
-                    var teamList = document.getElementById("teamName")
-                    teamList.options.length = 0
+                var teamList = document.getElementById("teamName")
+                teamList.options.length = 0
 
-                    for (var i = 0; i < teamResult.length; i++) {
-                        var teamOption = teamResult[i]
-                        var teamElement = document.createElement("option")
+                for (var i = 0; i < teamResult.length; i++) {
+                    var teamOption = teamResult[i]
+                    var teamElement = document.createElement("option")
 
-                        teamElement.textContent = teamOption
-                        teamElement.value = teamOption
+                    teamElement.textContent = teamOption
+                    teamElement.value = teamOption
 
-                        teamList.appendChild(teamElement)
-                    }
-
-                    var projectResult = []
-
-                    projectData.data.forEach(element => {
-                        projectResult.push(element)
-                    })
-
-                    var projectList = document.getElementById("projectName")
-                    projectList.options.length = 0
-
-                    for (var j = 0; j < projectResult.length; j++) {
-                        var projectOption = projectResult[j]
-                        var projectElement = document.createElement("option")
-
-                        projectElement.textContent = projectOption
-                        projectElement.value = projectOption
-
-                        projectList.appendChild(projectElement)
-                    }
-
-                    setState({
-                        ...state,
-                        teamName: teamResult[0],
-                        projectName: projectResult[0]
-                    })
-
-                } else {
-                    setMessage(teamData.message)
-                    setVariant("danger")
-                    setShow(true)
+                    teamList.appendChild(teamElement)
                 }
 
-                setTimeout(() => {
-                    setShow(false)
-                }, "3000")
-            }
-            catch (error) {
-                setMessage(error.message)
+                var projectResult = []
+
+                projectData.data.forEach(element => {
+                    projectResult.push(element)
+                })
+
+                var projectList = document.getElementById("projectName")
+                projectList.options.length = 0
+
+                for (var j = 0; j < projectResult.length; j++) {
+                    var projectOption = projectResult[j]
+                    var projectElement = document.createElement("option")
+
+                    projectElement.textContent = projectOption
+                    projectElement.value = projectOption
+
+                    projectList.appendChild(projectElement)
+                }
+
+                var assignedResult = []
+
+                asssignedData.data.forEach(element => {
+                    assignedResult.push({
+                        'teamName': element.teamName,
+                        'projectName': element.projectName[0]
+                    })
+                })
+                
+                state.result = assignedResult
+
+                setState({
+                    ...state,
+                    teamName: teamResult[0],
+                    projectName: projectResult[0],
+                })
+            } else {
+                setMessage(teamData.message)
                 setVariant("danger")
                 setShow(true)
             }
-        }
 
+            setTimeout(() => {
+                setShow(false)
+            }, "3000")
+        }
+        catch (error) {
+            setMessage(error.message)
+            setVariant("danger")
+            setShow(true)
+        }
+    }
+
+    useEffect(() => {
         handleLoad()
     }, [])
 
@@ -200,7 +220,7 @@ const AssignTaskToTeam = () => {
             <Container>
                 <Row>
                     <Col>
-                        <h4>Assign Task</h4>
+                        <h4>Assign Project</h4>
                         <Form>
                             <Form.Label>Project</Form.Label>
                             <Form.Select
@@ -239,43 +259,24 @@ const AssignTaskToTeam = () => {
                     </Col>
                     <Col style={{ margin: "0px 0px 0px 18px" }}>
 
-                        <h4>Assigned Task</h4>
+                        <h4>Assigned Projects</h4>
                         <p>Active Projects</p>
                         <Table>
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Task</th>
+                                    <th>Project</th>
                                     <th>Assigned Team</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                {/* {state.result.map((meeting, index) => (
+                            <tbody >
+                                {state.result?.map((projects, index) => (
                                     <tr data-index={index}>
                                         <td>{index + 1}</td>
-                                        <td>{meeting.meetingId}</td>
-                                        <td>{meeting.meetingTopic}</td>
-                                        <td>{meeting.meetingDuration}</td>
-                                        <td>
-                                            {meeting.meetingStartTime.split('T')[1].split('Z')[0]}
-                                        </td>
-                                        <td>{meeting.meetingStartTime.split('T')[0]}</td>
-                                        <td>
-                                            <ButtonGroup style={{ float: "center", padding: "0px 30px 0px 0px" }}>
-                                                <Button
-                                                    variant='primary'
-                                                    style={{ margin: "0px 8px 0px 0px" }}
-                                                    id="submitButton"
-                                                    onClick={() => {
-                                                        window.open(meeting.meetingStartUrl, "_blank")
-                                                    }}
-                                                >
-                                                    Start
-                                                </Button>
-                                            </ButtonGroup>
-                                        </td>
+                                        <td>{projects.projectName}</td>
+                                        <td>{projects.teamName}</td>
                                     </tr>
-                                ))} */}
+                                ))}
                             </tbody>
                         </Table>
                     </Col>
