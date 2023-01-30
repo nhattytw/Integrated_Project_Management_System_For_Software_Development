@@ -4,32 +4,36 @@ import { Form } from "react-bootstrap"
 import people from '../../Assets/BuissnessPeople.png'
 import { useState } from "react";
 import { LinkContainer } from "react-router-bootstrap";
+import { Alert } from 'react-bootstrap';
 
 export default function Login() {
 
     const base_url = 'http://localhost:9000/api'
 
+    const [variant, setVariant] = useState('success')
+    const [show, setShow] = useState(false)
+    const [message, setMessage] = useState()
+
+
+    const [state, setState] = useState({
+        userName: "",
+        password: ""
+    })
+
     const handleSubmit = async (e) => {
         // Prevent Default
+        e.preventDefault()
+
         try {
-            var formBody = [];
-            for (var property in state) {
-                var encodedKey = encodeURIComponent(
-                    property
-                )
-                var encodedValue = encodeURIComponent(
-                    state[property]
-                )
-                formBody.push(encodedKey + "=" + encodedValue)
-            }
-            formBody = formBody.join("&")
+            var formBody = JSON.stringify(state)
 
             const response = await fetch(
                 base_url + `/signin`,
                 {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
                     },
                     body: formBody
                 },
@@ -37,27 +41,52 @@ export default function Login() {
             const data = await response.json()
 
             if (data.message === "You've Logged in.") {
-                localStorage.setItem(
-                    'Bearer',
-                    'Bearer ' + data.data
-                )
-                alert('Login successful')
-                window.location.href = '/dashboard'  // User react router to go here
-            } else {
-                alert(data.message)
-            }
+                if (data.data.position !== "Project Manager") {
+                    localStorage.setItem(
+                        'Bearer',
+                        'Bearer ' + data.data.token
+                    )
+                    localStorage.setItem(
+                        'userName',
+                        data.data.userName
+                    )
+                    localStorage.setItem(
+                        'position',
+                        data.data.position
+                    )
+                    setMessage("Login successful!")
+                    setVariant("success")
+                    setShow(true)
 
+                    // Use react router here and based on user go to respective dashboards
+                    // [Violation] Forced reflow while executing JavaScript took 31ms
+                    window.open('/dashboard', '_self')
+                }
+                else {
+                    setMessage("Please Use The Project Manager Web App")
+                    setVariant("danger")
+                    setShow(true)
+                }
+            } else {
+                setMessage(data.message)
+                setVariant("danger")
+                setShow(true)
+            }
+            setState({
+                userName: "",
+                password: ""
+            })
+            setTimeout(() => {
+                setShow(false)
+            }, "10000")
         }
         catch (error) {
             console.log(error)
-            throw error
+            setMessage(error.message)
+            setVariant("danger")
+            setShow(true)
         }
     }
-
-    const [state, setState] = useState({
-        userName: "",
-        password: ""
-    })
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -69,7 +98,14 @@ export default function Login() {
     }
 
     return (
-        <>       <NavBar />
+        <>
+            <NavBar />
+
+            <Alert show={show} variant={variant}>
+                <p style={{ textAlign: 'center' }}>
+                    {message}
+                </p>
+            </Alert>
 
             <Form className="login">
                 <Container >
@@ -102,8 +138,8 @@ export default function Login() {
                                     Login
                                 </Button>
                                 <LinkContainer to='/forgetpassword'>
-                                <a href="#" style={{ textAlign: "center" }}>Forgot Password ?</a>
-                                
+                                    <a href="#" style={{ textAlign: "center" }}>Forgot Password ?</a>
+
                                 </LinkContainer>
                             </Form.Group>
                         </Col>
