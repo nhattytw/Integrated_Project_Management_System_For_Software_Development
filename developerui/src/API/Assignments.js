@@ -1,3 +1,4 @@
+import axios from "axios"
 export const assignments = [
     {
         team:"team 1",
@@ -20,3 +21,12 @@ export const assignments = [
     }
     }
 ]
+export const postCompletedTask = (taskDetail)=>{
+    const base_path = 'http://localhost:9000/api/';
+    
+    axios({
+        method: 'post',
+        url: base_path.concat('task/postCompletedTasks'),
+        data:taskDetail
+      });
+}

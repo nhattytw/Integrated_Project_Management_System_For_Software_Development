@@ -4,14 +4,14 @@ const issuesSchema = mongoose.Schema({
     title:{
         type:String
     },
-    issue: {
+    body: {
         type: String,
     },
     postedBy: {
         type: String,
     },
     comment:{
-        comments:[]
+        type:[]
     },
     status: {
         type: String,

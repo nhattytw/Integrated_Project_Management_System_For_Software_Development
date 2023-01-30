@@ -4,12 +4,13 @@ const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
 const mongoose = require("mongoose")
-const PostIssue = require('./controllers/issuesController')
-
+const PostIssue = require('./controllers/issuesController');
+let id = 0
+const messages = [] 
 app.use(cors());
 
 const server = http.createServer(app);
-
+let cached_sessions = []
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
@@ -20,12 +21,18 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
-
   socket.on("send_message", (data) => {
-    socket.join(data.room);
-    socket.to(data.room).emit("receive_message", data);
-    PostIssue(data)
+    // socket.join(data.room);
+    // socket.to(data.room).emit("receive_message", data);
+    if (messages.includes(data) == -1) return 0;
+    data.id = id 
+    id++
+    console.log(data)
+    io.emit("messages",data )
   });
+  socket.on("disconnect",()=>{
+    console.log("disconnected")
+  })
 });
 
 server.listen(3001, () => {
