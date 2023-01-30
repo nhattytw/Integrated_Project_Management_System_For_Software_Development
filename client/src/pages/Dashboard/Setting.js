@@ -186,7 +186,7 @@ const SettingPage = () => {
                         onChange={handleChange}
                     />
                 </Form>
-
+                <br />
                 <ButtonGroup style={{ float: "right", padding: "0px 30px 0px 0px" }}>
                     <Button
                         variant='primary'

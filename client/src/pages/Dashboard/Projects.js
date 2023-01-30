@@ -1,29 +1,28 @@
-import { Container, Col, Row, Button, ButtonGroup, Table, ProgressBar, Card } from 'react-bootstrap'
+import { Alert, Container, Col, Row, Button, ButtonGroup, Table, ProgressBar, Card } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import { Modal } from 'react-bootstrap';
-import { Activeproject, postProject } from '../../API/Project'
+// import { Activeproject, postProject } from '../../API/Project'
 import "rsuite/dist/rsuite.min.css";
 import { Nav } from 'rsuite'
 import { addWbs } from '../../API/wbs';
 import AdvancedAnalyticsIcon from '@rsuite/icons/AdvancedAnalytics';
 import PlusIcon from '@rsuite/icons/Plus';
-import BarChartIcon from '@rsuite/icons/BarChart';
+// import BarChartIcon from '@rsuite/icons/BarChart';
 import ListIcon from '@rsuite/icons/List';
-import TimeIcon from '@rsuite/icons/Time';
+// import TimeIcon from '@rsuite/icons/Time';
 import ContenetDisplay from '../../Components/ConentDisplay/ConentDisplay';
 import { useState, useContext, useEffect } from 'react';
 import Example from '../../Components/charts/PieChart'
 import axios from 'axios';
-import { Context, ContextProvider } from '../../Context/context';
-import { MyBoard } from '../../Components/Khanban Board/KhanBan';
+import { Context } from '../../Context/context';
+// import { MyBoard } from '../../Components/Khanban Board/KhanBan';
 
+
+const base_url = 'http://localhost:9000/api'
 
 
 // project manager is not required to enter the wbs,schedule and status upon creation.
 //wbs will come from later modules and the schedule will be dervied from the wbs
-
-
-
 
 const ProjectNav = () => {
     const { Tabs, setTabs } = useContext(Context)
@@ -45,67 +44,174 @@ const ProjectNav = () => {
 }
 
 const CreateProject = () => {
-    const [formData, setFormData] = useState(
-        {
-            projectname: '',
-            projectRepository: '',
-            budget: '',
-            duration: '',
-            descripion: '',
-            userName: localStorage.getItem('userName')
-        })
+    const [formData, setFormData] = useState({
+        projectname: "",
+        projectRepository: "",
+        budget: "",
+        duration: "",
+        descripion: "",
+        userName: localStorage.getItem('userName')
+    })
+
     const handleChange = (event) => {
-        let newData = Object.assign(formData, { [event.target.name]: event.target.value })
+        const { name, value } = event.target
 
-        setFormData(newData)
-
+        setFormData({
+            // ...formData,
+            [name]: value,
+        })
     }
 
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+
+        setFormData({
+            ...formData,
+            userName: localStorage.getItem('userName'),
+        })
+
+        try {
+            var formBody = JSON.stringify(formData)
+            console.log(formBody)
+
+            const response = await fetch(
+                base_url + `/project/createProject`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Authorization': localStorage.getItem('Bearer')
+                    },
+                    body: formBody
+                },
+            )
+            const data = await response.json()
+
+            if (data.message === "Project Created Successfully.") {
+                handleCancel()
+                setMessage("Project Created Successfully!")
+                setVariant("success")
+                setShow(true)
+
+            } else {
+                setMessage(data.message)
+                setVariant("danger")
+                setShow(true)
+                handleCancel()
+            }
+
+            setTimeout(() => {
+                setShow(false)
+            }, "3000")
+        }
+        catch (error) {
+            setMessage(error.message)
+            setVariant("danger")
+            setShow(true)
+        }
+    }
+
+    const handleCancel = () => {
+        setFormData({
+            ...formData,
+            projectname: "",
+            projectRepository: "",
+            budget: "",
+            duration: "",
+            descripion: "",
+            userName: localStorage.getItem('userName')
+        })
+    }
+
+    const [variant, setVariant] = useState('success')
+    const [show, setShow] = useState(false)
+    const [message, setMessage] = useState()
+
     return (
-        <Container>
-            <Form>
-                <Row>
-                    <Col>
-                        <h5 style={{ margin: "0px 10px 6px 0px" }}>Create Project</h5>
+        <div>
+            <Alert show={show} variant={variant}>
+                <p style={{ textAlign: 'center' }}>
+                    {message}
+                </p>
+            </Alert>
 
-                        <Form.Group>
-                            <Form.Label>Project Name</Form.Label>
-                            <Form.Control type="text" name="projectname" onChange={handleChange} />
-                            <Form.Label>Budget</Form.Label>
-                            <Form.Control type="number" name="budget" onChange={handleChange} />
-                            <Form.Label>Duration(months)</Form.Label>
-                            <Form.Control type="number" name='duration' onChange={handleChange} />
-
-                        </Form.Group>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Form.Label>GitHub Repository</Form.Label>
-                        <Form.Control type='text' name="projectRepository" onChange={handleChange} />
-                        <Form.Label>Project Description</Form.Label>
-                        <Form.Control as="textarea" name="descripion" onChange={handleChange} />
-                    </Col>
+            <Container>
+                <Form>
                     <Row>
                         <Col>
-                            <div style={{ margin: "10px 0px 0px 0px", justifyContent: "end" }}>
-                                <Button variant="primary" onClick={() => postProject(formData)}>Submit</Button>
-                                <Button variant="dark">Clear</Button>
+                            <h5 style={{ margin: "0px 10px 6px 0px" }}>Create Project</h5>
 
-                            </div>
+                            <Form.Group>
+                                <Form.Label>Project Name</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="projectname"
+                                    onChange={handleChange}
+                                    value={formData.projectname}
+                                />
+                                <Form.Label>Budget</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    name="budget"
+                                    onChange={handleChange}
+                                    value={formData.budget}
+                                />
+                                <Form.Label>Duration(months)</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    name='duration'
+                                    onChange={handleChange}
+                                    value={formData.duration}
+                                />
 
-
+                            </Form.Group>
                         </Col>
-
                     </Row>
+                    <Row>
+                        <Col>
+                            <Form.Label>GitHub Repository</Form.Label>
+                            <Form.Control
+                                type='text'
+                                name="projectRepository"
+                                onChange={handleChange}
+                                value={formData.projectRepository}
+                            />
+                            <Form.Label>Project Description</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                name="descripion"
+                                onChange={handleChange}
+                                value={formData.descripion}
+                            />
+                        </Col>
+                        <Row>
+                            <Col>
+                                <div style={{ margin: "10px 0px 0px 0px", justifyContent: "end" }}>
+                                    <Button
+                                        variant="primary"
+                                        onClick={handleSubmit}
+                                    >
+                                        Submit
+                                    </Button>
+                                    <Button
+                                        variant="dark"
+                                        onClick={handleCancel}
+                                    >
+                                        Clear
+                                    </Button>
+                                </div>
+                            </Col>
+                        </Row>
+                    </Row>
+                </Form>
 
-
-                </Row>
-            </Form>
-
-        </Container>
+            </Container>
+        </div>
     )
 }
+
+
 const SummaryPage = () => {
     const { Detail, setDetail } = useContext(Context)
     const Project_Details = [Detail]
@@ -237,26 +343,26 @@ const ActiveProjects = () => {
         axios.get(url).then((response) => {
             setOpenProjects(response.data)
         })
-
-
     }, [])
+
     const testClick = () => {
         setTabs("SummaryPage")
     }
+
     return (
         <Container>
-            {/* {console.log(Openprojects)} */}
-
-
             <Table borderless size='sm'>
                 <tr>
+                    <th>#</th>
                     <th>Project Name</th>
+                    <th>Details</th>
                 </tr>
                 <tbody>
 
-                    {Openprojects.map((project) => {
+                    {Openprojects.map((project, index) => {
                         return (
                             <tr>
+                                <td>{index + 1}</td>
                                 <td>{project.projectName}</td>
                                 <td><Button variant="dark" onClick={() => {
                                     setDetail(project)

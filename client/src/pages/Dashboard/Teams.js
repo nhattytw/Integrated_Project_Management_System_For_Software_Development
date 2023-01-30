@@ -1,12 +1,12 @@
-import { Container, Row, Col, Form, Table, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, Table, Button } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import Dropdown from 'react-bootstrap/Dropdown';
+// import Dropdown from 'react-bootstrap/Dropdown';
 import { Nav } from 'rsuite'
 import PeoplesMapIcon from '@rsuite/icons/PeoplesMap';
-import CheckIcon from '@rsuite/icons/Check';
-import CloseIcon from '@rsuite/icons/Close';
+// import CheckIcon from '@rsuite/icons/Check';
+// import CloseIcon from '@rsuite/icons/Close';
 import { PostTeams } from '../../API/Teams';
 
 const TeamNav = () => {
@@ -44,7 +44,7 @@ const CreateTeams = () => {
                     'Authorization': localStorage.getItem('Bearer')
                 },
             }
-            ).then((response) => {
+        ).then((response) => {
             setDevelopers(response.data)
 
         })
