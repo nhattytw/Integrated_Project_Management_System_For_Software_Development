@@ -1,4 +1,4 @@
-import { Container, Row, Col, Form, Button, ButtonGroup, Modal } from 'react-bootstrap'
+import { Container, Form, Button, ButtonGroup } from 'react-bootstrap'
 import { useState } from 'react';
 import { Alert } from 'react-bootstrap';
 
@@ -10,7 +10,7 @@ const SettingPage = () => {
     const [show, setShow] = useState(false)
     const [message, setMessage] = useState()
 
-    const Positions = ['Project Manager', 'Frontend Developer', 'Backend Developer', 'Mobile Developer'];
+    const Positions = ['Project Manager', 'Frontend Developer', 'Backend Developer', 'Mobile Developer']
 
     const [state, setState] = useState({
         phoneNumber: "",
@@ -55,7 +55,6 @@ const SettingPage = () => {
                 setMessage("UpdatedSuccessfully!!")
                 setVariant("success")
                 setShow(true)
-                // window.open('/login', '_self')
             } else {
                 handleCancel()
                 setMessage(data.message)
@@ -66,7 +65,6 @@ const SettingPage = () => {
             setTimeout(() => {
                 setShow(false)
             }, "3000")
-
         }
         catch (error) {
             handleCancel()
@@ -87,9 +85,6 @@ const SettingPage = () => {
         })
     }
 
-    // const handleClose = () => setShow(false);
-    // const handleShow = () => setShow(true);
-
     return (
         <div>
             <Alert show={show} variant={variant}>
@@ -99,33 +94,6 @@ const SettingPage = () => {
             </Alert>
 
             <Container>
-                {/* <Modal show={show} onHide={handleClose} animation={false}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Password Input</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form>
-                            <Form.Control
-                                type='password'
-                                placeholder='Enter your password'
-                                id='password'
-                                value={state.password}
-                                onChange={handleChange}
-                            ></Form.Control>
-                            <Button
-                                style={{ margin: '4px 0px 0px 0px' }}
-                                onClick={handleSubmit}>
-                                Update
-                            </Button>
-                        </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Cancel
-                        </Button>
-                    </Modal.Footer>
-                </Modal> */}
-
                 <h4> Edit Account Information </h4>
                 <Form>
                     <Form.Label>Phone Number</Form.Label>
