@@ -8,7 +8,9 @@ import PeoplesMapIcon from '@rsuite/icons/PeoplesMap';
 import CheckIcon from '@rsuite/icons/Check';
 import CloseIcon from '@rsuite/icons/Close';
 import { PostTeams } from '../../API/Teams';
+import socketIOClient from "socket.io-client";
 
+const endPoint ="http://127.0.0.1:3001"
 const TeamNav = () => {
     return (
         <Container>
@@ -31,6 +33,8 @@ const CreateTeams = () => {
     const [members, setMembers] = useState([])
     const [show, setShow] = useState(false);
     const [Team, setTeam] = useState({})
+
+    const socket = socketIOClient(endPoint)
 
     const url = 'http://localhost:9000/api/Teams/getDeveloper'
     useEffect(() => {
@@ -63,7 +67,9 @@ const CreateTeams = () => {
             { members: members },
             { [TeamName.id]: TeamName.value }
         )
-        PostTeams(data)
+        // PostTeams(data)
+        socket.emit("TeamCreation")
+
         handleClose()
     }
     const CreateTeam = (props) => {

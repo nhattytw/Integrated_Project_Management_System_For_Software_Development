@@ -11,14 +11,15 @@ import BarChartIcon from '@rsuite/icons/BarChart';
 import ListIcon from '@rsuite/icons/List';
 import TimeIcon from '@rsuite/icons/Time';
 import ContenetDisplay from '../../Components/ConentDisplay/ConentDisplay';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect,useReducer } from 'react';
 import Example from '../../Components/charts/PieChart'
 import axios from 'axios';
 import { Context, ContextProvider } from '../../Context/context';
-import { MyBoard } from '../../Components/Khanban Board/KhanBan';
+import socketIOClient from "socket.io-client";
 
 
 
+const endPoint ="http://127.0.0.1:3001"
 // project manager is not required to enter the wbs,schedule and status upon creation.
 //wbs will come from later modules and the schedule will be dervied from the wbs
 
@@ -44,7 +45,23 @@ const ProjectNav = () => {
     )
 }
 
+
 const CreateProject = () => {
+    let  socket = socketIOClient(endPoint);
+    const [notification,setNotification] = useReducer(
+        (state, newState) => {
+          for (const index in state) {
+            if (state[index].id == newState.id) return state;
+          }
+          return [...state, newState];
+        },
+        []
+      );
+    useEffect((()=>{
+        
+
+
+    }),[])
     const [formData, setFormData] = useState(
         {
             projectname: '',
@@ -60,7 +77,15 @@ const CreateProject = () => {
         setFormData(newData)
 
     }
+    const submitProject = ()=>{
+        postProject(formData)
+        
+        socket.emit("projectCreation",formData)  
 
+    }
+    socket.on("projectNotification",response=>{
+        console.log(response)
+    })
     return (
         <Container>
             <Form>
@@ -89,7 +114,7 @@ const CreateProject = () => {
                     <Row>
                         <Col>
                             <div style={{ margin: "10px 0px 0px 0px", justifyContent: "end" }}>
-                                <Button variant="primary" onClick={() => postProject(formData)}>Submit</Button>
+                                <Button variant="primary" onClick={() => submitProject()}>Submit</Button>
                                 <Button variant="dark">Clear</Button>
 
                             </div>
@@ -117,7 +142,6 @@ const SummaryPage = () => {
         <>
             <Container>
                 <h1>Project Summary</h1>
-
                 {Project_Details.map((detail) => {
                     return (
 
@@ -186,7 +210,7 @@ const SummaryPage = () => {
 
                     )
                 })}
-                <Row>
+                <Row > 
                     <Col>
                         <h3>Tasks</h3>
                         <Container className='customBoard' xs={2}>
@@ -208,15 +232,24 @@ const SummaryPage = () => {
                             })}
                         </Container>
                         <Container className='doneBoard'>
+                            {console.log(Tasks)}
                             <h5>Done</h5>
+                            {Tasks.map((task)=>{
+                                return(
                             <Card className="doneBoardItem">
-                                <h4>task title</h4>
+                                <h6>{task.title}</h6>
                                 <ul>
-                                    <li>task1</li>
-                                    <li>task2</li>
-                                    <li>task3</li>
+                                    {task.completedTasks.map((ct)=>{
+                                        return(
+
+                                            <li>{ct}</li>
+                                        )
+                                    })}
                                 </ul>
                             </Card>
+
+                                )
+                            })}
                         </Container>
                     </Col>
 
@@ -245,8 +278,7 @@ const ActiveProjects = () => {
     }
     return (
         <Container>
-            {/* {console.log(Openprojects)} */}
-
+      
 
             <Table borderless size='sm'>
                 <tr>

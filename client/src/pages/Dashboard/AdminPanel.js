@@ -6,6 +6,8 @@ import { ProjectBudgetData } from "../../API/Budgetdata";
 import { teams } from "../../API/Teams";
 import { assignments } from "../../API/Assignments";
 import { issues } from "../../API/Issues";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 //add padding to the cards
 const MeetingSummary = ()=>
@@ -15,9 +17,9 @@ const MeetingSummary = ()=>
             <Row>
                 <h3>Upcoming Meetings</h3>
                 <Col>
-                <Card >
+                <Card style={{padding:'10px'}}>
                 <Card.Body>
-                    <Card.Title>meeting with font end team</Card.Title>
+                    <Card.Title >meeting with font end team</Card.Title>
                     <Card.Text>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget nulla facilisi etiam dignissim diam quis enim lobortis. 
                     Cursus mattis molestie a iaculis at erat pellentesque. Nulla malesuada pellentesque elit eget gravida cum sociis.
@@ -62,26 +64,14 @@ const MeetingSummary = ()=>
     )
 
 }
-const BudgetSummary = () =>{
-    return(
-        <Container style={{padding:"0px",margin:"45px 0px 0px 0px"}}>
-                <Row > 
-                    <Col className="summary">
-                    <h4 style={{overflowWrap:"nowrap"}}> Budget:12,000</h4>
-                    <h5>Total Spent: 1,100</h5>
-                    <button id="btn-get-started" style={{margin:"0px 0px 0px 0px"}}>Budget</button>
-                    </Col>
-                </Row>
-        </Container>
-    )
-}
+
 const BudgetGraph = ()=>{
     return(
 
-    <Container>
+    <Container style={{margin:"0px 0px 0px 100px"}}>
         <Row>
             <Col >
-                <BarChart width={730} height={350} data={ProjectBudgetData}> 
+                <BarChart width={930} height={400} data={ProjectBudgetData}> 
                     <XAxis dataKey="name"/>
                     <YAxis />
                     <Legend />
@@ -104,17 +94,23 @@ const BudgetGraph = ()=>{
 
 const ActiveProjects = ()=>
 {
+    const [activeProjects,setActiveProjects] = useState([])
+    useEffect(()=>{
+        axios.get('http://localhost:9000/api/project/ActiveProject').then((response)=>{
+            setActiveProjects(response.data)
+        })
+    },[])
     return(
         <Container  >
             <h3>Active Projects</h3>
             <Row>
-                {ProjectBudgetData.map((project)=>{
+                {activeProjects.map((project)=>{
                     return(
-                    <Col >
+                    <Col xs={6} sm={6}>
                     <Card border="dark" className="ProjectDesc" style={{color:"#fff",backgroundColor:"rgba(66,105,158)"}}> 
-                        <Card.Title><h3>{project.name}</h3></Card.Title>
+                        <Card.Title><h3>{project.projectName}</h3></Card.Title>
                         <Card.Subtitle><h5 className="secondary" style={{color:"#fff"}}>{project.budget}</h5></Card.Subtitle>
-                        <Card.Body><p>Short Describtion of the project </p></Card.Body>
+                        <Card.Body><p>{project.descripion}</p></Card.Body>
                         <Button variant="light" style={{margin:"0px 10px 10px 10px"}}>Go to project</Button>
                     </Card>
                     </Col>

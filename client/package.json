@@ -29,6 +29,7 @@
     "recharts": "^2.1.16",
     "rsuite": "^5.23.1",
     "sass": "^1.56.1",
+    "socket.io-client": "^4.5.4",
     "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4"
   },
