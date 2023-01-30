@@ -8,7 +8,7 @@ const teamAssignmentSchema = mongoose.Schema({
             type: String
       }],
       assignedProject: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.String,
             ref: 'projectInfo'
       }
 }, { timestamps: true })

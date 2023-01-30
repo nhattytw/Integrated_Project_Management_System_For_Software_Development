@@ -34,7 +34,17 @@ const CreateTeams = () => {
 
     const url = 'http://localhost:9000/api/Teams/getDeveloper'
     useEffect(() => {
-        axios.get(url).then((response) => {
+        axios.get(
+            url,
+            {
+                method: 'GET', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': localStorage.getItem('Bearer')
+                },
+            }
+            ).then((response) => {
             setDevelopers(response.data)
 
         })
@@ -52,7 +62,7 @@ const CreateTeams = () => {
         const data = Object.assign(
             { members: members },
             { [TeamName.id]: TeamName.value }
-            )
+        )
         PostTeams(data)
         handleClose()
     }
@@ -114,7 +124,7 @@ const CreateTeams = () => {
                                     <td>{obj.position}</td>
                                     <td>{obj.gitHubAccount}</td>
                                     <td><Button onClick={() => { onBtnClicked(obj.userName) }} >Select</Button></td>
-                                    <td><Button >Remove</Button></td>
+                                    <td><Button variant='danger'>Remove</Button></td>
                                 </tr>
                             )
                         })}

@@ -43,7 +43,7 @@ router.get(
       getTeam
 )
 
-// @route    GET api/getAssignedTeam
+// @route    GET api/Teams/getAssignedTeam
 // @desc     Return all Teams With Project Assigned
 // @access   Private
 router.get(

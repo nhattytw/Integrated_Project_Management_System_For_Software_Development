@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const searchUserValidation = require('../middleware/searchUserValidation')
-const signinValidation = require('../middleware/signinValidation')
+const updateUserInfoValidation = require('../middleware/updateUserInfoValidation')
 const passValidation = require('../middleware/passwordValidation')
 const verifyAuthentication = require('../middleware/verifyAuthentication')
 const {
@@ -19,13 +19,13 @@ router.get(
       getUsersInfo
 )
 
-// @route    GET api/signin
+// @route    GET api/searchUser
 // @desc     Return Searched user
 // @access   Private
 router.post(
       '/user/searchUser',
-      searchUserValidation,
       verifyAuthentication,
+      searchUserValidation,
       searchUser
 )
 
@@ -35,7 +35,7 @@ router.post(
 router.put(
       '/user/updateUserInfo',
       verifyAuthentication,
-      signinValidation,
+      updateUserInfoValidation,
       searchUserValidation,
       updateUserInfo
 )

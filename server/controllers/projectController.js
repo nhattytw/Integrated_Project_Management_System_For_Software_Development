@@ -15,11 +15,11 @@ const messageFunction = require("../utils/messageFunction");
 const CreateProject = async (req, res) => {
   connectToDB();
   try {
-    const { projectname ,username, projectRepository, budget, duration, descripion } =
+    const { projectname, userName, projectRepository, budget, duration, descripion } =
       req.body;
 
     const projectmanager = User.findOne(
-      { userName: "test111" },
+      { userName: userName },
       (err, Managerresult) => {
         if (err) {
           res.send("error occured");
@@ -68,6 +68,9 @@ const ActiveProjectList = (req, res) => {
     const activeProject = Project.find()
       .populate("projectManager")
       .populate("wbs")
+      .sort({
+        projectName: 1
+      })
       .then((result) => {
         if (result) {
           console.log(result);
@@ -87,6 +90,9 @@ const wbsUnassigedProjects = (req, res) => {
     .select("wbs projectName")
     .where("wbs")
     .equals(null)
+    .sort({
+      projectName: 1
+    })
     .lean(true)
     .exec((err, result) => {
       if (err) {
@@ -101,20 +107,28 @@ const wbsUnassigedProjects = (req, res) => {
 // @desc     Get Projects Without teams Assigned assiged to them
 // @access   Public
 const getProject = async (_req, res) => {
-  connectToDB();
+  connectToDB()
   try {
     const projectFound = await Project.find({
-      isAssignedTo: { $exists: false },
-    }).lean(true);
+      wbs: { $exists: true },
+      isAssignedTo: { $exists: false }
+    }).sort({
+      projectName: 1
+    }).lean(true)
 
     if (!projectFound) {
       return res
         .status(400)
-        .json(messageFunction(true, "No Unassigned Projects Found."));
+        .json(
+          messageFunction(
+            true,
+            'No Unassigned Projects or Project with WBS Found.'
+          )
+        )
     } else {
       // Show Project Information
       // Data - projectFound
-      var projectResult = [];
+      var projectResult = []
 
       projectFound.forEach((element) => {
         projectResult.push(element.projectName);
@@ -137,11 +151,13 @@ const getProject = async (_req, res) => {
 // @desc     Get Team With Project Assigned
 // @access   Public
 const getAssignedProject = async (_req, res) => {
-  connectToDB();
+  connectToDB()
   try {
     const projectFound = await Project.find({
-      isAssignedTo: { $exists: true },
-    }).lean(true);
+      isAssignedTo: { $exists: true }
+    }).sort({
+      projectName: 1
+    }).lean(true)
 
     if (!projectFound) {
       return res
@@ -152,9 +168,10 @@ const getAssignedProject = async (_req, res) => {
       // Data - projectFound
       var projectResult = [];
 
-      projectFound.forEach((element) => {
-        projectResult.push(element.projectName);
-      });
+      projectFound.forEach(element => {
+        projectResult.push(element.projectName + " " + element.isAssignedTo)
+      })
+      console.log(projectFound)
 
       return res
         .status(200)
@@ -169,29 +186,34 @@ const getAssignedProject = async (_req, res) => {
       );
   }
 };
-const getProjectTasks = (req,res)=>
-{
-  const {projectName} = req.body
+const getProjectTasks = (req, res) => {
+  const { projectName } = req.body
   connectToDB()
-  Project.find({projectName:projectName}).select('wbs').populate('wbs').exec((err,result)=>{
-   if(err){
-    console.log(err)
-   }else{
-    const jsonData = JSON.stringify(result);
-    res.send(jsonData);
-   }
-  })
-  
+  Project.find(
+    { projectName: projectName })
+    .select('wbs')
+    .populate('wbs')
+    .sort({
+      projectName: 1
+    }).exec((err, result) => {
+      if (err) {
+        console.log(err)
+      } else {
+        const jsonData = JSON.stringify(result);
+        res.send(jsonData);
+      }
+    })
+
 }
-const findProject=(req,res)=>{
+const findProject = (req, res) => {
   connectToDB()
-  const{project} = req.body
+  const { project } = req.body
   console.log(req.body)
-  Project.find({projectName:project}).populate('wbs').select('wbs').exec((err,result)=>{
-    if(err){
+  Project.find({ projectName: project }).populate('wbs').select('wbs').sort({ projectName: 1 }).exec((err, result) => {
+    if (err) {
       console.log(err)
     }
-    else{
+    else {
       const jsonData = JSON.stringify(result);
       res.send(jsonData);
     }
