@@ -14,6 +14,7 @@ const wbsSchema = mongoose.Schema({
         EndingDate: {
             type: Date
         },
+        completedTasks:[]
     }],
     EstimatedCompletionTime:
     {
@@ -22,10 +23,15 @@ const wbsSchema = mongoose.Schema({
     taskStatus: {
         type: String,
     },
-    Schedule:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'scheduleInfo'
-    }],
+    progress:{
+        type:Number,
+        default:0
+    },
+    workload:{
+        type:Number,
+        
+    }
+    
 
 
 }, { timestamps: true })

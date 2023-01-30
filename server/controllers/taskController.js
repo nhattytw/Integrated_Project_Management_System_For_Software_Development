@@ -2,6 +2,10 @@ const connectToDB = require("../utils/dbConnect");
 const taskModel = require("../model/tasks");
 const user = require("../model/userInfo");
 const messageFunction = require("../utils/messageFunction");
+const WBS = require('../model/wbs')
+const project = require("../model/project");
+const { compareSync } = require("bcrypt");
+const mongoose = require("mongoose");
 
 // @desc    Assign and get tasks
 // @access  public
@@ -143,7 +147,59 @@ const updateTaskStatus = async (req, res) => {
       );
   }
 };
+const postCompletedTasks = (req, res) => {
+  connectToDB();
+  const { ProjectName, title, finishedTask } = req.body;
+  let RemainingTasks = [];
+  let progress = 0;
+  let taskUpdate = [];
+  let index = 0;
+  let id = mongoose.Schema.Types.ObjectId
 
+  project
+    .findOne({ projectName: ProjectName })
+    .populate("wbs")
+    .exec((err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        const { wbs } = result;
+        id=wbs._id
+        progress = wbs.progress
+        taskUpdate = wbs.task;
+
+        title.forEach((taskTitle) => {
+          wbs.task.forEach((t) => {
+            if (t.title === taskTitle) {
+              index = wbs.task.indexOf(t);
+              progress += finishedTask.length;
+              finishedTask.forEach((finsihedtask) => {
+                RemainingTasks =
+                  RemainingTasks.length === 0
+                    ? t.tasks.filter((task) => task !== finsihedtask)
+                    : RemainingTasks.filter((task) => task !== finsihedtask);
+                    taskUpdate[index].tasks = RemainingTasks;
+                    taskUpdate[index].completedTasks = finishedTask;
+              });
+            }
+          });
+         
+        });
+        
+         WBS.findByIdAndUpdate(id,{task:taskUpdate,progress:progress},{new:true},((err,response)=>{
+          if(err){
+            console.log(err)
+          }
+          else{
+            console.log(response)
+          }
+         }))
+      }
+    });
+    
+
+  res.send("ok");
+};
 const searchTasks = async (req, res) => {
   connectToDB();
   try {
@@ -170,4 +226,10 @@ const searchTasks = async (req, res) => {
   }
 };
 
-module.exports = { PostTask, getAssignedTasks, updateTaskStatus, searchTasks };
+module.exports = {
+  PostTask,
+  getAssignedTasks,
+  updateTaskStatus,
+  searchTasks,
+  postCompletedTasks,
+};

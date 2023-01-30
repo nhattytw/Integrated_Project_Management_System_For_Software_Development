@@ -1,3 +1,4 @@
+
 const mongoose = require("mongoose");
 
 const projectSchema = new mongoose.Schema({
@@ -32,7 +33,8 @@ const projectSchema = new mongoose.Schema({
     isAssignedTo: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'teamAssignment'
-    }
+    },
+
     
 }, { timestamps: true })
 

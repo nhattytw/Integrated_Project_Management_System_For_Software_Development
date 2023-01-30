@@ -1,17 +1,21 @@
 const express = require("express");
 const router = express.Router();
+const verifyAuthentication = require('../middleware/verifyAuthentication')
 const {
       CreateProject,
       ActiveProjectList,
       wbsUnassigedProjects,
       getProject, 
-      getAssignedProject} = require("../controllers/projectController");
+      getAssignedProject,
+      getProjectTasks,
+      findProject} = require("../controllers/projectController");
 
 // @route    POST api/project/createProject
 // @desc     Add Project
 // @access   Private
 router.post(
       '/project/createProject',
+      verifyAuthentication,
       CreateProject
 )
 
@@ -20,6 +24,7 @@ router.post(
 // @access   Private
 router.get(
       '/project/ActiveProject',
+      // verifyAuthentication,
       ActiveProjectList
 )
 
@@ -28,6 +33,7 @@ router.get(
 // @access   Private
 router.get(
       '/project/wbsNotSet',
+      // verifyAuthentication,
       wbsUnassigedProjects
 )
 
@@ -36,15 +42,24 @@ router.get(
 // @access   Private
 router.get(
       '/project/getProject',
+      verifyAuthentication,
       getProject
 )
 
-// @route    GET api/project/getAssignedProject
-// @desc     Get All Project With Teams Assigned
+// @route    GET api/project/getProjectTasks
+// @desc     Get Project With Assigned Task
 // @access   Private
 router.get(
-      '/project/getAssignedProject',
-      getAssignedProject
+      '/project/getProjectTasks',
+        getProjectTasks
+)
+
+// @route    POST api/project/findProject
+// @desc     Find Project
+// @access   Private
+router.post(
+      '/project/findProject',
+        findProject
 )
 
 module.exports = router

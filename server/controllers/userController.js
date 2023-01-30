@@ -36,6 +36,7 @@ const signup = async (req, res) => {
                         userName: userName,
                         password: hashedPassword,
                         position: position,
+                        assignedTeam:null,
                         gitHubAccount: gitHubAccount,
                         secret: ""
                   })

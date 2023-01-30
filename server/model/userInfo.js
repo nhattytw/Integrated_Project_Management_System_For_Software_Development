@@ -31,6 +31,13 @@ const userSchema = new mongoose.Schema({
       gitHubAccount: {
             type: String,
       },
+      assignedTeam:{
+            type:String
+            }
+      
+            
+            
+      
       
 }, { timestamps: true })
 

@@ -34,7 +34,7 @@ router.get(
 // @access   Private
 router.post(
       '/listMeetings',
-      verifyAuthentication,
+      // verifyAuthentication,
       listMeetings
 )
 

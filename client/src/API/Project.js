@@ -2,27 +2,29 @@ import { useEffect, useState } from "react"
 const base_Path = 'http://localhost:9000/api'
 
 
-const urlFetch= (url)=>{
+const urlFetch = (url) => {
     return fetch(url)
 }
-export const postProject=(project)=>{
+export const postProject = (project) => {
     // console.log(project)
     const post_Api = base_Path.concat('/project/createProject')
-  
+
     fetch(post_Api, {
-    method: 'POST', // or 'PUT'
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(project),
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Authorization': localStorage.getItem('Bearer')
+        },
+        body: JSON.stringify(project),
     })
-    .then((response) => response.json())
-    .then((data) => {
-        console.log('Success:', project);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+        .then((response) => response.json())
+        .then((data) => {
+            console.log('Success:', project);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
 
 }
 

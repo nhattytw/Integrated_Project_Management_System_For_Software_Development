@@ -2,8 +2,8 @@ const Team = require("../model/teamAssignment")
 const connectToDB = require('../utils/dbConnect')
 const Project = require("../model/project")
 const mailNotifications = require('../middleware/emailNotification')
-const users = require('../model/userInfo')
 const messageFunction = require('../utils/messageFunction')
+const User = require('../model/userInfo')
 
 
 // @desc     Get Team With No Assigned Project
@@ -13,6 +13,8 @@ const getTeam = async (_req, res) => {
     try {
         const existingTeam = await Team.find({
             assignedProject: { $exists: false }
+        }).sort({
+            teamName: 1
         }).lean(true)
 
         if (!existingTeam) {
@@ -60,7 +62,9 @@ const getAssignedTeam = async (_req, res) => {
     try {
         const existingTeam = await Team.find({
             assignedProject: { $exists: true }
-        }).lean(true)
+        }).sort({
+            teamName: 1
+        })
 
         if (!existingTeam) {
             return res
@@ -77,7 +81,10 @@ const getAssignedTeam = async (_req, res) => {
             var teamResult = []
 
             existingTeam.forEach(element => {
-                teamResult.push(element.teamName)
+                teamResult.push({
+                    'teamName': element.teamName,
+                    'projectName': element.assignedProject
+                })
             })
 
             return res
@@ -100,12 +107,13 @@ const getAssignedTeam = async (_req, res) => {
     }
 }
 
-
+// @desc     Get Mail List
+// @access   Public
 const getMailList = (members) => {
     let mailList = []
 
     members.forEach(element => {
-        users.findOne({
+        User.findOne({
             userName: element
         }).lean(true).exec((err, result) => {
             if (err) {
@@ -123,7 +131,6 @@ const getMailList = (members) => {
 
 }
 
-
 // create teams and assign projects to those teams. 
 // members must exist and project must be created before hand
 
@@ -134,13 +141,15 @@ const CreateTeams = async (req, res) => {
     try {
         const { teamName, members } = req.body
 
-
         const newTeam = new Team({
             teamName: teamName,
             members: members,
 
         })
         newTeam.save()
+        members.forEach((memeber) => {
+            User.findOneAndUpdate({ userName: memeber }, { assignedTeam: teamName })
+        })
         // getMailList(members)
         res.send("Teams Created")
 
@@ -174,7 +183,7 @@ const assignProjectToTeam = async (req, res) => {
                 )
             )
     }
-    
+
     try {
         await Team.findOne({
             assignedProject: { $exists: false },
@@ -200,7 +209,7 @@ const assignProjectToTeam = async (req, res) => {
                         },
                         {
                             $push: {
-                                assignedProject: projectFound._id
+                                assignedProject: projectFound.projectName
                             }
                         }
                     )
@@ -248,15 +257,20 @@ const assignProjectToTeam = async (req, res) => {
 
 const getDevelopers = (req, res) => {
     connectToDB()
-    users.find().select("email userName position phoneNumber gitHubAccount").where("position").in(['Frontend Developer', 'Backend Developer', 'Mobile Developer']).exec((err, result) => {
-        if (err) {
-            res.send("something went wrong")
-        }
-        else {
-            const jsonContent = JSON.stringify(result)
-            res.send(jsonContent)
-        }
-    })
+    User.find()
+        .select("email userName position phoneNumber gitHubAccount")
+        .where("position").in(['Frontend Developer', 'Backend Developer', 'Mobile Developer'])
+        .sort({
+            userName: 1
+        }).exec((err, result) => {
+            if (err) {
+                res.send("something went wrong")
+            }
+            else {
+                const jsonContent = JSON.stringify(result)
+                res.send(jsonContent)
+            }
+        })
 }
 
 module.exports = {
