@@ -31,7 +31,12 @@ const CreateProject = async (req, res) => {
               console.log(err);
             } else {
               if (Projectresult) {
-                await res.send("Project already exists");
+                return res
+                  .status(400)
+                  .json(messageFunction(
+                    true,
+                    "Project already exists."
+                  ))
               } else {
                 const newProject = new Project({
                   projectName: projectname,
@@ -45,17 +50,26 @@ const CreateProject = async (req, res) => {
                 await newProject.save();
                 console.log("Project saved");
                 // createRespository(projectRepository,descripion)
-                res.send("operation successful");
+                return res
+                  .status(200)
+                  .json(messageFunction(
+                    false,
+                    "Project Created Successfully."
+                  ))
               }
             }
-          });
+          })
         }
-      }
-    );
+      })
   } catch (error) {
-    console.log(error.message);
+    console.log(error.message)
+    return res
+      .status(500)
+      .json(
+        messageFunction(true, 'Server Error occured')
+      )
   }
-};
+}
 
 
 //finds a list of projects that are not completed or not been canceled
@@ -73,14 +87,28 @@ const ActiveProjectList = (req, res) => {
       })
       .then((result) => {
         if (result) {
-          console.log(result);
           const jsonContent = JSON.stringify(result);
-          res.send(jsonContent);
+          // console.log("Here", jsonContent.projectName)
+          return res
+            .status(200)
+            .send(jsonContent)
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error)
+        return res
+          .status(400)
+          .json(
+            messageFunction(true, 'Error Occurred When Fetching Data')
+          )
+      })
   } catch (error) {
     console.log(error);
+    return res
+      .status(500)
+      .json(
+        messageFunction(true, 'Server Error occured')
+      )
   }
 };
 
