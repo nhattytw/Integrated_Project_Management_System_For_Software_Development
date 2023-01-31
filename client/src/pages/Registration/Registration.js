@@ -294,7 +294,7 @@ export default function RegistrationPage() {
                     <Col style={{ padding: "0px 0px 0px 10px" }}>
                         <ButtonGroup style={{ float: "right", padding: "0px 30px 0px 0px" }}>
                             <Button
-                                variant='dark'
+                                variant='primary'
                                 style={{ margin: "0px 8px 0px 0px" }}
                                 onClick={handleSubmit}
                                 id="submitButton"

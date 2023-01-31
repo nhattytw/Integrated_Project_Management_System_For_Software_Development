@@ -1,6 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 import { Card } from 'react-bootstrap';
 import Aos from 'aos';
 import 'aos/dist/aos.css'
@@ -12,50 +13,60 @@ import calander from './realtime.svg';
 import team from './people.png';
 import constraintChart from './constraintChart.png'
 import laptop from './laptop.png'
-import { LinkContainer } from 'react-router-bootstrap';
 
 const Landing = () => {
   useEffect(() => {
     Aos.init({ duration: 2000 });
   }, [])
 
+  const handleSubmit = () => {
+    const state = localStorage.getItem('Bearer')
 
+    if (state === null) {
+      window.open('/login', '_self')
+    } else {
+      window.open('/Dashboard', '_self')
+    }
+
+  }
   return (
 
     <>
 
       <Container fluid className='LandingImage intro' style={{ height: "100vh" }}>
         <div className="header">
-        <Row >
-          <Col className='c1'>
-            <h4 className='intro-h4' >
-              Now you can manage your projects,teams and constraints,
-              with ease and efficency to accomplish the best work.
-            </h4>
-          </Col>
-        </Row>
-        <Row >
-          <Col>
-            <p className='intro-p'>
-              Lorem ipsum dolors sit amet, consectetur adipiscing elit. In dignissim tempus lorem nec dignissim. In lobortis est vitae lacus rhoncus hendrerit. Donec non quam sed urna ultrices varius. Pellentesque id vestibulum nibh.
-            </p>
-          </Col>
-   
-        <Row>
-          <LinkContainer to="/Dashboard ">
-            <button id="btn-get-started">
-              Get Started
-            </button>
-          </LinkContainer>
+          <Row >
+            <Col className='c1'>
+              <h4 className='intro-h4' >
+                Now you can manage your projects,teams and constraints,
+                with ease and efficency to accomplish the best work.
+              </h4>
+            </Col>
+          </Row>
+          <Row >
+            <Col>
+              <p className='intro-p'>
+                Lorem ipsum dolors sit amet, consectetur adipiscing elit. In dignissim tempus lorem nec dignissim. In lobortis est vitae lacus rhoncus hendrerit. Donec non quam sed urna ultrices varius. Pellentesque id vestibulum nibh.
+              </p>
+            </Col>
 
-        </Row>
-        </Row>
+            <Row>
+              <Button
+                variant='primary'
+                onClick={handleSubmit}
+                id="btn-get-started"
+              >
+                Get Started
+              </Button>
+
+            </Row>
+          </Row>
         </div>
       </Container>
-      <Container className='container' style={{height:"100vh", margin:"0px 0px 0px 300px"}}>
-         <h3>Procratio is a web-based,list-making,scheduling and project management application</h3>
-         <p></p>
-        <Row className='flexlist' style={{margin:"200px 0px 0px 0px"}}>
+      <Container className='container' style={{ height: "100vh", margin: "0px 0px 0px 300px" }}>
+        <h3>Procratio is a web-based,list-making,scheduling and project management application</h3>
+        <p></p>
+        <Row className='flexlist' style={{ margin: "200px 0px 0px 0px" }}>
           <Col data-aos="fade-right" data-aos-duration="2000" className="flexitem">
             <Card className="cardH">
               <Card.Img variant="top" src={image} className="img-height icon" />
@@ -99,29 +110,29 @@ const Landing = () => {
           </Col>
         </Row>
         <Row>
-        <Card className="cardH">
-              <Card.Img variant="top" src={calander} className="img-height icon" />
+          <Card className="cardH">
+            <Card.Img variant="top" src={calander} className="img-height icon" />
 
-              <Card.Body>
-                <Card.Text>
-                  <p>
-                    A real-time application, or RTA, is an application that functions within a time frame that the user senses as immediate or current. The latency must be less than a defined value, usually measured in seconds. The use of real-time applications is part of real-time computing.
+            <Card.Body>
+              <Card.Text>
+                <p>
+                  A real-time application, or RTA, is an application that functions within a time frame that the user senses as immediate or current. The latency must be less than a defined value, usually measured in seconds. The use of real-time applications is part of real-time computing.
 
-                    To determine if a specific application qualifies as real time is a function of its worst-case execution time. WCET is the maximum amount of time a defined task or set of tasks requires on a given hardware platform.
+                  To determine if a specific application qualifies as real time is a function of its worst-case execution time. WCET is the maximum amount of time a defined task or set of tasks requires on a given hardware platform.
 
 
-                  </p>
-                </Card.Text>
-              </Card.Body>
-            </Card>
+                </p>
+              </Card.Text>
+            </Card.Body>
+          </Card>
         </Row>
-        
+
       </Container>
 
       <Container data-aos="fade-right">
         <Row>
           <Col>
-            
+
           </Col>
         </Row>
         <Row>

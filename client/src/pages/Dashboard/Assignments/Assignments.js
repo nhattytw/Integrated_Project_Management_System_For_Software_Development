@@ -1,4 +1,4 @@
-import { AssignmentContext, Context } from "../../../Context/context";
+import { Context } from "../../../Context/context";
 import { Container, Col, Row, Form, Button, Table, ButtonGroup } from 'react-bootstrap'
 // import { CheckTreePicker, Toggle } from "rsuite";
 import { Nav } from 'rsuite'
@@ -78,6 +78,7 @@ const AssignTaskToTeam = () => {
                 setShow(true)
                 handleLoad()
             } else {
+    
                 setMessage(data.message)
                 setVariant("danger")
                 setShow(true)
@@ -130,11 +131,12 @@ const AssignTaskToTeam = () => {
                     },
                 }
             )
-            const asssignedData = await assignedResponse.json()
+
+            const assignedData = await assignedResponse.json()
             const teamData = await teamResponse.json()
             const projectData = await projectResponse.json()
 
-            if (asssignedData.message === "Team Information" && teamData.message === "Team Information" && projectData.message === "Project Information") {
+            if (assignedData.message === "Team Information" && teamData.message === "Team Information" && projectData.message === "Project Information") {
                 var teamResult = []
 
                 teamData.data.forEach(element => {
@@ -175,13 +177,13 @@ const AssignTaskToTeam = () => {
 
                 var assignedResult = []
 
-                asssignedData.data.forEach(element => {
+                assignedData.data.forEach(element => {
                     assignedResult.push({
                         'teamName': element.teamName,
                         'projectName': element.projectName[0]
                     })
                 })
-                
+
                 state.result = assignedResult
 
                 setState({
@@ -190,6 +192,7 @@ const AssignTaskToTeam = () => {
                     projectName: projectResult[0],
                 })
             } else {
+                console.log(teamData.message)
                 setMessage(teamData.message)
                 setVariant("danger")
                 setShow(true)
@@ -198,11 +201,18 @@ const AssignTaskToTeam = () => {
             setTimeout(() => {
                 setShow(false)
             }, "3000")
-        }
-        catch (error) {
-            setMessage(error.message)
-            setVariant("danger")
-            setShow(true)
+        } catch (error) {
+            if (error.message === `Unexpected token 'A', "Access Denied" is not valid JSON`) {
+                let msgg = `Access Denied`
+                setMessage(msgg)
+                setVariant("danger")
+                setShow(true)
+            }
+            else {
+                setMessage(error.message)
+                setVariant("danger")
+                setShow(true)
+            }
         }
     }
 

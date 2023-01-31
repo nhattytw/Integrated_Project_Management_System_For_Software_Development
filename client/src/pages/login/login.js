@@ -41,34 +41,50 @@ export default function Login() {
             const data = await response.json()
 
             if (data.message === "You've Logged in.") {
-                localStorage.setItem(
-                    'Bearer',
-                    'Bearer ' + data.data.token
-                )
-                localStorage.setItem(
-                    'userName',
-                    data.data.userName
-                )
-                setMessage("Login successful!")
-                setVariant("success")
-                setShow(true)
-                
-                // Use react router here and based on user go to respective dashboards
-                // [Violation] Forced reflow while executing JavaScript took 31ms
-                window.open('/dashboard', '_self')
+                if (data.data.position === "Project Manager") {
+                    localStorage.setItem(
+                        'Bearer',
+                        'Bearer ' + data.data.token
+                    )
+                    localStorage.setItem(
+                        'userName',
+                        data.data.userName
+                    )
+                    localStorage.setItem(
+                        'position',
+                        data.data.position
+                    )
+                    setMessage("Login successful!")
+                    setVariant("success")
+                    setShow(true)
+
+                    // Use react router here and based on user go to respective dashboards
+                    // [Violation] Forced reflow while executing JavaScript took 31ms
+                    window.open('/dashboard', '_self')
+                }
+                else {
+                    setMessage("Please Use The Developer Web App")
+                    setVariant("danger")
+                    setShow(true)
+                }
             } else {
                 setMessage(data.message)
                 setVariant("danger")
                 setShow(true)
             }
-
+            setState ({
+                userName: "",
+                password: ""
+            })
             setTimeout(() => {
                 setShow(false)
             }, "3000")
         }
         catch (error) {
-            console.log(error) //better way
-            throw error
+            console.log(error)
+            setMessage(error.message)
+            setVariant("danger")
+            setShow(true)
         }
     }
 

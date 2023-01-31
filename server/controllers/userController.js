@@ -36,7 +36,7 @@ const signup = async (req, res) => {
                         userName: userName,
                         password: hashedPassword,
                         position: position,
-                        assignedTeam:null,
+                        assignedTeam: null,
                         gitHubAccount: gitHubAccount,
                         secret: ""
                   })
@@ -119,14 +119,18 @@ const signin = async (req, res) => {
                                           .json(
                                                 messageFunction(true, 'Unauthorized')
                                           )
-
+                              const position = existingUser.position
                               return res
                                     .status(200)
                                     .json(
                                           messageFunction(
                                                 false,
                                                 `You've Logged in.`,
-                                                { token, userName }
+                                                {
+                                                      token,
+                                                      userName,
+                                                      position,
+                                                }
                                           )
                                     )
                         }
