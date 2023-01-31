@@ -20,15 +20,15 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-  // socket.on("send_message", (data) => {
-  //   // socket.join(data.room);
-  //   // socket.to(data.room).emit("receive_message", data);
-  //   if (messages.includes(data) == -1) return 0;
-  //   data.id = id 
-  //   id++
-  //   console.log(data)
-  //   io.emit("messages",data )
-  // });
+  socket.on("send_message", (data) => {
+    // socket.join(data.room);
+    // socket.to(data.room).emit("receive_message", data);
+    if (messages.includes(data) == -1) return 0;
+    data.id = id 
+    id++
+    console.log(data)
+    io.emit("messages",data )
+  });
   socket.on("projectCreation",(data)=>{
     
     io.emit("projectNotification",data.projectname)

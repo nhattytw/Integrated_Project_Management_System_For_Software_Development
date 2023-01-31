@@ -33,6 +33,10 @@ body,html{
     color:rgba(66,105,158) !important;
     background-color: #fff !important;
 }
+.NavItem:active{
+    color:rgba(66,105,158) !important;
+    background-color: #fff !important;
+}
 
 .customBoard{
     padding: 20px;

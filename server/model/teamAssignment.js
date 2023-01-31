@@ -4,9 +4,7 @@ const teamAssignmentSchema = mongoose.Schema({
       teamName: {
             type: String,
       },
-      members: [{
-            type: String
-      }],
+      members: [],
       assignedProject: {
             type: mongoose.Schema.Types.String,
             ref: 'projectInfo'

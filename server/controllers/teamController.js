@@ -147,6 +147,7 @@ const CreateTeams = async (req, res) => {
 
         })
         newTeam.save()
+       console.log(members)
         members.forEach((memeber) => {
             User.findOneAndUpdate({ userName: memeber }, { assignedTeam: teamName })
         })

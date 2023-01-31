@@ -43,44 +43,104 @@ const ProjectNav = () => {
 }
 
 
+
 const CreateProject = () => {
-    const [formData, setFormData] = useState(
-        {
-            projectname: '',
-            projectRepository: '',
-            budget: '',
-            duration: '',
-            descripion: '',
+    const [formData, setFormData] = useState({
+        projectname: "",
+        projectRepository: "",
+        budget: "",
+        duration: "",
+        descripion: "",
+        userName: localStorage.getItem('userName')
+    })
+
+    const handleChange = (event) => {
+        const { name, value } = event.target
+
+        setFormData({
+            // ...formData,
+            [name]: value,
+        })
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+
+        setFormData({
+            ...formData,
+            userName: localStorage.getItem('userName'),
+        })
+
+        try {
+            var formBody = JSON.stringify(formData)
+            console.log(formBody)
+
+            const response = await fetch(
+                base_url + `/project/createProject`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Authorization': localStorage.getItem('Bearer')
+                    },
+                    body: formBody
+                },
+            )
+            const data = await response.json()
+
+            if (data.message === "Project Created Successfully.") {
+                handleCancel()
+                setMessage("Project Created Successfully!")
+                setVariant("success")
+                setShow(true)
+
+            } else {
+                setMessage(data.message)
+                setVariant("danger")
+                setShow(true)
+                handleCancel()
+            }
+
+            setTimeout(() => {
+                setShow(false)
+            }, "3000")
+        }
+        catch (error) {
+            setMessage(error.message)
+            setVariant("danger")
+            setShow(true)
+        }
+    }
+
+    const handleCancel = () => {
+        setFormData({
+            ...formData,
+            projectname: "",
+            projectRepository: "",
+            budget: "",
+            duration: "",
+            descripion: "",
             userName: localStorage.getItem('userName')
         })
     }
 
+    const [variant, setVariant] = useState('success')
+    const [show, setShow] = useState(false)
+    const [message, setMessage] = useState()
+
     return (
         <div>
-        <Container>
-            <Form>
-                <Row>
-                    <Col>
-                        <h5 style={{ margin: "0px 10px 6px 0px" }}>Create Project</h5>
+            <Alert show={show} variant={variant}>
+                <p style={{ textAlign: 'center' }}>
+                    {message}
+                </p>
+            </Alert>
 
-                        <Form.Group>
-                            <Form.Label>Project Name</Form.Label>
-                            <Form.Control type="text" name="projectname" onChange={handleChange} />
-                            <Form.Label>Budget</Form.Label>
-                            <Form.Control type="number" name="budget" onChange={handleChange} />
-                            <Form.Label>Duration(months)</Form.Label>
-                            <Form.Control type="number" name='duration' onChange={handleChange} />
-
-                            </Form.Group>
-                        </Col>
-                    </Row>
+            <Container>
+                <Form>
                     <Row>
                         <Col>
-                            <div style={{ margin: "10px 0px 0px 0px", justifyContent: "end" }}>
-                                <Button variant="primary" onClick={() => submitProject()}>Submit</Button>
-                                <Button variant="dark">Clear</Button>
-
-                            </div>
                             <h5 style={{ margin: "0px 10px 6px 0px" }}>Create Project</h5>
 
                             <Form.Group>
@@ -108,17 +168,51 @@ const CreateProject = () => {
 
                             </Form.Group>
                         </Col>
-
                     </Row>
-
-
-                </Row>
-            </Form>
+                    <Row>
+                        <Col>
+                            <Form.Label>GitHub Repository</Form.Label>
+                            <Form.Control
+                                type='text'
+                                name="projectRepository"
+                                onChange={handleChange}
+                                value={formData.projectRepository}
+                            />
+                            <Form.Label>Project Description</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                name="descripion"
+                                onChange={handleChange}
+                                value={formData.descripion}
+                            />
+                        </Col>
+                        <Row>
+                            <Col>
+                                <div style={{ margin: "10px 0px 0px 0px", justifyContent: "end" }}>
+                                    <Button
+                                        variant="primary"
+                                        onClick={handleSubmit}
+                                    >
+                                        Submit
+                                    </Button>
+                                    <Button
+                                        variant="dark"
+                                        onClick={handleCancel}
+                                    >
+                                        Clear
+                                    </Button>
+                                </div>
+                            </Col>
+                        </Row>
+                    </Row>
+                </Form>
 
             </Container>
         </div>
     )
 }
+
+
 
 
 const SummaryPage = () => {

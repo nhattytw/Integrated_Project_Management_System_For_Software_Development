@@ -7,7 +7,7 @@ import { Nav } from 'rsuite'
 import PeoplesMapIcon from '@rsuite/icons/PeoplesMap';
 // import CheckIcon from '@rsuite/icons/Check';
 // import CloseIcon from '@rsuite/icons/Close';
-import { PostTeams } from '../../API/Teams';
+import { PostTeams, teams } from '../../API/Teams';
 import socketIOClient from "socket.io-client";
 
 const endPoint ="http://127.0.0.1:3001"
@@ -32,10 +32,11 @@ const CreateTeams = () => {
     const [developers, setDevelopers] = useState([])
     const [members, setMembers] = useState([])
     const [show, setShow] = useState(false);
-    const [Team, setTeam] = useState({})
-
-    const socket = socketIOClient(endPoint)
-
+    const [Team, setTeam] = useState([])
+    let temp = [];
+    
+    // const socket = socketIOClient(endPoint)
+    
     const url = 'http://localhost:9000/api/Teams/getDeveloper'
     useEffect(() => {
         axios.get(
@@ -59,16 +60,47 @@ const CreateTeams = () => {
     const handleShow = () => setShow(true);
 
     const handleNameInput = (event) => {
+        
+    }
+    const ListTeams=(props)=>{
+        const [select,setSelect] = useState(false)
+        let result =[]
+        
+        const addMemeber=(e)=>{
+            setMembers([...members,e.target.value])
+            console.log(members)
+        }
 
+        return(
+            <Container>
+                <Row style={{width:"50vh"}}>
+                    <Col>
+                    <p>{props.username}</p>
+                    </Col>
+                    <Col>
+                    <p>{props.Position}</p>
+                    </Col>
+                    <Col>
+                        <input type='checkbox' value={props.username} onChange={(e)=>{addMemeber(e)
+                        
+                        }}></input>
+                    </Col>
+                </Row>
+                
+            </Container>
+        )
     }
     const handleSubmit = () => {
         const TeamName = document.getElementById('teamName')
-        const data = Object.assign(
-            { members: members },
-            { [TeamName.id]: TeamName.value }
-        )
-        // PostTeams(data)
-        socket.emit("TeamCreation")
+ 
+        const data={
+            members:Team,
+            teamName:TeamName.value
+        }
+        
+         PostTeams(data)
+        console.log(data)
+        // socket.emit("TeamCreation")
 
         handleClose()
     }
@@ -82,7 +114,7 @@ const CreateTeams = () => {
                 <Modal.Body>
                     <Form>
                         <Form.Control type='text' placeholder='Enter team name' id='teamName' autoComplete='false'></Form.Control>
-                        <Button style={{ margin: '4px 0px 0px 0px' }} onClick={handleSubmit}>Save</Button>
+                        <Button style={{ margin: '4px 0px 0px 0px' }} onClick={()=>{handleSubmit()}}>Save</Button>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -94,11 +126,17 @@ const CreateTeams = () => {
             </Modal>
         )
     }
-    const onBtnClicked = (username) => {
-        const newMemembers = [...members, username]
-        setMembers(newMemembers)
 
-    }
+    const handleCheck = (event) => {
+        var updatedList = [...Team];
+        if (event.target.checked) {
+          updatedList = [...Team, event.target.value];
+        } else {
+          updatedList.splice(Team.indexOf(event.target.value), 1);
+        }
+        setTeam(updatedList);
+        console.log(Team)
+      };
     const onCreateTeam = () => {
         handleShow()
     }
@@ -114,33 +152,34 @@ const CreateTeams = () => {
                     <Button>Search</Button>
                 </Col>
             </Row>
-            <Row style={{ margin: "20px 0px 0px 0px" }}>
-                <Table>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Position</th>
-                    <th>GitHub</th>
-                    <th></th>
-                    <tbody>
+           
+              
                         {developers.map((obj) => {
                             return (
-                                <tr>
-                                    <td>{obj.userName}</td>
-                                    <td>{obj.email}</td>
-                                    <td>{obj.position}</td>
-                                    <td>{obj.gitHubAccount}</td>
-                                    <td><Button onClick={() => { onBtnClicked(obj.userName) }} >Select</Button></td>
-                                    <td><Button variant='danger'>Remove</Button></td>
-                                </tr>
+                                <div>
+                                    <input type="checkbox" value={obj.userName} onChange={handleCheck}></input>
+                                    <span>
+                                    {obj.userName}
+                                    <span> </span>
+                                    {obj.position}
+                                    </span>
+                                    
+                                    
+                                
+                                </div>
                             )
                         })}
-                    </tbody>
 
-                </Table>
-                <Col>
+                {/* {developers.map((obj)=>{
+                    return(
+                        <ListTeams username={obj.userName} Position={obj.position}></ListTeams>
+                    )
+                })} */}
+                
+                
                     <Button style={{ float: "right" }} onClick={handleShow}>Create Team</Button>
-                </Col>
-            </Row>
+               
+          
             <CreateTeam />
         </Container>
     )
