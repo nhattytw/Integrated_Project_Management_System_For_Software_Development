@@ -3,7 +3,7 @@ const DB_URL = process.env.DB_URL
 
 mongoose.set("strictQuery", false)
 
-const connectToDB = async () => {
+const connectToDB = async (_req, res) => {
       try {
             await mongoose
                   .connect(
@@ -22,9 +22,9 @@ const connectToDB = async () => {
                   .status(400)
                   .json(
                         messageFunction(
-                              true, 
+                              true,
                               `Can't connect to MongoDb! Please make sure you are connected to the internet.`
-                              )
+                        )
                   )
       }
 }
