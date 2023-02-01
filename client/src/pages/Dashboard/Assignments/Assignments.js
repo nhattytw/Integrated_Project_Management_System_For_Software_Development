@@ -1,15 +1,9 @@
 import { Context } from "../../../Context/context";
-import { Container, Col, Row, Form, Button, Table, ButtonGroup } from 'react-bootstrap'
-// import { CheckTreePicker, Toggle } from "rsuite";
+import { Alert, Container, Col, Row, Form, Button, Table, ButtonGroup } from 'react-bootstrap'
 import { Nav } from 'rsuite'
-import CheckRoundIcon from '@rsuite/icons/CheckRound';
-import PauseRoundIcon from '@rsuite/icons/PauseRound';
 import PeoplesIcon from '@rsuite/icons/Peoples';
 import { useContext, useState, useEffect } from "react";
-import ContenetDisplay from "../../../Components/ConentDisplay/ConentDisplay";
-import { Alert } from 'react-bootstrap';
-
-
+import ContentDisplay from "../../../Components/ConentDisplay/ConentDisplay";
 
 const base_url = 'http://localhost:9000/api'
 
@@ -21,9 +15,9 @@ const AssignemtsNav = () => {
             <Row>
                 <Col>
                     <Nav appearance='tabs' >
-                        <Nav.Item icon={<PeoplesIcon />} onSelect={() => { setAssignment("AssignTaskToTeam") }}>Assign project to team</Nav.Item>
-                        <Nav.Item icon={<CheckRoundIcon />} onSelect={() => { setAssignment("CompletedAssignments") }}>Completed Assignments</Nav.Item>
-                        <Nav.Item icon={<PauseRoundIcon />} onSelect={() => { setAssignment("PendingAssignments") }}>Pending Assignments</Nav.Item>
+                        <Nav.Item icon={<PeoplesIcon />} onSelect={() => { setAssignment("AssignTaskToTeam") }}>
+                            Assign project to team
+                        </Nav.Item>
 
                     </Nav>
                 </Col>
@@ -41,7 +35,8 @@ const AssignTaskToTeam = () => {
     const [state, setState] = useState({
         projectName: "",
         teamName: "",
-        result: []
+        result: [],
+        userName: localStorage.getItem('userName')
     })
 
     const handleChange = (event) => {
@@ -79,7 +74,7 @@ const AssignTaskToTeam = () => {
                 setShow(true)
                 handleLoad()
             } else {
-    
+
                 setMessage(data.message)
                 setVariant("danger")
                 setShow(true)
@@ -120,7 +115,6 @@ const AssignTaskToTeam = () => {
                     },
                 },
             )
-
             const assignedResponse = await fetch(
                 base_url + `/Teams/getAssignedTeam`,
                 {
@@ -329,19 +323,21 @@ const CompletedAssignments = () => {
 
     )
 }
+
 const pages = {
     "PendingAssignments": PendingAssignments,
     "CompletedAssignments": CompletedAssignments,
     "AssignTaskToTeam": AssignTaskToTeam
 }
+
 const Assignments = () => {
     const { Assignment, setAssignment } = useContext(Context)
 
     return (
         <>
             <AssignemtsNav />
-            <ContenetDisplay content={pages[Assignment]}>
-            </ContenetDisplay>
+            <ContentDisplay content={pages[Assignment]}>
+            </ContentDisplay>
 
         </>
     )
