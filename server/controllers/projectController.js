@@ -79,8 +79,9 @@ const CreateProject = async (req, res) => {
 const ActiveProjectList = (req, res) => {
   connectToDB();
   try {
-    const activeProject = Project.find()
-      .populate("projectManager")
+    const activeProject = Project.find({
+      isAssignedTo: { $exists: true }
+    }).populate("projectManager")
       .populate("wbs")
       .sort({
         projectName: 1
@@ -183,9 +184,12 @@ const getAssignedProject = async (_req, res) => {
   try {
     const projectFound = await Project.find({
       isAssignedTo: { $exists: true }
-    }).sort({
-      projectName: 1
-    }).lean(true)
+    }).populate("projectManager")
+      .populate("wbs")
+      .sort({
+        projectName: 1
+      })
+      .lean(true)
 
     if (!projectFound) {
       return res
@@ -197,7 +201,10 @@ const getAssignedProject = async (_req, res) => {
       var projectResult = [];
 
       projectFound.forEach(element => {
-        projectResult.push(element.projectName + " " + element.isAssignedTo)
+        projectResult.push({
+          'teamName': element.isAssignedTo[0],
+          'projectName': element.projectName
+      })
       })
       console.log(projectFound)
 

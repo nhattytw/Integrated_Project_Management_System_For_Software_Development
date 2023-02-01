@@ -31,7 +31,7 @@ const projectSchema = new mongoose.Schema({
         type:String
     },
     isAssignedTo: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.String,
         ref: 'teamAssignment'
     },
 
