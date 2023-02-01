@@ -27,7 +27,7 @@ import PeoplesIcon from '@rsuite/icons/Peoples';
           <LinkContainer to="/"><BootNav.Link >Home</BootNav.Link ></LinkContainer>
            <LinkContainer to="/login"><BootNav.Link >Login</BootNav.Link></LinkContainer>
            <LinkContainer to="/Registration"><BootNav.Link >Registration</BootNav.Link ></LinkContainer>
-            <BootNav.Link href="#pricing">About</BootNav.Link>
+           <LinkContainer to="/About"><BootNav.Link >About</BootNav.Link ></LinkContainer>
             <BootNav.Link href="#pricing">Services</BootNav.Link>
             <BootNav.Link href="#pricing">Contact</BootNav.Link>
           </BootNav>

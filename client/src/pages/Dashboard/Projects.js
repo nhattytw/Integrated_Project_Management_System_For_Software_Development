@@ -125,10 +125,6 @@ const CreateProject = () => {
         })
     }
 
-    const [variant, setVariant] = useState('success')
-    const [show, setShow] = useState(false)
-    const [message, setMessage] = useState()
-
     return (
         <div>
             <Alert show={show} variant={variant}>
@@ -188,26 +184,10 @@ const CreateProject = () => {
                         </Col>
                         <Col></Col>
                     </Row>
-                    <Row>
-                        <Col>
-                            <div style={{ margin: "10px 0px 0px 0px", justifyContent: "end" }}>
-                                <Button
-                                    variant="primary"
-                                    onClick={handleSubmit}
-                                >
-                                    Submit
-                                </Button>
-                                <Button
-                                    variant="dark"
-                                    onClick={handleCancel}
-                                >
-                                    Clear
-                                </Button>
-                            </div>
-                        </Col>
-                        <Col></Col>
-                    </Row>
-                </Form>
+
+
+                </Row>
+            </Form>
 
             </Container>
         </div >
