@@ -139,15 +139,24 @@ const getMailList = (members) => {
 const CreateTeams = async (req, res) => {
     connectToDB()
     try {
-        const { teamName, members } = req.body
+        const { teamName, members,userName } = req.body
 
-        const newTeam = new Team({
-            teamName: teamName,
-            members: members,
+        User.findOne({userName:userName}).exec((err,result)=>{
+            if(err){
+
+            }
+            else{
+                const newTeam = new Team({
+                    teamName: teamName,
+                    members: members,
+                    projectManager:result._id
+                })
+                newTeam.save()
+
+            }
 
         })
-        newTeam.save()
-       console.log(members)
+      console.log(members)
         members.forEach((memeber) => {
             User.findOneAndUpdate({ userName: memeber }, { assignedTeam: teamName })
         })
