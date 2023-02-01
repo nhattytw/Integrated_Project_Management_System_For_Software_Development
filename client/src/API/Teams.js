@@ -20,7 +20,7 @@ const base_Path = 'http://localhost:9000/api'
 export const PostTeams = (teams) => {
 
     fetch(
-        base_Path + '/Teams/newTeam',
+        base_Path.concat('/Teams/newTeam'),
         {
             method: 'POST', // or 'PUT'
             headers: {
@@ -28,7 +28,7 @@ export const PostTeams = (teams) => {
                 'Access-Control-Allow-Origin': '*',
                 'Authorization': localStorage.getItem('Bearer')
             },
-            body: teams
+            body: JSON.stringify(teams)
         }).then(
             (response) => {
                 console.log(response)

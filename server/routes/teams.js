@@ -12,7 +12,7 @@ const verifyAuthentication = require("../middleware/verifyAuthentication");
 // @access   Private
 router.post(
       '/Teams/newTeam',
-      verifyAuthentication,
+     // verifyAuthentication,
       CreateTeams
 )
 

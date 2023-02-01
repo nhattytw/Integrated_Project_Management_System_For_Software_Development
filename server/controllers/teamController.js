@@ -139,14 +139,25 @@ const getMailList = (members) => {
 const CreateTeams = async (req, res) => {
     connectToDB()
     try {
-        const { teamName, members } = req.body
+        const { teamName, members,userName } = req.body
 
-        const newTeam = new Team({
-            teamName: teamName,
-            members: members,
+        User.findOne({userName:userName}).exec((err,result)=>{
+            if(err){
+
+            }
+            else{
+                const newTeam = new Team({
+                    teamName: teamName,
+                    members: members,
+                    projectManager:userName
+                })
+                newTeam.save()
+
+            }
 
         })
-        newTeam.save()
+      console.log(members)
+
         members.forEach((memeber) => {
             User.findOneAndUpdate({ userName: memeber }, { assignedTeam: teamName })
         })
@@ -161,7 +172,7 @@ const CreateTeams = async (req, res) => {
 // @desc     Assign Project To Team
 // @access   Public
 const assignProjectToTeam = async (req, res) => {
-    const { projectName, teamName } = req.body
+    const { projectName, teamName, userName } = req.body
     connectToDB()
 
     if (!teamName) {
@@ -209,6 +220,7 @@ const assignProjectToTeam = async (req, res) => {
                         },
                         {
                             $push: {
+                                projectManager: userName,
                                 assignedProject: projectFound.projectName
                             }
                         }
@@ -220,7 +232,7 @@ const assignProjectToTeam = async (req, res) => {
                             },
                             {
                                 $push: {
-                                    isAssignedTo: result._id
+                                    isAssignedTo: result.teamName
                                 }
                             }
                         )

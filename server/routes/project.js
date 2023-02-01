@@ -46,6 +46,15 @@ router.get(
       getProject
 )
 
+// @route    GET api/project/getAssignedProject
+// @desc     Get All Project With Teams Assigned
+// @access   Private
+router.get(
+      '/project/getAssignedProject',
+      // verifyAuthentication,
+      getAssignedProject
+)
+
 // @route    GET api/project/getProjectTasks
 // @desc     Get Project With Assigned Task
 // @access   Private
