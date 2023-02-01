@@ -12,7 +12,11 @@ const teamAssignmentSchema = mongoose.Schema({
       assignedProject: {
             type: mongoose.Schema.Types.String,
             ref: 'projectInfo'
-      }
+      },
+      projectManager: {
+            type: mongoose.Schema.Types.String,
+            ref: 'userInfo'
+      },
 }, { timestamps: true })
 
 module.exports = mongoose.model('teamAssignment', teamAssignmentSchema)
