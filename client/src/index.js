@@ -9,7 +9,7 @@ import RegistrationPage from './pages/Registration/Registration';
 import ForgotPassword from './pages/Landing/forgotPassword';
 import Dashboard from "./pages/Dashboard/Dashboard"
 import { ContextProvider,AssignmentContext,AssignmentContextProvider } from './Context/context';
-
+import About from './pages/Landing/About';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -29,6 +29,10 @@ const router = new createBrowserRouter([{
 {
   path:'/Dashboard',
   element:<Dashboard />
+},
+{
+  path:'/About',
+  element:<About />
 },
 {
   path:'/forgetpassword',

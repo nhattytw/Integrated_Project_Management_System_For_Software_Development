@@ -3,7 +3,7 @@ import { NavBar } from "../../Components/nav/nav";
 import { useState } from "react";
 import team from "./team.jpg";
 
-export default function about() {
+export default function About() {
   return (
     <>
       <NavBar />

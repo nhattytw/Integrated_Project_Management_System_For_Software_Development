@@ -124,7 +124,9 @@ const CreateProject = () => {
             userName: localStorage.getItem('userName')
         })
     }
-
+    const [variant, setVariant] = useState('success')
+    const [show, setShow] = useState(false)
+    const [message, setMessage] = useState()
     return (
         <div>
             <Alert show={show} variant={variant}>
@@ -163,7 +165,7 @@ const CreateProject = () => {
 
                             </Form.Group>
                         </Col>
-                        <Col></Col>
+                       
                     </Row>
                     <Row>
                         <Col>
@@ -182,17 +184,15 @@ const CreateProject = () => {
                                 value={formData.descripion}
                             />
                         </Col>
-                        <Col></Col>
+                       
                     </Row>
-
-
-                </Row>
+                
             </Form>
-
             </Container>
-        </div >
+        </div>
     )
 }
+
 
 const SummaryPage = () => {
     const { Detail, setDetail } = useContext(Context)
@@ -535,8 +535,8 @@ const InactiveProjects = () => {
                             </tbody>
                         </Table>
                     </Col>
-                    <Col></Col>
-                    <Col></Col>
+                   
+                    
                 </Row>
             </Container>
         </div >
