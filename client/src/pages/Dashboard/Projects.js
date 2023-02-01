@@ -5,10 +5,8 @@ import { Modal } from 'react-bootstrap';
 import "rsuite/dist/rsuite.min.css";
 import { Nav } from 'rsuite'
 import { addWbs } from '../../API/wbs';
-// import AdvancedAnalyticsIcon from '@rsuite/icons/AdvancedAnalytics';
 import PlusIcon from '@rsuite/icons/Plus';
 import BarChartIcon from '@rsuite/icons/BarChart';
-// import ListIcon from '@rsuite/icons/List';
 import TimeIcon from '@rsuite/icons/Time';
 import CheckRoundIcon from '@rsuite/icons/CheckRound';
 import PauseRoundIcon from '@rsuite/icons/PauseRound';
@@ -22,6 +20,7 @@ import { Context } from '../../Context/context';
 
 const base_url = 'http://localhost:9000/api'
 const endPoint ="http://127.0.0.1:3001"
+
 // project manager is not required to enter the wbs,schedule and status upon creation.
 //wbs will come from later modules and the schedule will be dervied from the wbs
 
@@ -44,8 +43,6 @@ const ProjectNav = () => {
         </Container>
     )
 }
-
-
 
 const CreateProject = () => {
     const [formData, setFormData] = useState({
@@ -899,8 +896,8 @@ const pages = {
     "InactiveProjects": InactiveProjects,
     "CompletedProjects": CompletedProjects
 
-
 }
+
 const Projects = () => {
     const { Tabs, setTabs } = useContext(Context)
 
