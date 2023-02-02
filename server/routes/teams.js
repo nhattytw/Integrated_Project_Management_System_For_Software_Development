@@ -4,6 +4,7 @@ const { CreateTeams,
       assignProjectToTeam,
       getDevelopers,
       getTeam,
+      getAllTeam,
       getAssignedTeam, 
       aggregateTest} = require("../controllers/teamController");
 const verifyAuthentication = require("../middleware/verifyAuthentication");
@@ -13,7 +14,7 @@ const verifyAuthentication = require("../middleware/verifyAuthentication");
 // @access   Private
 router.post(
       '/Teams/newTeam',
-     // verifyAuthentication,
+      // verifyAuthentication,
       CreateTeams
 )
 
@@ -42,6 +43,15 @@ router.get(
       '/Teams/getTeam',
       verifyAuthentication,
       getTeam
+)
+
+// @route    GET api/getAllTeam
+// @desc     Return all Teams
+// @access   Private
+router.get(
+      '/Teams/getAllTeam',
+      verifyAuthentication,
+      getAllTeam
 )
 
 // @route    GET api/Teams/getAssignedTeam

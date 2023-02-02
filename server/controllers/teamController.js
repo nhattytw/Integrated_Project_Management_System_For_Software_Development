@@ -8,6 +8,57 @@ const User = require('../model/userInfo')
 
 // @desc     Get Team With No Assigned Project
 // @access   Public
+const getAllTeam = async (_req, res) => {
+    connectToDB()
+    try {
+        const existingTeam = await Team.find()
+            .sort({
+                teamName: 1
+            }).lean(true)
+
+        if (!existingTeam) {
+            return res
+                .status(400)
+                .json(
+                    messageFunction(
+                        true,
+                        'No Teams Found.'
+                    )
+                )
+        } else {
+            // Show All Teams Information
+            // Data - existingTeam
+            var teamResult = []
+
+            existingTeam.forEach(element => {
+                teamResult.push({
+                    teamName: element.teamName,
+                    members: element.members
+                })
+            })
+
+            return res
+                .status(200)
+                .json(
+                    messageFunction(false,
+                        'Team Information',
+                        teamResult
+                    )
+                )
+        }
+    } catch (error) {
+        console.error(error.message)
+        return res.status(500).json(
+            messageFunction(
+                true,
+                'Failed To Fetch Teams, Please Try Again.'
+            )
+        )
+    }
+}
+
+// @desc     Get Team With No Assigned Project
+// @access   Public
 const getTeam = async (_req, res) => {
     connectToDB()
     try {
@@ -140,24 +191,23 @@ const CreateTeams = async (req, res) => {
     let temp_teams = []
     connectToDB()
     try {
-        const { teamName, members,userName } = req.body
+        const { teamName, members, userName } = req.body
 
-        User.findOne({userName:userName}).exec((err,result)=>{
-            if(err){
+        User.findOne({ userName: userName }).exec((err, result) => {
+            if (err) {
 
             }
-            else{
+            else {
                 const newTeam = new Team({
                     teamName: teamName,
                     members: members,
-                    projectManager:userName
+                    projectManager: userName
                 })
                 newTeam.save()
 
             }
 
         })
-      console.log(members)
 
         members.forEach((memeber) => {
             User.find({userName:memeber}).lean(true).exec((err,result)=>{
@@ -318,5 +368,6 @@ module.exports = {
     assignProjectToTeam,
     getDevelopers,
     getTeam,
+    getAllTeam,
     getAssignedTeam
 }
