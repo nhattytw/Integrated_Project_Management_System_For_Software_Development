@@ -19,7 +19,7 @@ import { Context } from '../../Context/context';
 
 
 const base_url = 'http://localhost:9000/api'
-const endPoint ="http://127.0.0.1:3001"
+const endPoint = "http://127.0.0.1:3001"
 
 // project manager is not required to enter the wbs,schedule and status upon creation.
 //wbs will come from later modules and the schedule will be dervied from the wbs
@@ -165,7 +165,7 @@ const CreateProject = () => {
 
                             </Form.Group>
                         </Col>
-                       
+
                     </Row>
                     <Row>
                         <Col>
@@ -184,7 +184,7 @@ const CreateProject = () => {
                                 value={formData.descripion}
                             />
                         </Col>
-                       
+
                     </Row>
                     <Row>
                         <Col>
@@ -205,8 +205,8 @@ const CreateProject = () => {
                         </Col>
                         <Col></Col>
                     </Row>
-                
-            </Form>
+
+                </Form>
             </Container>
         </div>
     )
@@ -312,19 +312,19 @@ const SummaryPage = () => {
                         <Container className='doneBoard'>
                             {console.log(Tasks)}
                             <h5>Done</h5>
-                            {Tasks.map((task)=>{
-                                return(
-                            <Card className="doneBoardItem">
-                                <h6>{task.title}</h6>
-                                <ul>
-                                    {task.completedTasks.map((ct)=>{
-                                        return(
+                            {Tasks.map((task) => {
+                                return (
+                                    <Card className="doneBoardItem">
+                                        <h6>{task.title}</h6>
+                                        <ul>
+                                            {task.completedTasks.map((ct) => {
+                                                return (
 
-                                            <li>{ct}</li>
-                                        )
-                                    })}
-                                </ul>
-                            </Card>
+                                                    <li>{ct}</li>
+                                                )
+                                            })}
+                                        </ul>
+                                    </Card>
 
                                 )
                             })}
@@ -349,40 +349,87 @@ const ActiveProjects = () => {
 
     const [state, setState] = useState({
         temp: "",
-        result: []
+        teamName: "",
+        result: [],
+        userName: localStorage.getItem('userName')
     })
 
-    useEffect(() => {
-        const handleLoad = () => {
-            const url = 'http://localhost:9000/api/project/ActiveProject'
+    const handleRelease = async (teamName) => {
 
-            axios.get(url).then((response) => {
-                var assignedResult = []
+        state.teamName = teamName
 
-                response.data.forEach(element => {
-                    assignedResult.push({
-                        'teamName': element.isAssignedTo[0],
-                        'projectName': element.projectName,
-                        'wbs': element.wbs
-                    })
-                })
-                state.result = assignedResult
+        var formBody = JSON.stringify(state)
+        console.log(formBody)
 
-                setState({
-                    ...state,
-                    temp: "",
-                })
-            }).catch(() => {
-                setMessage("Fetching Failed")
+        try {
+            const response = await fetch(
+                base_url + `/Teams/unassignTeam`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Authorization': localStorage.getItem('Bearer')
+                    },
+                    body: formBody
+                },
+            )
+            const data = await response.json()
+
+            if (data.message === "Team Unassigned") {
+                setMessage("Team Unassigned!")
+                setVariant("success")
+                setShow(true)
+                handleLoad()
+            } else {
+                setMessage(data.message)
                 setVariant("danger")
                 setShow(true)
-            })
+            }
 
             setTimeout(() => {
                 setShow(false)
             }, "3000")
         }
+        catch (error) {
+            setMessage(error.message)
+            setVariant("danger")
+            setShow(true)
+        }
 
+    }
+
+    const handleLoad = () => {
+        const url = 'http://localhost:9000/api/project/ActiveProject'
+
+        axios.get(url).then((response) => {
+            var assignedResult = []
+
+            response.data.forEach(element => {
+                assignedResult.push({
+                    'teamName': element.isAssignedTo[0],
+                    'projectName': element.projectName,
+                    'wbs': element.wbs
+                })
+            })
+            state.result = assignedResult
+
+            setState({
+                ...state,
+                temp: "",
+            })
+        }).catch(() => {
+            setMessage("Fetching Failed")
+            setVariant("danger")
+            setShow(true)
+        })
+
+        setTimeout(() => {
+            setShow(false)
+        }, "3000")
+    }
+
+    useEffect(() => {
         handleLoad()
     }, [])
 
@@ -430,7 +477,7 @@ const ActiveProjects = () => {
                                             <Button
                                                 variant="danger"
                                                 onClick={() => {
-                                                    // handleRelease(projects)
+                                                    handleRelease(projects.teamName)
                                                 }}
                                             >
                                                 Release Team
@@ -554,8 +601,8 @@ const InactiveProjects = () => {
                             </tbody>
                         </Table>
                     </Col>
-                   
-                    
+
+
                 </Row>
             </Container>
         </div >
@@ -645,7 +692,7 @@ const CompletedProjects = () => {
                         <h4>Completed Projects</h4>
 
                         <h1>Not done yet</h1>
-                        
+
                         <Table>
                             <thead>
                                 <tr>

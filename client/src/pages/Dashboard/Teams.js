@@ -31,9 +31,6 @@ const TeamsNav = () => {
                         <Nav.Item icon={<PeoplesMapIcon />} onSelect={() => { setTeams("CreateTeams") }}>
                             Create Teams
                         </Nav.Item>
-                        <Nav.Item icon={<AdvancedAnalyticsIcon />} onSelect={() => { setTeams("EditTeams") }}>
-                            Edit Tems
-                        </Nav.Item>
                     </Nav>
                 </Col>
             </Row>
@@ -183,208 +180,6 @@ const CreateTeams = () => {
     )
 }
 
-const EditTeams = () => {
-
-    const [variant, setVariant] = useState('success')
-    const [show, setShow] = useState(false)
-    const [message, setMessage] = useState()
-
-    const [state, setState] = useState({
-        members: "",
-        teamName: "",
-        result: [],
-        userName: localStorage.getItem('userName')
-    })
-
-    const handleChange = (event) => {
-        const { name, value } = event.target
-
-        setState({
-            ...state,
-            [name]: value,
-        })
-    }
-
-    const handleDelete = async (e) => {
-        e.preventDefault()
-
-        var formBody = JSON.stringify(state)
-
-        try {
-            const response = await fetch(
-                base_url + `/Teams/assignProject`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Authorization': localStorage.getItem('Bearer')
-                    },
-                    body: formBody
-                },
-            )
-            const data = await response.json()
-
-            if (data.message === "Project Assigned To Team") {
-                setMessage("Project Assigned To Team!")
-                setVariant("success")
-                setShow(true)
-                handleLoad()
-            } else {
-
-                setMessage(data.message)
-                setVariant("danger")
-                setShow(true)
-            }
-
-            setTimeout(() => {
-                setShow(false)
-            }, "3000")
-        }
-        catch (error) {
-            setMessage(error.message)
-            setVariant("danger")
-            setShow(true)
-        }
-    }
-
-    const handleLoad = async () => {
-        try {
-            const teamResponse = await fetch(
-                base_url + `/Teams/getAllTeam`,
-                {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Authorization': localStorage.getItem('Bearer')
-                    },
-                },
-            )
-
-            const teamData = await teamResponse.json()
-
-            if (teamData.message === "Team Information") {
-                var teamResult = []
-
-                teamData.data.forEach(element => {
-                    teamResult.push(element.teamName)
-                })
-
-                var teamList = document.getElementById("teamName")
-                teamList.options.length = 0
-
-                for (var i = 0; i < teamResult.length; i++) {
-                    var teamOption = teamResult[i]
-                    var teamElement = document.createElement("option")
-
-                    teamElement.textContent = teamOption
-                    teamElement.value = teamOption
-
-                    teamList.appendChild(teamElement)
-                }
-                state.result = teamResult
-
-                setState({
-                    ...state,
-                    members: teamResult.members,
-                })
-            } else {
-                console.log(teamData.message)
-                setMessage(teamData.message)
-                setVariant("danger")
-                setShow(true)
-            }
-
-            setTimeout(() => {
-                setShow(false)
-            }, "3000")
-        } catch (error) {
-            if (error.message === `Unexpected token 'A', "Access Denied" is not valid JSON`) {
-                let msgg = `Access Denied`
-                setMessage(msgg)
-                setVariant("danger")
-                setShow(true)
-            }
-            else {
-                setMessage(error.message)
-                setVariant("danger")
-                setShow(true)
-            }
-        }
-    }
-
-    useEffect(() => {
-        handleLoad()
-    }, [])
-
-    return (
-        <div>
-            <Alert show={show} variant={variant}>
-                <p style={{ textAlign: 'center' }}>
-                    {message}
-                </p>
-            </Alert>
-            <Container>
-                <Row>
-                    <Col>
-                        <h4 style={{ margin: "0px 10px 6px 0px" }}>Edit Teams</h4>
-                        <Form>
-                            <Form.Group>
-                                <Form.Label>Teams </Form.Label>
-                                <Form.Select
-                                    name="teamName"
-                                    id="teamName"
-                                    value={state.teamName}
-                                    onChange={handleChange}
-                                >
-                                    <option>Select</option>
-                                </Form.Select>
-                            </Form.Group>
-                            <ButtonGroup
-                                style={{
-                                    float: "right",
-                                    margin: "12px 0px 30px 0px"
-                                }}>
-                                <Button
-                                    variant='danger'
-                                    onClick={handleDelete}
-                                    id="submitButton"
-                                >
-                                    Delete
-                                </Button>
-                            </ButtonGroup>
-                        </Form>
-                    </Col>
-                    <Col style={{ margin: "0px 0px 0px 18px" }}>
-                        <h4 style={{ margin: "0px 10px 6px 0px" }}>Members</h4>
-                        <Table>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Members</th>
-                                </tr>
-                            </thead>
-                            <tbody >
-                                {state.result.members?.map((projects, index) => (
-                                    <tr data-index={index}>
-
-                                        <tr>{projects}</tr>
-
-                                        {/* <td>{index + 1}</td>
-                                        <td>{projects.projectName}</td>
-                                        <td>{projects.teamName}</td> */}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
-                    </Col>
-                </Row>
-            </Container>
-        </div >
-    )
-}
-
 const ViewTeams = () => {
     const [variant, setVariant] = useState('success')
     const [show, setShow] = useState(false)
@@ -396,17 +191,55 @@ const ViewTeams = () => {
         userName: localStorage.getItem('userName')
     })
 
+    const handleDelete = async (teamName) => {
+        state.teamName = teamName
+
+        var formBody = JSON.stringify(state)
+
+        const teamResponse = await fetch(
+            base_url + `/Teams/deleteTeam`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': localStorage.getItem('Bearer')
+                },
+                body: formBody
+            },
+        )
+        const data = await teamResponse.json()
+
+        if (data.message === "Team Information") {
+            setMessage("Deleted Team Successfully!")
+            setVariant("success")
+            setShow(true)
+            handleLoad()
+        } else {
+            setMessage(data.message)
+            setVariant("danger")
+            setShow(true)
+        }
+
+        setTimeout(() => {
+            setShow(false)
+        }, "3000")
+    }
+
     const handleLoad = async () => {
+        var formBody = JSON.stringify(state)
+
         try {
             const teamResponse = await fetch(
                 base_url + `/Teams/getAllTeam`,
                 {
-                    method: 'GET',
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': '*',
                         'Authorization': localStorage.getItem('Bearer')
                     },
+                    body: formBody
                 },
             )
 
@@ -438,7 +271,7 @@ const ViewTeams = () => {
 
             setTimeout(() => {
                 setShow(false)
-            }, "3000")
+            }, "5000")
         } catch (error) {
             if (error.message === `Unexpected token 'A', "Access Denied" is not valid JSON`) {
                 let msgg = `Access Denied`
@@ -481,18 +314,21 @@ const ViewTeams = () => {
                                 <Accordion.Body>
                                     <h6>Members</h6>
                                     {teams.members?.map((members) => (
-                                        <ul>
-                                            {members}
-                                        </ul>
+                                        <Row>
+                                            <Col>
+                                                {members}
+                                            </Col>
+                                        </Row>
                                     ))}
                                     <ButtonGroup
                                         style={{
                                             float: "right",
                                             margin: "12px 0px 30px 0px"
                                         }}>
+
                                         <Button
                                             variant='danger'
-                                            // onClick={handleDelete}
+                                            onClick={() => { handleDelete(teams.teamName) }}
                                             id="submitButton"
                                         >
                                             Delete
@@ -502,6 +338,7 @@ const ViewTeams = () => {
                             </Accordion>
                         ))}
                     </Col>
+                    <Col></Col>
                 </Row>
             </Container>
         </div >
@@ -510,8 +347,7 @@ const ViewTeams = () => {
 
 const pages = {
     "CreateTeams": CreateTeams,
-    "ViewTeams": ViewTeams,
-    "EditTeams": EditTeams
+    "ViewTeams": ViewTeams
 }
 
 const Teams = () => {

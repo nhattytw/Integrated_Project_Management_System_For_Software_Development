@@ -80,7 +80,7 @@ const ActiveProjectList = (req, res) => {
   connectToDB();
   try {
     const activeProject = Project.find({
-      isAssignedTo: { $exists: true }
+      isAssignedTo: { $gt: 0 }
     }).populate("projectManager")
       .populate("wbs")
       .sort({
@@ -133,13 +133,12 @@ const wbsUnassigedProjects = (req, res) => {
     });
 };
 
-// @desc     Get Projects Without teams Assigned assiged to them
+// @desc     Get Inactive Projects
 // @access   Public
 const getProject = async (_req, res) => {
   connectToDB()
   try {
     const projectFound = await Project.find({
-      wbs: { $exists: true },
       isAssignedTo: { $exists: false }
     }).sort({
       projectName: 1
@@ -204,7 +203,7 @@ const getAssignedProject = async (_req, res) => {
         projectResult.push({
           'teamName': element.isAssignedTo[0],
           'projectName': element.projectName
-      })
+        })
       })
       console.log(projectFound)
 
@@ -221,6 +220,7 @@ const getAssignedProject = async (_req, res) => {
       );
   }
 };
+
 const getProjectTasks = (req, res) => {
   const { projectName } = req.body
   connectToDB()
