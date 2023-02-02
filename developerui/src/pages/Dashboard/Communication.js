@@ -117,17 +117,17 @@ const Issue = () => {
   };
 
   const sendMessage = () => {
-    postIssue(message)
-    // socket.emit("send_message", message);
+    // postIssue(message)
+    socket.emit("send_message", message);
   };
-  // socket.on("messages", (data) => {
-  //   let youCanAddMessage = true;
-  //   cached_messages.forEach((message) => {
-  //     if (message.id == data.id) youCanAddMessage = false;
-  //   });
-  //   if (!youCanAddMessage) return 0;
-  //   setReceivedMessages(data);
-  // });
+  socket.on("messages", (data) => {
+    let youCanAddMessage = true;
+    cached_messages.forEach((message) => {
+      if (message.id == data.id) youCanAddMessage = false;
+    });
+    if (!youCanAddMessage) return 0;
+    setReceivedMessages(data);
+  });
   useEffect(() => {
     cached_messages = receivedMessages;
   }, [receivedMessages]);

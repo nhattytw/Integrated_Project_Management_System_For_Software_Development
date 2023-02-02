@@ -186,6 +186,25 @@ const CreateProject = () => {
                         </Col>
                        
                     </Row>
+                    <Row>
+                        <Col>
+                            <div style={{ margin: "10px 0px 0px 0px", justifyContent: "end" }}>
+                                <Button
+                                    variant="primary"
+                                    onClick={handleSubmit}
+                                >
+                                    Submit
+                                </Button>
+                                <Button
+                                    variant="dark"
+                                    onClick={handleCancel}
+                                >
+                                    Clear
+                                </Button>
+                            </div>
+                        </Col>
+                        <Col></Col>
+                    </Row>
                 
             </Form>
             </Container>

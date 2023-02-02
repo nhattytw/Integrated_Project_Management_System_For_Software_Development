@@ -36,9 +36,10 @@ const signup = async (req, res) => {
                         userName: userName,
                         password: hashedPassword,
                         position: position,
-                        assignedTeam: null,
+                        assignedTeam: [],
                         gitHubAccount: gitHubAccount,
-                        secret: ""
+                        secret: "",
+                        available   :true
                   })
 
                   if (await newUser.save()) {

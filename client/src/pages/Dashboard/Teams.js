@@ -1,4 +1,4 @@
-import { Alert, Container, Col, Row, Form, Button, Table, ButtonGroup } from 'react-bootstrap'
+import { Alert, Container, Col, Row, Form, Button, Table, ButtonGroup,ListGroup,ListGroupItem } from 'react-bootstrap'
 import { Modal } from 'react-bootstrap';
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
@@ -10,7 +10,7 @@ import { PostTeams } from '../../API/Teams';
 // import socketIOClient from "socket.io-client";
 import { Context } from "../../Context/context";
 import ContenetDisplay from '../../Components/ConentDisplay/ConentDisplay';
-
+import '../../Styles/dashboard.css'
 const endPoint = "http://127.0.0.1:3001"
 const base_url = 'http://localhost:9000/api'
 
@@ -82,13 +82,14 @@ const CreateTeams = () => {
 
         const addMemeber = (e) => {
             setMembers([...members, e.target.value])
-            console.log(members)
+            
         }
 
         return (
-            <Container>
-                <Row style={{ width: "50vh" }}>
-                    <Col>
+            <Container style={{backgroundColor:"red !important"}} >
+
+                <Row>
+                    <Col style={{margin:'1000px 10px 10px 10px'}}>
                         <p>{props.username}</p>
                     </Col>
                     <Col>
@@ -156,38 +157,30 @@ const CreateTeams = () => {
         handleShow()
     }
     return (
-        <Container>
-            <Row>
-                <Col>
-                    <Form>
-                        <Form.Control type='text'></Form.Control>
-                    </Form>
-                </Col>
-                <Col>
-                    <Button>Search</Button>
-                </Col>
-            </Row>
+        <Container  className="teamsContainer"style={{width:"50vh",margin:"100px 0px 0px 350px "}}>
+            <h4>Unassigened Developers</h4>
+
+            
+            <Container >
             {developers.map((obj) => {
                 return (
-                    <div>
-                        <input type="checkbox" value={obj.userName} onChange={handleCheck}></input>
+                    <div style={{width:"40vh",alignItems:"center"}}>
+                        <ListGroup>
+                            <ListGroupItem style={{margin:"3px 0px 0px 0px"}}>
                         <span>
-                            {obj.userName}
-                            <span> </span>
-                            {obj.position}
+                          
+                            <span className='availableDevs'> {obj.userName}</span>
+                            <span className='availableDevs'> {obj.position}</span>
+                           
                         </span>
+                            <input type="checkbox" className="checkbox"value={obj.userName} onChange={handleCheck}></input>
+                            </ListGroupItem>
+                        </ListGroup>
                     </div>
                 )
             })}
-
-            {/* {developers.map((obj)=>{
-                    return(
-                        <ListTeams username={obj.userName} Position={obj.position}></ListTeams>
-                    )
-                })} */}
-
-
-            <Button style={{ float: "right" }} onClick={handleShow}>Create Team</Button>
+            <Button style={{ float: "right",margin:"3px 30px 0px 0px" }} onClick={handleShow}>Add toTeam</Button>
+            </Container>
 
             <CreateTeam />
         </Container>

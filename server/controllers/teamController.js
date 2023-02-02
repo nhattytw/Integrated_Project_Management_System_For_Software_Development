@@ -137,6 +137,7 @@ const getMailList = (members) => {
 // @desc     Create Teams
 // @access   Public
 const CreateTeams = async (req, res) => {
+    let temp_teams = []
     connectToDB()
     try {
         const { teamName, members,userName } = req.body
@@ -159,7 +160,32 @@ const CreateTeams = async (req, res) => {
       console.log(members)
 
         members.forEach((memeber) => {
-            User.findOneAndUpdate({ userName: memeber }, { assignedTeam: teamName })
+            User.find({userName:memeber}).lean(true).exec((err,result)=>{
+                if(err){
+                    console.log(err)
+                }
+                else{
+                   
+                    result.forEach(async(record)=>{
+                        let inTeams = record.assignedTeam.length
+                        if(inTeams<2){
+                            temp_teams = [...record.assignedTeam,teamName]
+                           await User.findOneAndUpdate({ userName: memeber }, { assignedTeam: temp_teams })
+                           if(inTeams === 1){
+                            await User.findOneAndUpdate({ userName: memeber }, { available: false })
+
+                           }
+
+                        }
+
+                        else{
+                            console.log("developer cannot be reassiged")
+                        }
+
+                    })
+                }
+
+            })
         })
         // getMailList(members)
         res.send("Teams Created")
@@ -226,6 +252,7 @@ const assignProjectToTeam = async (req, res) => {
                         }
                     )
                     if (assignTeam) {
+
                         const assignProject = await Project.updateOne(
                             {
                                 projectName: projectName
@@ -271,7 +298,7 @@ const getDevelopers = (req, res) => {
     connectToDB()
     User.find()
         .select("email userName position phoneNumber gitHubAccount")
-        .where("position").in(['Frontend Developer', 'Backend Developer', 'Mobile Developer'])
+        .where("position").in(['Frontend Developer', 'Backend Developer', 'Mobile Developer']).where('available').equals(true)
         .sort({
             userName: 1
         }).exec((err, result) => {
@@ -284,6 +311,7 @@ const getDevelopers = (req, res) => {
             }
         })
 }
+
 
 module.exports = {
     CreateTeams,

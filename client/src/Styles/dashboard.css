@@ -63,3 +63,19 @@ body,html{
     padding: 5px 0px 0px 8px
 
 }
+.teamsContainer{
+    height: fit-content;
+    padding:20px;
+    box-shadow:  20px 20px 60px #d9d9d9,
+             -20px -20px 60px #ffffff;
+}
+  .checkbox
+  {
+    border-radius: 20pc;
+    margin:1px 0px 0px 5px;
+  }
+
+  .availableDevs{
+   
+  }
+

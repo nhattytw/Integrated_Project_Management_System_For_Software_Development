@@ -1,3 +1,4 @@
+const { boolean } = require('joi')
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
@@ -31,13 +32,10 @@ const userSchema = new mongoose.Schema({
       gitHubAccount: {
             type: String,
       },
-      assignedTeam:{
-            type:String
-            }
-      
-            
-            
-      
+      assignedTeam:[],
+      available:{
+            type:Boolean
+      } 
       
 }, { timestamps: true })
 
