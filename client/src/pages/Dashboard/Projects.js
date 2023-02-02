@@ -46,7 +46,7 @@ const ProjectNav = () => {
 
 const CreateProject = () => {
     const [formData, setFormData] = useState({
-        projectname: "",
+        projectName: "",
         projectRepository: "",
         budget: "",
         duration: "",
@@ -58,7 +58,7 @@ const CreateProject = () => {
         const { name, value } = event.target
 
         setFormData({
-            // ...formData,
+            ...formData,
             [name]: value,
         })
     }
@@ -73,7 +73,6 @@ const CreateProject = () => {
 
         try {
             var formBody = JSON.stringify(formData)
-            console.log(formBody)
 
             const response = await fetch(
                 base_url + `/project/createProject`,
@@ -116,7 +115,7 @@ const CreateProject = () => {
     const handleCancel = () => {
         setFormData({
             ...formData,
-            projectname: "",
+            projectName: "",
             projectRepository: "",
             budget: "",
             duration: "",
@@ -144,9 +143,9 @@ const CreateProject = () => {
                                 <Form.Label>Project Name</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    name="projectname"
+                                    name="projectName"
                                     onChange={handleChange}
-                                    value={formData.projectname}
+                                    value={formData.projectName}
                                 />
                                 <Form.Label>Budget</Form.Label>
                                 <Form.Control
@@ -871,7 +870,6 @@ const CreateWbs = () => {
                     <Col sm={6}>
                         <Form.Label>Select Project</Form.Label>
                         <Form.Select name="projectName" onChange={(e) => { createWbs(e) }}>
-                            <option></option>
                             {projects.map((data) => {
                                 return (
                                     <option >{data.projectName}</option>

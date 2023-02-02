@@ -107,7 +107,8 @@ const CreateTeams = () => {
 
         const data = {
             members: Team,
-            teamName: TeamName.value
+            teamName: TeamName.value,
+            userName: localStorage.getItem('userName')
         }
 
         PostTeams(data)

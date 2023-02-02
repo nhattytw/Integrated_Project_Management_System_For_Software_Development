@@ -15,7 +15,7 @@ const messageFunction = require("../utils/messageFunction");
 const CreateProject = async (req, res) => {
   connectToDB();
   try {
-    const { projectname, userName, projectRepository, budget, duration, descripion } =
+    const { projectName, userName, projectRepository, budget, duration, descripion } =
       req.body;
 
     const projectmanager = User.findOne(
@@ -25,7 +25,7 @@ const CreateProject = async (req, res) => {
           res.send("error occured");
         } else {
           const ExistingProject = Project.findOne({
-            projectName: projectname,
+            projectName: projectName,
           }).exec(async (err, Projectresult) => {
             if (err) {
               console.log(err);
@@ -39,7 +39,7 @@ const CreateProject = async (req, res) => {
                   ))
               } else {
                 const newProject = new Project({
-                  projectName: projectname,
+                  projectName: projectName,
                   projectRepository: projectRepository,
                   projectManager: Managerresult._id,
                   budget: budget,
