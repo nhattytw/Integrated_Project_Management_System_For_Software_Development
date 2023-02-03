@@ -1,9 +1,7 @@
 const connectToDB = require("../utils/dbConnect");
 const Project = require("../model/project");
 const User = require("../model/userInfo");
-const {
-  default: createRespository,
-} = require("../middleware/githubOperations");
+const { default: createRespository } = require("../middleware/githubOperations");
 const messageFunction = require("../utils/messageFunction");
 const project = require("../model/project");
 const teamAssignment = require("../model/teamAssignment");
@@ -68,29 +66,43 @@ const CreateProject = async (req, res) => {
 
 // @desc     Get Active Projects
 // @access   Public
-const ActiveProjectList = (req, res) => {
-  connectToDB();
+const ActiveProjectList = async (req, res) => {
+  connectToDB()
+
+  const { userName } = req.body
+
   try {
-    const activeProject = Project.find({
-      isAssignedTo: { $gt: 0 }
-    }).populate("projectManager")
-      .populate("wbs")
-      .sort({
-        projectName: 1,
+    await User.findOne(
+      { userName: userName }
+    ).lean(true)
+      .exec(async (error, managerResult) => {
+
+        await Project.find({
+          isAssignedTo: { $gt: 0 },
+          projectManager: managerResult._id
+        }).populate("projectManager")
+          .populate("wbs")
+          .sort({
+            projectName: 1
+          })
+          .then((result) => {
+            if (result) {
+              const jsonContent = JSON.stringify(result);
+              // console.log("Here", jsonContent.projectName)
+              return res
+                .status(200)
+                .send(jsonContent)
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+            return res
+              .status(400)
+              .json(
+                messageFunction(true, 'Error Occurred When Fetching Data')
+              )
+          })
       })
-      .then((result) => {
-        if (result) {
-          const jsonContent = JSON.stringify(result);
-          // console.log("Here", jsonContent.projectName)
-          return res.status(200).send(jsonContent);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        return res
-          .status(400)
-          .json(messageFunction(true, "Error Occurred When Fetching Data"));
-      });
   } catch (error) {
     console.log(error);
     return res.status(500).json(messageFunction(true, "Server Error occured"));
@@ -120,36 +132,43 @@ const wbsUnassigedProjects = (req, res) => {
 // @desc     Get Inactive Projects
 // @access   Public
 const getProject = async (_req, res) => {
-  connectToDB();
+  connectToDB()
   try {
-    const projectFound = await Project.find({
-      isAssignedTo: { $exists: false }
-    }).sort({
-      projectName: 1
-    }).lean(true)
+    await User.findOne(
+      { userName: userName }
+    ).lean(true)
+      .exec(async (error, managerResult) => {
 
-    if (!projectFound) {
-      return res
-        .status(400)
-        .json(
-          messageFunction(
-            true,
-            "No Unassigned Projects or Project with WBS Found."
-          )
-        );
-    } else {
-      // Show Project Information
-      // Data - projectFound
-      var projectResult = [];
+        const projectFound = await Project.find({
+          projectManager: managerResult._id,
+          isAssignedTo: { $exists: false }
+        }).sort({
+          projectName: 1
+        }).lean(true)
 
-      projectFound.forEach((element) => {
-        projectResult.push(element.projectName);
-      });
+        if (!projectFound) {
+          return res
+            .status(400)
+            .json(
+              messageFunction(
+                true,
+                'No Unassigned Projects or Project with WBS Found.'
+              )
+            )
+        } else {
+          // Show Project Information
+          // Data - projectFound
+          var projectResult = []
 
-      return res
-        .status(200)
-        .json(messageFunction(false, "Project Information", projectResult));
-    }
+          projectFound.forEach((element) => {
+            projectResult.push(element.projectName);
+          });
+
+          return res
+            .status(200)
+            .json(messageFunction(false, "Project Information", projectResult));
+        }
+      })
   } catch (error) {
     console.error(error.message);
     return res

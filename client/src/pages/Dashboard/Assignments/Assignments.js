@@ -93,6 +93,8 @@ const AssignTaskToTeam = () => {
 
     const handleLoad = async () => {
         try {
+            var formBody = JSON.stringify(state)
+
             const teamResponse = await fetch(
                 base_url + `/Teams/getTeam`,
                 {
@@ -107,12 +109,13 @@ const AssignTaskToTeam = () => {
             const projectResponse = await fetch(
                 base_url + `/project/getProject`,
                 {
-                    method: 'GET',
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': '*',
                         'Authorization': localStorage.getItem('Bearer')
                     },
+                    body: formBody
                 },
             )
             const assignedResponse = await fetch(

@@ -8,11 +8,11 @@ const project = require("../model/project");
 // @access   Public
 //create a work break down structure for a project. once the wbs has been created it returns an associated id
 //task is an array of objects, and each object contains a start and finish date
-const timeEstimation = (task)=>{
- 
+const timeEstimation = (task) => {
+
   let EstimatedCompletionTime = new Date();
   task.forEach(element => {
-    
+
   });
 
 

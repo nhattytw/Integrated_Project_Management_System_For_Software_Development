@@ -398,10 +398,15 @@ const ActiveProjects = () => {
 
     }
 
-    const handleLoad = () => {
+    const handleLoad = async () => {
         const url = 'http://localhost:9000/api/project/ActiveProject'
 
-        axios.get(url).then((response) => {
+        let payload = { userName: localStorage.getItem('userName') }
+
+        await axios.post(
+            url,
+            payload
+        ).then((response) => {
             var assignedResult = []
 
             response.data.forEach(element => {
@@ -509,15 +514,18 @@ const InactiveProjects = () => {
     useEffect(() => {
         const handleLoad = async () => {
             try {
+                var formBody = JSON.stringify(state)
+
                 const projectResponse = await fetch(
                     base_url + `/project/getProject`,
                     {
-                        method: 'GET',
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'Access-Control-Allow-Origin': '*',
                             'Authorization': localStorage.getItem('Bearer')
                         },
+                        body: formBody
                     },
                 )
                 const projectData = await projectResponse.json()
@@ -624,15 +632,18 @@ const CompletedProjects = () => {
     useEffect(() => {
         const handleLoad = async () => {
             try {
+                var formBody = JSON.stringify(state)
+
                 const projectResponse = await fetch(
                     base_url + `/project/getProject`,
                     {
-                        method: 'GET',
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'Access-Control-Allow-Origin': '*',
                             'Authorization': localStorage.getItem('Bearer')
                         },
+                        body: formBody
                     },
                 )
                 const projectData = await projectResponse.json()

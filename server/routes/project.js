@@ -5,11 +5,11 @@ const {
       CreateProject,
       ActiveProjectList,
       wbsUnassigedProjects,
-      getProject, 
+      getProject,
       getAssignedProject,
       getProjectTasks,
       findProject,
-      getDeveloperAssigenedProject} = require("../controllers/projectController");
+      getDeveloperAssigenedProject } = require("../controllers/projectController");
 
 // @route    POST api/project/createProject
 // @desc     Add Project
@@ -23,7 +23,7 @@ router.post(
 // @route    POST api/project/ActiveProject
 // @desc     Get Project List
 // @access   Private
-router.get(
+router.post(
       '/project/ActiveProject',
       // verifyAuthentication,
       ActiveProjectList
@@ -38,10 +38,10 @@ router.get(
       wbsUnassigedProjects
 )
 
-// @route    GET api/project/getProject
+// @route    POST api/project/getProject
 // @desc     Get All Project With No Teams Assigned
 // @access   Private
-router.get(
+router.post(
       '/project/getProject',
       verifyAuthentication,
       getProject
@@ -61,7 +61,7 @@ router.get(
 // @access   Private
 router.get(
       '/project/getProjectTasks',
-        getProjectTasks
+      getProjectTasks
 )
 
 // @route    POST api/project/findProject
@@ -69,7 +69,7 @@ router.get(
 // @access   Private
 router.post(
       '/project/findProject',
-        findProject
+      findProject
 )
 router.post('/project/myprojects',getDeveloperAssigenedProject)
 
