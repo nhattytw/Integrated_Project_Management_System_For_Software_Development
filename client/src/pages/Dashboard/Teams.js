@@ -164,7 +164,7 @@ const CreateTeams = () => {
                 <h4 style={{ margin: "0px 10px 6px 0px" }}>Unassigned Developers</h4>
 
                 <Container >
-                    {developers.map((obj) => (
+                    {developers?.map((obj) => (
                         <div style={{ width: "40vh", alignItems: "center" }}>
                             <ListGroup>
                                 <ListGroupItem style={{ margin: "3px 0px 0px 0px" }}>
