@@ -5,6 +5,8 @@ const {
   default: createRespository,
 } = require("../middleware/githubOperations");
 const messageFunction = require("../utils/messageFunction");
+const project = require("../model/project");
+const teamAssignment = require("../model/teamAssignment");
 
 //stored initalize project and assign a project Manager
 
@@ -239,6 +241,28 @@ const findProject = (req, res) => {
       }
     });
 };
+const getDeveloperAssigenedProject=(req,res)=>{
+    const {username} = req.body
+    const responseObj = []
+    User.find({userName:username}).exec((err,result)=>{
+      if(err){
+        console.log(err)
+      }else
+      {
+       const {assignedTeam} = result
+        
+       assignedTeam.forEach(async(element)=>{
+           teamAssignment.find({teamName:element}).exec((err,result)=>{
+              if(result.assignedProject){
+                  console.log("team is assigened a project")
+              }
+          })
+       })
+      }
+    })
+    
+}
+
 module.exports = {
   CreateProject,
   ActiveProjectList,
@@ -247,4 +271,5 @@ module.exports = {
   findProject,
   getAssignedProject,
   getProjectTasks,
+  getDeveloperAssigenedProject
 };

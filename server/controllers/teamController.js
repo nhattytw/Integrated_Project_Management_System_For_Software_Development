@@ -219,7 +219,8 @@ const CreateTeams = async (req, res) => {
                 else {
 
                     result.forEach(async (record) => {
-                        let inTeams = record.assignedTeam.length
+                         let inTeams = record.assignedTeam.length
+                       
                         if (inTeams < 2) {
                             temp_teams = [...record.assignedTeam, teamName]
                             await User.findOneAndUpdate(

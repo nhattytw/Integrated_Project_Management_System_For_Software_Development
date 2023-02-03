@@ -67,11 +67,13 @@ const PendingAssignments = () => {
 
   useEffect(() => {
     axios({
-      method: "get",
-      url: base_url + "/project/getAssignedProject",
-    }).then((response) => {
-     setProjects(response.data.data)
-    });
+      method:'post',
+      url:base_url.concat('project/myprojects'),
+      data:{
+        username:localStorage.getItem('userName')
+      }
+    })
+   
   }, []);
   const getProjects = (e)=>{
       axios.post(base_url + "project/findProject",

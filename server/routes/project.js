@@ -8,7 +8,8 @@ const {
       getProject, 
       getAssignedProject,
       getProjectTasks,
-      findProject} = require("../controllers/projectController");
+      findProject,
+      getDeveloperAssigenedProject} = require("../controllers/projectController");
 
 // @route    POST api/project/createProject
 // @desc     Add Project
@@ -70,5 +71,6 @@ router.post(
       '/project/findProject',
         findProject
 )
+router.post('/project/myprojects',getDeveloperAssigenedProject)
 
 module.exports = router
