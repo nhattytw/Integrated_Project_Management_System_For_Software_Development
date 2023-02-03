@@ -197,7 +197,7 @@ const CreateTeams = async (req, res) => {
     try {
         const { teamName, members, userName } = req.body
 
-        const existingTeam = await User.findOne({
+        const existingTeam = await Team.findOne({
             teamName: teamName
         }).lean(true)
 
@@ -235,40 +235,21 @@ const CreateTeams = async (req, res) => {
                                     await User.findOneAndUpdate(
                                         { userName: memeber },
                                         { assignedTeam: teamName })
-                                    console.log("Created")
-                                    // return res
-                                    //     .status(200)
-                                    //     .json(
-                                    //         messageFunction(false,
-                                    //             'Team Information',
-                                    //             teamResult
-                                    //         )
-                                    //     )
                                 } else {
                                     let inTeams = record.assignedTeam.length
                                     if (inTeams < 2) {
                                         temp_teams = [...record.assignedTeam, teamName]
                                         await User.findOneAndUpdate(
                                             { userName: memeber },
-                                            { assignedTeam: temp_teams })
-                                        console.log("Created")
-                                    }
-                                    else if (inTeams === 1) {
-                                        await User.findOneAndUpdate(
-                                            { userName: memeber },
-                                            { available: false })
-                                        console.log("Created")
-                                    }
-                                    // return res
-                                    //     .status(200)
-                                    //     .json(
-                                    //         messageFunction(false,
-                                    //             'Team Information',
-                                    //             teamResult
-                                    //         )
-                                    //     )
-
-                                    else {
+                                            { assignedTeam: temp_teams }
+                                        )
+                                        if (inTeams === 1) {
+                                            await User.findOneAndUpdate(
+                                                { userName: memeber },
+                                                { available: false }
+                                            )
+                                        }
+                                    } else {
                                         console.log("developer cannot be reassiged")
                                         return res
                                             .status(400)
@@ -286,7 +267,7 @@ const CreateTeams = async (req, res) => {
             })
 
             // getMailList(members)
-         
+            // res.send("Teams Created")
 
         }
     } catch (error) {
@@ -403,7 +384,14 @@ const assignProjectToTeam = async (req, res) => {
 const getDevelopers = (req, res) => {
     connectToDB()
     User.find({
-        $or: [{ assignedTeam: { $exists: false } }, { available: { $eq: 'true' } }]
+        $or: [
+            {
+                assignedTeam: { $exists: false }
+            },
+            {
+                available: { $eq: 'true' }
+            }
+        ]
     }).select("email userName position phoneNumber gitHubAccount")
         .where("position").in(['Frontend Developer', 'Backend Developer', 'Mobile Developer'])
         .sort({
