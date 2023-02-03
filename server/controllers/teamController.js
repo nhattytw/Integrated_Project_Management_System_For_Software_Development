@@ -208,7 +208,7 @@ const CreateTeams = async (req, res) => {
                     messageFunction(true, 'Team Name Already Exists')
                 )
         } else {
-            members.fore
+            
             User.findOne({ userName: userName }).exec((err) => {
                 if (err) {
 

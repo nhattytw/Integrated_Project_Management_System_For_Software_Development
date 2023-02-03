@@ -272,15 +272,23 @@ const getDeveloperAssigenedProject = (req, res) => {
     } else {
       const RelatedTeam = result[0].assignedTeam
       teamAssignment.find().where("teamName").in(RelatedTeam).exec((err, teamResult) => {
+        console.log("team Query")
         if (err) {
           console.log(err)
         }
         else {
           let assignedProject = []
           teamResult.forEach((element) => {
-            assignedProject.push(element.assignedProject)
+            if(element.assignedProject){
+               assignedProject=[...assignedProject,...element.assignedProject]
+              console.log(element.assignedProject)
+
+            }
           })
+          console.log(assignedProject)
+          
           Project.find().where("projectName").in(assignedProject).populate('wbs').exec((err, Projectresult) => {
+            console.log("Project Query")
             if (err) {
               console.log(err)
             }
