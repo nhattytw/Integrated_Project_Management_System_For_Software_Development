@@ -131,8 +131,9 @@ const wbsUnassigedProjects = (req, res) => {
 
 // @desc     Get Inactive Projects
 // @access   Public
-const getProject = async (_req, res) => {
+const getProject = async (req, res) => {
   connectToDB()
+  const { userName } = req.body
   try {
     await User.findOne(
       { userName: userName }
@@ -260,38 +261,37 @@ const findProject = (req, res) => {
       }
     });
 };
-const getDeveloperAssigenedProject=(req,res)=>{
-    const {username} = req.body
-    
-    connectToDB()
-    User.find({userName:username}).lean(true).exec((err,result)=>{
-      
-      if(err){
-        console.log(err)
-      }else
-      { 
-        const RelatedTeam = result[0].assignedTeam
-        teamAssignment.find().where("teamName").in(RelatedTeam).exec((err,teamResult)=>{
-          if(err){
-            console.log(err)
-          }
-          else{
-            let assignedProject = []
-            teamResult.forEach((element)=>{
-              assignedProject.push(element.assignedProject)
-            })
-            Project.find().where("projectName").in(assignedProject).populate('wbs').exec((err,Projectresult)=>{
-              if(err){
-                console.log(err)
-              }
-              else{
-                res.send(Projectresult)
-              }
-            })
-          }
+const getDeveloperAssigenedProject = (req, res) => {
+  const { username } = req.body
 
-        })
-        
+  connectToDB()
+  User.find({ userName: username }).lean(true).exec((err, result) => {
+
+    if (err) {
+      console.log(err)
+    } else {
+      const RelatedTeam = result[0].assignedTeam
+      teamAssignment.find().where("teamName").in(RelatedTeam).exec((err, teamResult) => {
+        if (err) {
+          console.log(err)
+        }
+        else {
+          let assignedProject = []
+          teamResult.forEach((element) => {
+            assignedProject.push(element.assignedProject)
+          })
+          Project.find().where("projectName").in(assignedProject).populate('wbs').exec((err, Projectresult) => {
+            if (err) {
+              console.log(err)
+            }
+            else {
+              res.send(Projectresult)
+            }
+          })
+        }
+
+      })
+
       //  result[0].assignedTeam.forEach((element)=>{
 
       //      teamAssignment.find({teamName:element}).exec((err,Teamresult)=>{
@@ -302,18 +302,18 @@ const getDeveloperAssigenedProject=(req,res)=>{
       //               }
       //               else{
       //                   res.send(projectResult)
-                      
+
       //               }
-                   
+
       //             })
       //         }
       //     })
-          
+
       //  })
 
-      }
-    })
-    
+    }
+  })
+
 }
 
 module.exports = {
