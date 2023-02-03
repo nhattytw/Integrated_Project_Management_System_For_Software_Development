@@ -8,11 +8,11 @@ const project = require("../model/project");
 // @access   Public
 //create a work break down structure for a project. once the wbs has been created it returns an associated id
 //task is an array of objects, and each object contains a start and finish date
-const timeEstimation = (task)=>{
- 
+const timeEstimation = (task) => {
+
   let EstimatedCompletionTime = new Date();
   task.forEach(element => {
-    
+
   });
 
 
@@ -27,28 +27,28 @@ const addWbs = async (req, res) => {
       task: Task,
     });
 
-    // InsertItems.save((err, result) => {
-    //   if (err) {
-    //     res.status(403).json("Task failed");
-    //     console.log(err);
-    //   } else {
-    //     project
-    //       .findOneAndUpdate(
-    //         { projectName: ProjectName },
-    //         { wbs: result._id },
-    //         { new: true }
-    //       )
-    //       .exec((err, result) => {
-    //         if (err) {
-    //           console.log(err);
-    //         } else {
-    //           console.log(result);
-    //         }
-    //       });
-    //     console.log(result._id);
-    //     res.send("ok");
-    //   }
-    // });
+    InsertItems.save((err, result) => {
+      if (err) {
+        res.status(403).json("Task failed");
+        console.log(err);
+      } else {
+        project
+          .findOneAndUpdate(
+            { projectName: ProjectName },
+            { wbs: result._id },
+            { new: true }
+          )
+          .exec((err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(result);
+            }
+          });
+        console.log(result._id);
+        res.send("ok");
+      }
+    });
   }
 
   catch (err) {
