@@ -46,30 +46,23 @@ const ProjectNav = () => {
 
 const CreateProject = () => {
     const [formData, setFormData] = useState({
-        projectname: "",
-        projectRepository: "",
-        budget: "",
-        duration: "",
-        descripion: "",
-        userName: localStorage.getItem('userName')
+
     })
 
     const handleChange = (event) => {
         const { name, value } = event.target
-
-        setFormData({
-            // ...formData,
-            [name]: value,
-        })
+        let temp = Object.assign(formData,{[name]:value})
+         setFormData(temp)
     }
-
+    
     const handleSubmit = async (event) => {
-        event.preventDefault()
-
+        
+        let temp = Object.assign(formData,{userName: localStorage.getItem('userName')})
         setFormData({
-            ...formData,
-            userName: localStorage.getItem('userName'),
+            temp
+            
         })
+      
 
         try {
             var formBody = JSON.stringify(formData)
@@ -88,7 +81,7 @@ const CreateProject = () => {
                 },
             )
             const data = await response.json()
-
+          
             if (data.message === "Project Created Successfully.") {
                 handleCancel()
                 setMessage("Project Created Successfully!")
@@ -145,21 +138,21 @@ const CreateProject = () => {
                                 <Form.Control
                                     type="text"
                                     name="projectname"
-                                    onChange={handleChange}
+                                    onChange={(e)=>{handleChange(e)}}
                                     value={formData.projectname}
                                 />
                                 <Form.Label>Budget</Form.Label>
                                 <Form.Control
                                     type="number"
                                     name="budget"
-                                    onChange={handleChange}
+                                    onChange={(e)=>{handleChange(e)}}
                                     value={formData.budget}
                                 />
                                 <Form.Label>Duration(months)</Form.Label>
                                 <Form.Control
                                     type="number"
                                     name='duration'
-                                    onChange={handleChange}
+                                    onChange={(e)=>{handleChange(e)}}
                                     value={formData.duration}
                                 />
 
@@ -173,14 +166,14 @@ const CreateProject = () => {
                             <Form.Control
                                 type='text'
                                 name="projectRepository"
-                                onChange={handleChange}
+                                onChange={(e)=>{handleChange(e)}}
                                 value={formData.projectRepository}
                             />
                             <Form.Label>Project Description</Form.Label>
                             <Form.Control
                                 as="textarea"
                                 name="descripion"
-                                onChange={handleChange}
+                                onChange={(e)=>{handleChange(e)}}
                                 value={formData.descripion}
                             />
                         </Col>
@@ -191,13 +184,13 @@ const CreateProject = () => {
                             <div style={{ margin: "10px 0px 0px 0px", justifyContent: "end" }}>
                                 <Button
                                     variant="primary"
-                                    onClick={handleSubmit}
+                                    onClick={()=>{handleSubmit()}}
                                 >
                                     Submit
                                 </Button>
                                 <Button
                                     variant="dark"
-                                    onClick={handleCancel}
+                                    onClick={()=>{handleCancel()}}
                                 >
                                     Clear
                                 </Button>

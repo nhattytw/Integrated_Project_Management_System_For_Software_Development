@@ -142,22 +142,22 @@ const CreateTeams = async (req, res) => {
     try {
         const { teamName, members,userName } = req.body
 
-        User.findOne({userName:userName}).exec((err,result)=>{
-            if(err){
+        // User.findOne({userName:userName}).exec((err,result)=>{
+        //     if(err){
 
-            }
-            else{
-                const newTeam = new Team({
-                    teamName: teamName,
-                    members: members,
-                    projectManager:userName
-                })
-                newTeam.save()
+        //     }
+        //     else{
+        //         const newTeam = new Team({
+        //             teamName: teamName,
+        //             members: members,
+        //             projectManager:userName
+        //         })
+        //         newTeam.save()
 
-            }
+        //     }
 
-        })
-      console.log(members)
+        // })
+      
 
         members.forEach((memeber) => {
             User.find({userName:memeber}).lean(true).exec((err,result)=>{
@@ -168,6 +168,7 @@ const CreateTeams = async (req, res) => {
                    
                     result.forEach(async(record)=>{
                         let inTeams = record.assignedTeam.length
+                        console.log(record.userName,"is in:",inTeams)
                         if(inTeams<2){
                             temp_teams = [...record.assignedTeam,teamName]
                            await User.findOneAndUpdate({ userName: memeber }, { assignedTeam: temp_teams })

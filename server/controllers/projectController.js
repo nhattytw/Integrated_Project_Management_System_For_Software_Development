@@ -6,8 +6,6 @@ const {
 } = require("../middleware/githubOperations");
 const messageFunction = require("../utils/messageFunction");
 
-
-
 //stored initalize project and assign a project Manager
 
 // @desc     Create Project
@@ -15,8 +13,14 @@ const messageFunction = require("../utils/messageFunction");
 const CreateProject = async (req, res) => {
   connectToDB();
   try {
-    const { projectname, userName, projectRepository, budget, duration, descripion } =
-      req.body;
+    const {
+      projectname,
+      userName,
+      projectRepository,
+      budget,
+      duration,
+      descripion,
+    } = req.body;
 
     const projectmanager = User.findOne(
       { userName: userName },
@@ -33,10 +37,7 @@ const CreateProject = async (req, res) => {
               if (Projectresult) {
                 return res
                   .status(400)
-                  .json(messageFunction(
-                    true,
-                    "Project already exists."
-                  ))
+                  .json(messageFunction(true, "Project already exists."));
               } else {
                 const newProject = new Project({
                   projectName: projectname,
@@ -52,25 +53,20 @@ const CreateProject = async (req, res) => {
                 // createRespository(projectRepository,descripion)
                 return res
                   .status(200)
-                  .json(messageFunction(
-                    false,
-                    "Project Created Successfully."
-                  ))
+                  .json(
+                    messageFunction(false, "Project Created Successfully.")
+                  );
               }
             }
-          })
+          });
         }
-      })
+      }
+    );
   } catch (error) {
-    console.log(error.message)
-    return res
-      .status(500)
-      .json(
-        messageFunction(true, 'Server Error occured')
-      )
+    console.log(error.message);
+    return res.status(500).json(messageFunction(true, "Server Error occured"));
   }
-}
-
+};
 
 //finds a list of projects that are not completed or not been canceled
 
@@ -80,36 +76,29 @@ const ActiveProjectList = (req, res) => {
   connectToDB();
   try {
     const activeProject = Project.find({
-      isAssignedTo: { $exists: true }
-    }).populate("projectManager")
+      isAssignedTo: { $exists: true },
+    })
+      .populate("projectManager")
       .populate("wbs")
       .sort({
-        projectName: 1
+        projectName: 1,
       })
       .then((result) => {
         if (result) {
           const jsonContent = JSON.stringify(result);
           // console.log("Here", jsonContent.projectName)
-          return res
-            .status(200)
-            .send(jsonContent)
+          return res.status(200).send(jsonContent);
         }
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         return res
           .status(400)
-          .json(
-            messageFunction(true, 'Error Occurred When Fetching Data')
-          )
-      })
+          .json(messageFunction(true, "Error Occurred When Fetching Data"));
+      });
   } catch (error) {
     console.log(error);
-    return res
-      .status(500)
-      .json(
-        messageFunction(true, 'Server Error occured')
-      )
+    return res.status(500).json(messageFunction(true, "Server Error occured"));
   }
 };
 
@@ -120,7 +109,7 @@ const wbsUnassigedProjects = (req, res) => {
     .where("wbs")
     .equals(null)
     .sort({
-      projectName: 1
+      projectName: 1,
     })
     .lean(true)
     .exec((err, result) => {
@@ -136,14 +125,16 @@ const wbsUnassigedProjects = (req, res) => {
 // @desc     Get Projects Without teams Assigned assiged to them
 // @access   Public
 const getProject = async (_req, res) => {
-  connectToDB()
+  connectToDB();
   try {
     const projectFound = await Project.find({
       wbs: { $exists: true },
-      isAssignedTo: { $exists: false }
-    }).sort({
-      projectName: 1
-    }).lean(true)
+      isAssignedTo: { $exists: false },
+    })
+      .sort({
+        projectName: 1,
+      })
+      .lean(true);
 
     if (!projectFound) {
       return res
@@ -151,13 +142,13 @@ const getProject = async (_req, res) => {
         .json(
           messageFunction(
             true,
-            'No Unassigned Projects or Project with WBS Found.'
+            "No Unassigned Projects or Project with WBS Found."
           )
-        )
+        );
     } else {
       // Show Project Information
       // Data - projectFound
-      var projectResult = []
+      var projectResult = [];
 
       projectFound.forEach((element) => {
         projectResult.push(element.projectName);
@@ -180,16 +171,17 @@ const getProject = async (_req, res) => {
 // @desc     Get Team With Project Assigned
 // @access   Public
 const getAssignedProject = async (_req, res) => {
-  connectToDB()
+  connectToDB();
   try {
     const projectFound = await Project.find({
-      isAssignedTo: { $exists: true }
-    }).populate("projectManager")
+      isAssignedTo: { $exists: true },
+    })
+      .populate("projectManager")
       .populate("wbs")
       .sort({
-        projectName: 1
+        projectName: 1,
       })
-      .lean(true)
+      .lean(true);
 
     if (!projectFound) {
       return res
@@ -200,13 +192,13 @@ const getAssignedProject = async (_req, res) => {
       // Data - projectFound
       var projectResult = [];
 
-      projectFound.forEach(element => {
+      projectFound.forEach((element) => {
         projectResult.push({
-          'teamName': element.isAssignedTo[0],
-          'projectName': element.projectName
-      })
-      })
-      console.log(projectFound)
+          teamName: element.isAssignedTo[0],
+          projectName: element.projectName,
+        });
+      });
+      console.log(projectFound);
 
       return res
         .status(200)
@@ -222,38 +214,40 @@ const getAssignedProject = async (_req, res) => {
   }
 };
 const getProjectTasks = (req, res) => {
-  const { projectName } = req.body
-  connectToDB()
-  Project.find(
-    { projectName: projectName })
-    .select('wbs')
-    .populate('wbs')
+  const { projectName } = req.body;
+  connectToDB();
+  Project.find({ projectName: projectName })
+    .select("wbs")
+    .populate("wbs")
     .sort({
-      projectName: 1
-    }).exec((err, result) => {
+      projectName: 1,
+    })
+    .exec((err, result) => {
       if (err) {
-        console.log(err)
+        console.log(err);
       } else {
         const jsonData = JSON.stringify(result);
         res.send(jsonData);
       }
-    })
-
-}
+    });
+};
 const findProject = (req, res) => {
-  connectToDB()
-  const { project } = req.body
-  console.log(req.body)
-  Project.find({ projectName: project }).populate('wbs').select('wbs').sort({ projectName: 1 }).exec((err, result) => {
-    if (err) {
-      console.log(err)
-    }
-    else {
-      const jsonData = JSON.stringify(result);
-      res.send(jsonData);
-    }
-  })
-}
+  connectToDB();
+  const { project } = req.body;
+  console.log(req.body);
+  Project.find({ projectName: project })
+    .populate("wbs")
+    .select("wbs")
+    .sort({ projectName: 1 })
+    .exec((err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        const jsonData = JSON.stringify(result);
+        res.send(jsonData);
+      }
+    });
+};
 module.exports = {
   CreateProject,
   ActiveProjectList,
@@ -261,5 +255,5 @@ module.exports = {
   getProject,
   findProject,
   getAssignedProject,
-  getProjectTasks
+  getProjectTasks,
 };

@@ -21,9 +21,9 @@ import axios from "axios";
 
 import ContenetDisplay from "../../../Components/ConentDisplay/ConentDisplay";
 import { postCompletedTask } from "../../../API/Assignments";
+
 const AssignemtsNav = () => {
   const { Assignment, setAssignment } = useContext(Context);
-
   return (
     <Container>
       <Row>
