@@ -82,7 +82,7 @@ const AssignTaskToTeam = () => {
 
             setTimeout(() => {
                 setShow(false)
-            }, "3000")
+            }, "5000")
         }
         catch (error) {
             setMessage(error.message)
@@ -195,7 +195,7 @@ const AssignTaskToTeam = () => {
 
             setTimeout(() => {
                 setShow(false)
-            }, "3000")
+            }, "5000")
         } catch (error) {
             if (error.message === `Unexpected token 'A', "Access Denied" is not valid JSON`) {
                 let msgg = `Access Denied`
@@ -227,7 +227,7 @@ const AssignTaskToTeam = () => {
                     <Col>
                         <h4>Assign Project</h4>
                         <Form>
-                            <Form.Label>Project</Form.Label>
+                            <Form.Label>Inactive Project</Form.Label>
                             <Form.Select
                                 name="projectName"
                                 id="projectName"
@@ -237,7 +237,7 @@ const AssignTaskToTeam = () => {
                                 <option>Select</option>
                             </Form.Select>
                             <Form.Group>
-                                <Form.Label>Teams </Form.Label>
+                                <Form.Label>Unassigned Teams</Form.Label>
                                 <Form.Select
                                     name="teamName"
                                     id="teamName"

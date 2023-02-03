@@ -13,14 +13,8 @@ const messageFunction = require("../utils/messageFunction");
 const CreateProject = async (req, res) => {
   connectToDB();
   try {
-    const {
-      projectname,
-      userName,
-      projectRepository,
-      budget,
-      duration,
-      descripion,
-    } = req.body;
+    const { projectName, userName, projectRepository, budget, duration, descripion } =
+      req.body;
 
     const projectmanager = User.findOne(
       { userName: userName },
@@ -29,7 +23,7 @@ const CreateProject = async (req, res) => {
           res.send("error occured");
         } else {
           const ExistingProject = Project.findOne({
-            projectName: projectname,
+            projectName: projectName,
           }).exec(async (err, Projectresult) => {
             if (err) {
               console.log(err);
@@ -40,7 +34,7 @@ const CreateProject = async (req, res) => {
                   .json(messageFunction(true, "Project already exists."));
               } else {
                 const newProject = new Project({
-                  projectName: projectname,
+                  projectName: projectName,
                   projectRepository: projectRepository,
                   projectManager: Managerresult._id,
                   budget: budget,
@@ -76,9 +70,8 @@ const ActiveProjectList = (req, res) => {
   connectToDB();
   try {
     const activeProject = Project.find({
-      isAssignedTo: { $exists: true },
-    })
-      .populate("projectManager")
+      isAssignedTo: { $gt: 0 }
+    }).populate("projectManager")
       .populate("wbs")
       .sort({
         projectName: 1,
@@ -122,19 +115,16 @@ const wbsUnassigedProjects = (req, res) => {
     });
 };
 
-// @desc     Get Projects Without teams Assigned assiged to them
+// @desc     Get Inactive Projects
 // @access   Public
 const getProject = async (_req, res) => {
   connectToDB();
   try {
     const projectFound = await Project.find({
-      wbs: { $exists: true },
-      isAssignedTo: { $exists: false },
-    })
-      .sort({
-        projectName: 1,
-      })
-      .lean(true);
+      isAssignedTo: { $exists: false }
+    }).sort({
+      projectName: 1
+    }).lean(true)
 
     if (!projectFound) {
       return res
@@ -194,11 +184,11 @@ const getAssignedProject = async (_req, res) => {
 
       projectFound.forEach((element) => {
         projectResult.push({
-          teamName: element.isAssignedTo[0],
-          projectName: element.projectName,
-        });
-      });
-      console.log(projectFound);
+          'teamName': element.isAssignedTo[0],
+          'projectName': element.projectName
+        })
+      })
+      console.log(projectFound)
 
       return res
         .status(200)
@@ -213,6 +203,7 @@ const getAssignedProject = async (_req, res) => {
       );
   }
 };
+
 const getProjectTasks = (req, res) => {
   const { projectName } = req.body;
   connectToDB();
