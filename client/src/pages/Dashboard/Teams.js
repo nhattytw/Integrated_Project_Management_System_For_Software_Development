@@ -45,6 +45,8 @@ const CreateTeams = () => {
     const [Team, setTeam] = useState([])
     let temp = [];
 
+    const [variant, setVariant] = useState('success')
+    const [message, setMessage] = useState()
     // const socket = socketIOClient(endPoint)
 
     const url = 'http://localhost:9000/api/Teams/getDeveloper'
@@ -112,7 +114,6 @@ const CreateTeams = () => {
         }
 
         PostTeams(data)
-        console.log(data)
         // socket.emit("TeamCreation")
 
         handleClose()
@@ -148,36 +149,42 @@ const CreateTeams = () => {
             updatedList.splice(Team.indexOf(event.target.value), 1);
         }
         setTeam(updatedList);
-        console.log(Team)
     };
     const onCreateTeam = () => {
         handleShow()
     }
     return (
-        <Container className="teamsContainer" style={{ width: "50vh", margin: "100px 0px 0px 350px " }}>
-            <h4 style={{ margin: "0px 10px 6px 0px" }}>Unassigned Developers</h4>
+        <div>
+            <Alert show={show} variant={variant}>
+                <p style={{ textAlign: 'center' }}>
+                    {message}
+                </p>
+            </Alert>
+            <Container className="teamsContainer" style={{ width: "50vh", margin: "100px 0px 0px 350px " }}>
+                <h4 style={{ margin: "0px 10px 6px 0px" }}>Unassigned Developers</h4>
 
-            <Container >
-                {developers.map((obj) => (
-                    <div style={{ width: "40vh", alignItems: "center" }}>
-                        <ListGroup>
-                            <ListGroupItem style={{ margin: "3px 0px 0px 0px" }}>
-                                <span>
+                <Container >
+                    {developers.map((obj) => (
+                        <div style={{ width: "40vh", alignItems: "center" }}>
+                            <ListGroup>
+                                <ListGroupItem style={{ margin: "3px 0px 0px 0px" }}>
+                                    <span>
 
-                                    <span className='availableDevs'> {obj.userName}</span>
-                                    <span className='availableDevs'> {obj.position}</span>
+                                        <span className='availableDevs'> {obj.userName}</span>
+                                        <span className='availableDevs'> {obj.position}</span>
 
-                                </span>
-                                <input type="checkbox" className="checkbox" value={obj.userName} onChange={handleCheck}></input>
-                            </ListGroupItem>
-                        </ListGroup>
-                    </div>
-                ))}
-                <Button style={{ float: "right", margin: "3px 30px 0px 0px" }} onClick={handleShow}>Add to Team</Button>
+                                    </span>
+                                    <input type="checkbox" className="checkbox" value={obj.userName} onChange={handleCheck}></input>
+                                </ListGroupItem>
+                            </ListGroup>
+                        </div>
+                    ))}
+                    <Button style={{ float: "right", margin: "3px 30px 0px 0px" }} onClick={handleShow}>Add to Team</Button>
+                </Container>
+
+                <CreateTeam />
             </Container>
-
-            <CreateTeam />
-        </Container>
+        </div>
     )
 }
 
@@ -196,6 +203,8 @@ const ViewTeams = () => {
         state.teamName = teamName
 
         var formBody = JSON.stringify(state)
+
+        console.log(formBody)
 
         const teamResponse = await fetch(
             base_url + `/Teams/deleteTeam`,
