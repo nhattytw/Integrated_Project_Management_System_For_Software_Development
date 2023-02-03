@@ -58,7 +58,7 @@ const CreateProject = () => {
         const { name, value } = event.target
         // this spreading works
         setFormData({
-            // ...formData,
+             ...formData,
             [name]: value,
         })
     }

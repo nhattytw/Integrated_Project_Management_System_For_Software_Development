@@ -32,6 +32,9 @@ button {
   color: rgba(66, 105, 158) !important;
   background-color: #fff !important;
 }
+.NavItem:active{
+  background-color: red;
+}
 
 .customBoard {
   padding: 20px;

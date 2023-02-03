@@ -18,9 +18,10 @@ import PauseRoundIcon from "@rsuite/icons/PauseRound";
 import PeoplesIcon from "@rsuite/icons/Peoples";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
-
 import ContenetDisplay from "../../../Components/ConentDisplay/ConentDisplay";
 import { postCompletedTask } from "../../../API/Assignments";
+
+
 
 const AssignemtsNav = () => {
   const { Assignment, setAssignment } = useContext(Context);
@@ -59,11 +60,10 @@ const PendingAssignments = () => {
   const [disabled,setDisabled] = useState(false)
   const [selectedProject,setSelectedProject] = useState("")
   const [title,setTitle] = useState("")
-  
+  const base_url = "http://localhost:9000/api/";
   const props = {
     disabled:disabled
   }
-  const base_url = "http://localhost:9000/api/";
 
   useEffect(() => {
     axios({
@@ -71,7 +71,12 @@ const PendingAssignments = () => {
       url:base_url.concat('project/myprojects'),
       data:{
         username:localStorage.getItem('userName')
+      
       }
+      
+    }).then((response)=>{
+      console.log(response)
+      setProjects(response.data)
     })
    
   }, []);
@@ -122,7 +127,7 @@ const PendingAssignments = () => {
           <option></option>
          {projects.map((project)=>{
           return(
-            <option>{project}</option>
+            <option>{project.projectName}</option>
           )
          })}
             
@@ -166,6 +171,22 @@ const PendingAssignments = () => {
   );
 };
 const CompletedAssignments = () => {
+  const [completedTask,setCompletedTask] = useState([])
+  const base_url = "http://localhost:9000/api/";
+  useEffect(() => {
+    axios({
+      method:'post',
+      url:base_url.concat('project/myprojects'),
+      data:{
+        username:localStorage.getItem('userName')
+      
+      }
+      
+    }).then((response)=>{
+     console.log(response)
+      // setCompletedTask(response.data[0].wbs)
+    })
+  },[])
   return (
     <Container>
       <Row>
@@ -179,7 +200,13 @@ const CompletedAssignments = () => {
                 <th>Assigned Team</th>
                 <th>Date Assigend</th>
                 <th>Date Completed</th>
-                <th>schedule</th>
+                
+              </tr>
+              <tr>
+                {completedTask.map((task)=>{
+
+                <td></td>
+                })}
               </tr>
             </thead>
           </Table>

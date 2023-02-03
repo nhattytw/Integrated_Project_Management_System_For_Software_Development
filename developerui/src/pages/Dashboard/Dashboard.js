@@ -110,6 +110,8 @@ const Dashboard = () => {
           width={expand ? 260 : 56}
           collapsible
           className="Navcontainer"
+          
+
         >
           <Sidenav.Header>
             <div style={headerStyles}>
@@ -135,11 +137,14 @@ const Dashboard = () => {
                 <Nav.Item
                   eventKey="1"
                   icon={<DashboardIcon />}
+                  onSele
                   onClick={() => {
                     SetPage("AdminPanel");
+
                   }}
                   style={{ color: "white"}}
                   className="NavItem"
+                  
                 >
                   Dashboard
                 </Nav.Item>

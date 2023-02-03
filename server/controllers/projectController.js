@@ -243,21 +243,55 @@ const findProject = (req, res) => {
 };
 const getDeveloperAssigenedProject=(req,res)=>{
     const {username} = req.body
-    const responseObj = []
-    User.find({userName:username}).exec((err,result)=>{
+    
+    connectToDB()
+    User.find({userName:username}).lean(true).exec((err,result)=>{
+      
       if(err){
         console.log(err)
       }else
-      {
-       const {assignedTeam} = result
-        
-       assignedTeam.forEach(async(element)=>{
-           teamAssignment.find({teamName:element}).exec((err,result)=>{
-              if(result.assignedProject){
-                  console.log("team is assigened a project")
+      { 
+        const RelatedTeam = result[0].assignedTeam
+        teamAssignment.find().where("teamName").in(RelatedTeam).exec((err,teamResult)=>{
+          if(err){
+            console.log(err)
+          }
+          else{
+            let assignedProject = []
+            teamResult.forEach((element)=>{
+              assignedProject.push(element.assignedProject)
+            })
+            Project.find().where("projectName").in(assignedProject).populate('wbs').exec((err,Projectresult)=>{
+              if(err){
+                console.log(err)
               }
-          })
-       })
+              else{
+                res.send(Projectresult)
+              }
+            })
+          }
+
+        })
+        
+      //  result[0].assignedTeam.forEach((element)=>{
+
+      //      teamAssignment.find({teamName:element}).exec((err,Teamresult)=>{
+      //         if(Teamresult[0].assignedProject){
+      //             Project.find({projectName:Teamresult[0].assignedProject}).exec((err,projectResult)=>{
+      //               if(err){
+      //                 console.log(err)
+      //               }
+      //               else{
+      //                   res.send(projectResult)
+                      
+      //               }
+                   
+      //             })
+      //         }
+      //     })
+          
+      //  })
+
       }
     })
     

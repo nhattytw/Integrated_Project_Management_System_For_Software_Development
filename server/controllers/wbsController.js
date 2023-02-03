@@ -27,28 +27,28 @@ const addWbs = async (req, res) => {
       task: Task,
     });
 
-    // InsertItems.save((err, result) => {
-    //   if (err) {
-    //     res.status(403).json("Task failed");
-    //     console.log(err);
-    //   } else {
-    //     project
-    //       .findOneAndUpdate(
-    //         { projectName: ProjectName },
-    //         { wbs: result._id },
-    //         { new: true }
-    //       )
-    //       .exec((err, result) => {
-    //         if (err) {
-    //           console.log(err);
-    //         } else {
-    //           console.log(result);
-    //         }
-    //       });
-    //     console.log(result._id);
-    //     res.send("ok");
-    //   }
-    // });
+    InsertItems.save((err, result) => {
+      if (err) {
+        res.status(403).json("Task failed");
+        console.log(err);
+      } else {
+        project
+          .findOneAndUpdate(
+            { projectName: ProjectName },
+            { wbs: result._id },
+            { new: true }
+          )
+          .exec((err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(result);
+            }
+          });
+        console.log(result._id);
+        res.send("ok");
+      }
+    });
   }
 
   catch (err) {
