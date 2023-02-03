@@ -196,54 +196,95 @@ const CreateTeams = async (req, res) => {
     try {
         const { teamName, members, userName } = req.body
 
-        User.findOne({ userName: userName }).exec((err, result) => {
-            if (err) {
+        const existingTeam = await user.findOne({
+            teamName: teamName
+        }).lean(true)
 
-            }
-            else {
-                const newTeam = new Team({
-                    teamName: teamName,
-                    members: members,
-                    projectManager: userName
-                })
-                newTeam.save()
-            }
-
-        })
-
-        members.forEach((memeber) => {
-            User.find({ userName: memeber }).lean(true).exec((err, result) => {
+        if (existingTeam) {
+            return res
+                .status(400)
+                .json(
+                    messageFunction(true, 'Team Name Already Exists')
+                )
+        } else {
+            User.findOne({ userName: userName }).exec((err) => {
                 if (err) {
-                    console.log(err)
+
+                } else {
+                    const newTeam = new Team({
+                        teamName: teamName,
+                        members: members,
+                        projectManager: userName
+                    })
+                    newTeam.save()
                 }
-                else {
+            })
 
-                    result.forEach(async (record) => {
-                        let inTeams = record.assignedTeam.length
-                        if (inTeams < 2) {
-                            temp_teams = [...record.assignedTeam, teamName]
-                            await User.findOneAndUpdate(
-                                { userName: memeber },
-                                { assignedTeam: temp_teams })
-                            if (inTeams === 1) {
-                                await User.findOneAndUpdate(
-                                    { userName: memeber },
-                                    { available: false })
-                            }
-
+            members.forEach((memeber) => {
+                User.find({ userName: memeber })
+                    .lean(true)
+                    .exec((err, result) => {
+                        if (err) {
+                            console.log(err)
                         }
-
                         else {
-                            console.log("developer cannot be reassiged")
+                            result.forEach(async (record) => {
+                                if (record.assignedTeam === undefined) {
+                                    await User.findOneAndUpdate(
+                                        { userName: memeber },
+                                        { assignedTeam: teamName })
+
+                                    return res
+                                        .status(200)
+                                        .json(
+                                            messageFunction(false,
+                                                'Team Information',
+                                                teamResult
+                                            )
+                                        )
+                                } else {
+                                    let inTeams = record.assignedTeam.length
+                                    if (inTeams < 2) {
+                                        temp_teams = [...record.assignedTeam, teamName]
+                                        await User.findOneAndUpdate(
+                                            { userName: memeber },
+                                            { assignedTeam: temp_teams })
+                                        if (inTeams === 1) {
+                                            await User.findOneAndUpdate(
+                                                { userName: memeber },
+                                                { available: false })
+                                        }
+
+                                        return res
+                                            .status(200)
+                                            .json(
+                                                messageFunction(false,
+                                                    'Team Information',
+                                                    teamResult
+                                                )
+                                            )
+                                    }
+                                    else {
+                                        console.log("developer cannot be reassiged")
+                                        return res
+                                            .status(400)
+                                            .json(
+                                                messageFunction(
+                                                    true,
+                                                    'Developer assigned in two teams, choose another developer!',
+                                                )
+                                            )
+                                    }
+                                }
+                            })
                         }
                     })
-                }
-
             })
-        })
-        // getMailList(members)
-        res.send("Teams Created")
 
+            // getMailList(members)
+            res.send("Teams Created")
+
+        }
     } catch (error) {
         console.log(error)
     }
@@ -351,9 +392,10 @@ const assignProjectToTeam = async (req, res) => {
 
 const getDevelopers = (req, res) => {
     connectToDB()
-    User.find()
-        .select("email userName position phoneNumber gitHubAccount")
-        .where("position").in(['Frontend Developer', 'Backend Developer', 'Mobile Developer']).where('available').equals(true)
+    User.find({
+        $or: [{ assignedTeam: { $exists: false } }, { available: { $eq: 'true' } }]
+    }).select("email userName position phoneNumber gitHubAccount")
+        .where("position").in(['Frontend Developer', 'Backend Developer', 'Mobile Developer'])
         .sort({
             userName: 1
         }).exec((err, result) => {
@@ -467,22 +509,15 @@ const deleteTeam = async (req, res) => {
     const { teamName, userName } = req.body
     connectToDB()
 
-    console.log(teamName)
-    console.log(userName)
-
     try {
         const team = await Team.findOne({
             teamName: teamName,
             projectManager: userName,
-            assignedProject: { $exists: false }
         })
         if (team) {
             await Team.findOne({
                 teamName: teamName
             }).exec(async (error, existingTeam) => {
-
-                console.log(existingTeam)
-
                 if (!existingTeam) {
                     return res
                         .status(400)
@@ -493,32 +528,20 @@ const deleteTeam = async (req, res) => {
                             )
                         )
                 } else {
-                    console.log(existingTeam)
-                    existingTeam[0].members.forEach((member) => {
-                        User.find({ userName: member })
-                            .lean(true)
-                            .exec((err, result) => {
-                                if (err) {
-                                    console.log(err)
-                                }
-                                else {
-                                    result.forEach(async (record) => {
-                                        await User.updateOne(
-                                            {
-                                                userName: member,
-                                                assignedTeam: teamName
-                                            },
-                                            {
-                                                $unset: {
-                                                    assignedTeam: ""
-                                                }
-                                            }
-                                        )
-                                    })
-                                }
-                            })
+                    existingTeam.members.forEach(async (member) => {
+                        await User.updateOne(
+                            {
+                                userName: member,
+                                assignedTeam: teamName
+                            },
+                            {
+                                $pull: {
+                                    assignedTeam: teamName
+                                },
+                                available: true
+                            }
+                        )
                     })
-
                     const teamResult = await Team.findOneAndDelete({
                         projectManager: userName,
                         teamName: teamName

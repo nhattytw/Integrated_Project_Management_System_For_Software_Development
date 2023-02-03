@@ -56,7 +56,7 @@ const CreateProject = () => {
 
     const handleChange = (event) => {
         const { name, value } = event.target
-
+        // this spreading works
         setFormData({
             ...formData,
             [name]: value,
