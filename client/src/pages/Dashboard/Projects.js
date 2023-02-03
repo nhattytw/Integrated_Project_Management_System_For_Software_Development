@@ -68,7 +68,6 @@ const CreateProject = () => {
         let temp = Object.assign(formData,{userName: localStorage.getItem('userName')})
         setFormData({
             temp
-            
         })
       
 
