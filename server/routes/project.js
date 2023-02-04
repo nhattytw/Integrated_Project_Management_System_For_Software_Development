@@ -9,7 +9,8 @@ const {
       getAssignedProject,
       getProjectTasks,
       findProject,
-      getDeveloperAssigenedProject } = require("../controllers/projectController");
+      getDeveloperAssigenedProject,
+      getAllProject } = require("../controllers/projectController");
 
 // @route    POST api/project/createProject
 // @desc     Add Project
@@ -18,6 +19,15 @@ router.post(
       '/project/createProject',
       verifyAuthentication,
       CreateProject
+)
+
+// @route    POST api/project/getProject
+// @desc     Get All Project With No Teams Assigned
+// @access   Private
+router.post(
+      '/project/getAllProject',
+      verifyAuthentication,
+      getAllProject
 )
 
 // @route    POST api/project/ActiveProject
@@ -71,6 +81,6 @@ router.post(
       '/project/findProject',
       findProject
 )
-router.post('/project/myprojects',getDeveloperAssigenedProject)
+router.post('/project/myprojects', getDeveloperAssigenedProject)
 
 module.exports = router
