@@ -6,7 +6,6 @@ const Meeting = require('../model/meetings')
 const connectToDB = require('../utils/dbConnect')
 const User = require('../model/userInfo')
 
-// Create model if needed to show the scheduled meetings
 // Automatic delete if a meeting is time passed? or just listMeetings
 
 const payload = {
@@ -26,7 +25,7 @@ const token = jwt.sign(
 // @access   Public
 const createMeeting = async (req, res) => {
       // email = 'nathnael.tesfaye.hh4142@gmail.com'  // Company email account that has a zoom developer
-      const { duration, start_time, topic, userName } = req.body
+      const { duration, start_time, topic, userName, projectName } = req.body
 
       var options = {
             method: 'POST',
@@ -82,7 +81,8 @@ const createMeeting = async (req, res) => {
                                                             meetingTopic: response.topic,
                                                             meetingDuration: response.duration,
                                                             meetingStartTime: response.start_time,
-                                                            meetingStartUrl: response.join_url
+                                                            meetingStartUrl: response.join_url,
+                                                            projectName: projectName
                                                       }]
                                                 }
                                           }
@@ -116,7 +116,8 @@ const createMeeting = async (req, res) => {
                                                 meetingTopic: response.topic,
                                                 meetingDuration: response.duration,
                                                 meetingStartTime: response.start_time,
-                                                meetingStartUrl: response.join_url
+                                                meetingStartUrl: response.join_url,
+                                                projectName: projectName
                                           }]
                                     }).save()
 

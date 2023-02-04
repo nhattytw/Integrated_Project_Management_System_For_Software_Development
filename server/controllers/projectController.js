@@ -1,37 +1,35 @@
-const connectToDB = require("../utils/dbConnect");
-const Project = require("../model/project");
-const User = require("../model/userInfo");
-const { default: createRespository } = require("../middleware/githubOperations");
-const messageFunction = require("../utils/messageFunction");
-const project = require("../model/project");
-const teamAssignment = require("../model/teamAssignment");
-
-//stored initalize project and assign a project Manager
+const connectToDB = require("../utils/dbConnect")
+const Project = require("../model/project")
+const User = require("../model/userInfo")
+const { default: createRespository } = require("../middleware/githubOperations")
+const messageFunction = require("../utils/messageFunction")
+const project = require("../model/project")
+const teamAssignment = require("../model/teamAssignment")
 
 // @desc     Create Project
 // @access   Public
 const CreateProject = async (req, res) => {
-  connectToDB();
+  connectToDB()
   try {
     const { projectName, userName, projectRepository, budget, duration, descripion } =
-      req.body;
+      req.body
 
     const projectmanager = User.findOne(
       { userName: userName },
       (err, Managerresult) => {
         if (err) {
-          res.send("error occured");
+          res.send("error occured")
         } else {
           const ExistingProject = Project.findOne({
             projectName: projectName,
           }).exec(async (err, Projectresult) => {
             if (err) {
-              console.log(err);
+              console.log(err)
             } else {
               if (Projectresult) {
                 return res
                   .status(400)
-                  .json(messageFunction(true, "Project already exists."));
+                  .json(messageFunction(true, "Project already exists."))
               } else {
                 const newProject = new Project({
                   projectName: projectName,
@@ -40,29 +38,27 @@ const CreateProject = async (req, res) => {
                   budget: budget,
                   duration: duration,
                   descripion: descripion,
-                });
+                })
 
-                await newProject.save();
-                console.log("Project saved");
+                await newProject.save()
+                console.log("Project saved")
                 // createRespository(projectRepository,descripion)
                 return res
                   .status(200)
                   .json(
                     messageFunction(false, "Project Created Successfully.")
-                  );
+                  )
               }
             }
-          });
+          })
         }
       }
-    );
+    )
   } catch (error) {
-    console.log(error.message);
-    return res.status(500).json(messageFunction(true, "Server Error occured"));
+    console.log(error.message)
+    return res.status(500).json(messageFunction(true, "Server Error occured"))
   }
-};
-
-//finds a list of projects that are not completed or not been canceled
+}
 
 // @desc     Get Active Projects
 // @access   Public
@@ -87,7 +83,7 @@ const ActiveProjectList = async (req, res) => {
           })
           .then((result) => {
             if (result) {
-              const jsonContent = JSON.stringify(result);
+              const jsonContent = JSON.stringify(result)
               // console.log("Here", jsonContent.projectName)
               return res
                 .status(200)
@@ -104,13 +100,13 @@ const ActiveProjectList = async (req, res) => {
           })
       })
   } catch (error) {
-    console.log(error);
-    return res.status(500).json(messageFunction(true, "Server Error occured"));
+    console.log(error)
+    return res.status(500).json(messageFunction(true, "Server Error occured"))
   }
-};
+}
 
 const wbsUnassigedProjects = (req, res) => {
-  connectToDB();
+  connectToDB()
   Project.find()
     .select("wbs projectName")
     .where("wbs")
@@ -121,13 +117,13 @@ const wbsUnassigedProjects = (req, res) => {
     .lean(true)
     .exec((err, result) => {
       if (err) {
-        console.log(err);
+        console.log(err)
       } else {
-        const jsonData = JSON.stringify(result);
-        res.send(jsonData);
+        const jsonData = JSON.stringify(result)
+        res.send(jsonData)
       }
-    });
-};
+    })
+}
 
 // @desc     Get Inactive Projects
 // @access   Public
@@ -162,28 +158,28 @@ const getProject = async (req, res) => {
           var projectResult = []
 
           projectFound.forEach((element) => {
-            projectResult.push(element.projectName);
-          });
+            projectResult.push(element.projectName)
+          })
 
           return res
             .status(200)
-            .json(messageFunction(false, "Project Information", projectResult));
+            .json(messageFunction(false, "Project Information", projectResult))
         }
       })
   } catch (error) {
-    console.error(error.message);
+    console.error(error.message)
     return res
       .status(500)
       .json(
         messageFunction(true, "Failed To Fetch Projects, Please Try Again.")
-      );
+      )
   }
-};
+}
 
 // @desc     Get Team With Project Assigned
 // @access   Public
 const getAssignedProject = async (_req, res) => {
-  connectToDB();
+  connectToDB()
   try {
     const projectFound = await Project.find({
       isAssignedTo: { $exists: true },
@@ -193,16 +189,16 @@ const getAssignedProject = async (_req, res) => {
       .sort({
         projectName: 1,
       })
-      .lean(true);
+      .lean(true)
 
     if (!projectFound) {
       return res
         .status(400)
-        .json(messageFunction(true, "No Assigned Projects Found."));
+        .json(messageFunction(true, "No Assigned Projects Found."))
     } else {
       // Show Project Information
       // Data - projectFound
-      var projectResult = [];
+      var projectResult = []
 
       projectFound.forEach((element) => {
         projectResult.push({
@@ -214,21 +210,22 @@ const getAssignedProject = async (_req, res) => {
 
       return res
         .status(200)
-        .json(messageFunction(false, "Project Information", projectResult));
+        .json(messageFunction(false, "Project Information", projectResult))
     }
   } catch (error) {
-    console.error(error.message);
+    console.error(error.message)
     return res
       .status(500)
       .json(
         messageFunction(true, "Failed To Fetch Projects, Please Try Again.")
-      );
+      )
   }
-};
+}
 
 const getProjectTasks = (req, res) => {
-  const { projectName } = req.body;
-  connectToDB();
+  const { projectName } = req.body
+  connectToDB()
+
   Project.find({ projectName: projectName })
     .select("wbs")
     .populate("wbs")
@@ -237,30 +234,82 @@ const getProjectTasks = (req, res) => {
     })
     .exec((err, result) => {
       if (err) {
-        console.log(err);
+        console.log(err)
       } else {
-        const jsonData = JSON.stringify(result);
-        res.send(jsonData);
+        const jsonData = JSON.stringify(result)
+        res.send(jsonData)
       }
-    });
-};
+    })
+}
+
 const findProject = (req, res) => {
-  connectToDB();
-  const { project } = req.body;
-  console.log(req.body);
+  connectToDB()
+  const { project } = req.body
+  console.log(req.body)
   Project.find({ projectName: project })
     .populate("wbs")
     .select("wbs")
     .sort({ projectName: 1 })
     .exec((err, result) => {
       if (err) {
-        console.log(err);
+        console.log(err)
       } else {
-        const jsonData = JSON.stringify(result);
-        res.send(jsonData);
+        const jsonData = JSON.stringify(result)
+        res.send(jsonData)
       }
-    });
-};
+    })
+}
+
+// @desc     Get All Project With for a project Manager
+// @access   Public
+const getAllProject = async (req, res) => {
+  connectToDB()
+  const { userName } = req.body
+  try {
+    await User.findOne(
+      { userName: userName }
+    ).lean(true)
+      .exec(async (error, managerResult) => {
+
+        const projectFound = await Project.find({
+          projectManager: managerResult._id
+        }).sort({
+          projectName: 1
+        }).lean(true)
+
+        if (!projectFound) {
+          return res
+            .status(400)
+            .json(
+              messageFunction(
+                true,
+                'No Projects Found.'
+              )
+            )
+        } else {
+          // Show Project Information
+          // Data - projectFound
+          var projectResult = []
+
+          projectFound.forEach((element) => {
+            projectResult.push(element.projectName)
+          })
+
+          return res
+            .status(200)
+            .json(messageFunction(false, "Project Information", projectResult))
+        }
+      })
+  } catch (error) {
+    console.error(error.message)
+    return res
+      .status(500)
+      .json(
+        messageFunction(true, "Failed To Fetch Projects, Please Try Again.")
+      )
+  }
+}
+
 const getDeveloperAssigenedProject = (req, res) => {
   const { username } = req.body
 
@@ -324,5 +373,6 @@ module.exports = {
   findProject,
   getAssignedProject,
   getProjectTasks,
-  getDeveloperAssigenedProject
-};
+  getDeveloperAssigenedProject,
+  getAllProject
+}
