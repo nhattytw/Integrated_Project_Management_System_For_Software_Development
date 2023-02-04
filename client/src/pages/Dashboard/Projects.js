@@ -214,9 +214,24 @@ const CreateProject = () => {
 
 const SummaryPage = () => {
     const { Detail, setDetail } = useContext(Context)
-    const Project_Details = [Detail]
+    const [Project_Details,setProject_Details] = useState([])
     const { wbs } = Detail;
     const Tasks = wbs.task
+    
+    const base_Path = 'http://localhost:9000/api'
+
+useEffect(()=>{
+    axios.post(base_Path+'/project/findProjectSummary',{
+        "project":Detail.projectName,
+    }).then(
+        (response)=>{
+            setProject_Details(response.data)
+        }
+    )
+
+},[])
+    
+
    
 
     return (
@@ -233,8 +248,8 @@ const SummaryPage = () => {
                                     <Row>
                                         <Col>
                                             <div style={{ margin: '0px 0px 0px 20px' }}>
-                                                <h4>Budget</h4>
-                                                <Example />
+                                                <h3>Project Progress</h3>
+                                             <Example data = {[{value:wbs.workload},{value:wbs.progress}]}/>
                                             </div>
                                         </Col>
                                         <Col xs={6}>
@@ -309,7 +324,7 @@ const SummaryPage = () => {
                             })}
                         </Container>
                         <Container className='doneBoard'>
-                            {console.log(Tasks)}
+                           
                             <h5>Done</h5>
                             {Tasks.map((task) => {
                                 return (

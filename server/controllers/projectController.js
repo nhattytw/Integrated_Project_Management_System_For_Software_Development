@@ -248,7 +248,7 @@ const findProject = (req, res) => {
   console.log(req.body)
   Project.find({ projectName: project })
     .populate("wbs")
-    .select("wbs")
+    .select("wbs ")
     .sort({ projectName: 1 })
     .exec((err, result) => {
       if (err) {
@@ -259,7 +259,22 @@ const findProject = (req, res) => {
       }
     })
 }
-
+const findProjectSummary = (req, res) => {
+  connectToDB()
+  const { project } = req.body
+  console.log(req.body)
+  Project.find({ projectName: project })
+    .populate("wbs")
+    .sort({ projectName: 1 })
+    .exec((err, result) => {
+      if (err) {
+        console.log(err)
+      } else {
+        const jsonData = JSON.stringify(result)
+        res.send(jsonData)
+      }
+    })
+}
 // @desc     Get All Project With for a project Manager
 // @access   Public
 const getAllProject = async (req, res) => {
@@ -382,5 +397,6 @@ module.exports = {
   getAssignedProject,
   getProjectTasks,
   getDeveloperAssigenedProject,
-  getAllProject
+  getAllProject,
+  findProjectSummary
 }

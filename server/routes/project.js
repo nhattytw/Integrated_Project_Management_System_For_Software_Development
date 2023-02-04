@@ -9,6 +9,7 @@ const {
       getAssignedProject,
       getProjectTasks,
       findProject,
+      findProjectSummary,
       getDeveloperAssigenedProject,
       getAllProject } = require("../controllers/projectController");
 
@@ -80,6 +81,10 @@ router.get(
 router.post(
       '/project/findProject',
       findProject
+)
+router.post(
+      '/project/findProjectSummary',
+      findProjectSummary
 )
 router.post('/project/myprojects', getDeveloperAssigenedProject)
 
