@@ -217,7 +217,7 @@ const SummaryPage = () => {
     const Project_Details = [Detail]
     const { wbs } = Detail;
     const Tasks = wbs.task
-    console.log(Tasks)
+   
 
     return (
         <>
@@ -246,8 +246,8 @@ const SummaryPage = () => {
                                                 <p>Duration:{detail.duration}</p>
                                                 <p>Created At:{detail.createdAt}</p>
                                                 <p>Description:{detail.descripion}</p>
-                                                <p>progress</p>
-                                                <ProgressBar variant="success" now={60} label={60}></ProgressBar>
+                                                <p>Estimated Completion:{detail.EstimatedCompletionTime}</p>
+                                                
 
                                             </div>
 
