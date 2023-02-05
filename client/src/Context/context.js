@@ -8,10 +8,10 @@ const ContextProvider = ({ children }) => {
     const [Communications, setCommunications] = useState("Issues")
     const [Team, setTeams] = useState("ViewTeams")
     const [Detail, setDetail] = useState({})
-
+    const [adminPages,setAdminPages] = useState("projects")
     return (
 
-        <Context.Provider value={{ Tabs, setTabs, Assignment, setAssignment, Communications, setCommunications, Team, setTeams, Detail, setDetail }}>
+        <Context.Provider value={{ Tabs, setTabs, Assignment, setAssignment, Communications, setCommunications, Team, setTeams, Detail, setDetail,adminPages,setAdminPages }}>
             {children}
         </Context.Provider>
     )

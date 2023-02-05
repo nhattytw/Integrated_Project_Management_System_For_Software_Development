@@ -356,7 +356,6 @@ useEffect(()=>{
 const ActiveProjects = () => {
     const { Tabs, setTabs } = useContext(Context)
     const { Detail, setDetail } = useContext(Context)
-
     const [variant, setVariant] = useState('success')
     const [show, setShow] = useState(false)
     const [message, setMessage] = useState()
