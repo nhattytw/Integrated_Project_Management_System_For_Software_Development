@@ -83,4 +83,16 @@ body,html{
   .availableDevs{
    
   }
-
+ .projectDisplayHeader{
+    padding: 10px;
+ }
+  .projectDisplay{
+    margin:10px 0px 0px 0px;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+.adminClock{
+    margin-top: 0px;
+    float:"right";
+    font-size: 20px;
+}

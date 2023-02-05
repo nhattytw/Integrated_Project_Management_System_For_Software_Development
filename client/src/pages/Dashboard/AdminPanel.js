@@ -1,234 +1,236 @@
-import { Container,Row,Col,Card ,Button,Accordion} from "react-bootstrap";
-import {BarChart, Bar ,XAxis,YAxis,Legend,PieChart,Pie} from 'recharts'
-import Example from "../../Components/charts/PieChart";
 import "../../Styles/dashboard.css"
-import { ProjectBudgetData } from "../../API/Budgetdata";
-import { teams } from "../../API/Teams";
-import { assignments } from "../../API/Assignments";
-import { issues } from "../../API/Issues";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import axios from "axios";
-
-//add padding to the cards
-const MeetingSummary = ()=>
-{
+import { Container,Row,Col,Card,Form,Button } from "react-bootstrap";
+import NavItem from "rsuite/esm/Nav/NavItem";
+import { Nav } from "rsuite";
+import { Context } from "../../Context/context";
+import Clock from 'react-live-clock';
+import React from "react";
+import { postComment } from "../../API/Issues";
+import  ContenetDisplay  from "../../Components/ConentDisplay/ConentDisplay";
+const Header = ()=>{
+    let x = new Date()
     return(
         <Container className="font-link">
             <Row>
-                <h3>Upcoming Meetings</h3>
-                <Col>
-                <Card style={{padding:'10px'}}>
-                <Card.Body>
-                    <Card.Title >meeting with font end team</Card.Title>
-                    <Card.Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget nulla facilisi etiam dignissim diam quis enim lobortis. 
-                    Cursus mattis molestie a iaculis at erat pellentesque. Nulla malesuada pellentesque elit eget gravida cum sociis.
-                    <h5>date:12/12/12</h5>
-                    <h5>time:1:20</h5>
-                    <h5>Participating teams:front End team</h5>
-                    </Card.Text>
-                </Card.Body>
-            </Card>
+                <Col xs lg="0" >
+                    <h3>Welcome  {localStorage.getItem("userName")}</h3>
                 </Col>
-                <Col>
-                <Card>
-                <Card.Body>
-                    <Card.Title>meeting with font end team</Card.Title>
-                    <Card.Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget nulla facilisi etiam dignissim diam quis enim lobortis. 
-                    Cursus mattis molestie a iaculis at erat pellentesque. Nulla malesuada pellentesque elit eget gravida cum sociis.
-                    <h5>date:12/12/12</h5>
-                    <h5>time:1:20</h5>
-                    <h5>Participating teams:front End team</h5>
-                    </Card.Text>
-                </Card.Body>
-            </Card>
-                </Col>
-                <Col>
-                <Card>
-                <Card.Body>
-                    <Card.Title>meeting with font end team</Card.Title>
-                    <Card.Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget nulla facilisi etiam dignissim diam quis enim lobortis. 
-                    Cursus mattis molestie a iaculis at erat pellentesque. Nulla malesuada pellentesque elit eget gravida cum sociis.
-                    <h5>date:12/12/12</h5>
-                    <h5>time:1:20</h5>
-                    <h5>Participating teams:front End team</h5>
-                    </Card.Text>
-                </Card.Body>
-            </Card>
+                <Col xs lg="2">
+                    <Clock style={{float:"right",fontSize:"20px"}} className="adminClock" format={'HH:mm:ss'}  ticking={true} timezone={'Africa/Addis_Ababa'} />
                 </Col>
             </Row>
+            <div style={{float:"right",fontSize:"40px"}}>
+                    {/* <h1 style={{float:"right",fontSize:"40px"}}>{x.getMonth()}/{x.getDate()}/{x.getFullYear()}</h1> */}
+                    
 
+            </div>
+       
         </Container>
     )
-
 }
+const ProjectNav = () => {
 
-const BudgetGraph = ()=>{
-    return(
-
-    <Container style={{margin:"0px 0px 0px 100px"}}>
-        <Row>
-            <Col >
-                <BarChart width={930} height={400} data={ProjectBudgetData}> 
-                    <XAxis dataKey="name"/>
-                    <YAxis />
-                    <Legend />
-                    <Bar dataKey="budget" fill="rgba(66,105,158)" />
-                    <Bar dataKey="spent" fill="#82ca9d" />
-                </BarChart>
-                
-            </Col>
-          <Col>
-          
-          </Col>
-
-         </Row>
-    </Container>
-     
-
+    const { adminPages,setAdminPages } = useContext(Context)
+    return (
+        <>
+        
+        <Nav appearance="tabs" pullRight>
+        
+        <Nav.Item eventKey="home"  onSelect={()=>{setAdminPages("projects")}}>
+        Your Projects
+        </Nav.Item>
+        <Nav.Item eventKey="news" onSelect={()=>{setAdminPages("Issues")}}>Issues</Nav.Item>
+        <Nav.Item eventKey="solutions">Teams</Nav.Item>
+        <Nav.Item eventKey="products">Meetings</Nav.Item>
+       
+      </Nav>
+        
+        </>
     )
 }
-
-
-const ActiveProjects = ()=>
-{
-    const [activeProjects,setActiveProjects] = useState([])
+//add padding to the cards
+const AllProjects=()=>{
+    const [allProjects,setallProjects] = useState([])
+    const [count,setCount] = useState(0)
     useEffect(()=>{
-        axios.get('http://localhost:9000/api/project/ActiveProject').then((response)=>{
-            setActiveProjects(response.data)
+        const url = 'http://localhost:9000/api/project/ActiveProject'
+
+        let payload = { userName: localStorage.getItem('userName') }
+
+         axios.post(
+            url,
+            payload
+        ).then((response) => {
+            setallProjects(response.data)
+        }).catch((err) => {
+            console.log(err)
         })
     },[])
-    return(
-        <Container  >
-            <h3>Active Projects</h3>
-            <Row>
-                {activeProjects.map((project)=>{
-                    return(
-                    <Col xs={6} sm={6}>
-                    <Card border="dark" className="ProjectDesc" style={{color:"#fff",backgroundColor:"rgba(66,105,158)"}}> 
-                        <Card.Title><h3>{project.projectName}</h3></Card.Title>
-                        <Card.Subtitle><h5 className="secondary" style={{color:"#fff"}}>{project.budget}</h5></Card.Subtitle>
-                        <Card.Body><p>{project.descripion}</p></Card.Body>
-                        <Button variant="light" style={{margin:"0px 10px 10px 10px"}}>Go to project</Button>
-                    </Card>
-                    </Col>
-                    )
-                })}
-            </Row>
-        </Container>
-    )
-}
-const WorkStatus=()=>{
+    console.log(allProjects)
     return(
         <Container>
-            <Row>
-                <Col xs={6}>
-                   <h3>Active Assignments</h3>
-                </Col>
-                <Col xs={6}>
-                <h3>issues</h3>
-                {issues.map((issue)=>{
-                    return(
-                        <>
-                        <h6>{issue.project}</h6>
-                       <ul>
-                        {issue.issue.map((i)=>
-                        {return(
-                            <li>{i}</li>
-                        )
-                        })}
-                       </ul>
-                       </>
-                       
-                    )
-                })}
-                </Col>
+            <Row className="projectDisplayHeader">
+            <Col># |</Col>
+            <Col>Project Name</Col>
+            <Col>Duration</Col>
+            <Col>Repository</Col>
+            <Col>Status</Col>
+            <Col>Created At</Col>
             </Row>
-        </Container>
-    )
-}
-const Teams = ()=>
-{
-    return (
-    <Container>
-        <Row>
-            <Col><h3>Teams</h3></Col>
-        </Row>
-        <Row>
-            <Col>
-            {teams.map((team)=>{
-                return(
-            <Accordion>
-                <Accordion.Header>{team.name}</Accordion.Header>
-                <Accordion.Body>
-                    <h3>members</h3>
-                    {team.members.map((memeber)=>{
-                        return(
-                        <ul>
-                            <li>{memeber}</li>
-                        </ul>
-                        )
-                    })}
+            {allProjects.map((project,index)=>{
                 
-                </Accordion.Body>
-            </Accordion>
+                return(
+                    <Row className="projectDisplay">
+                        <Col>{index+=1}</Col>
+                        <Col>{project.projectName}</Col>
+                        <Col>{project.duration}</Col>
+                        <Col>{project.projectRepository}</Col>
+                        <Col><li style={{color:'green'}}>{project.status}</li></Col>
+                        <Col>{project.createdAt}</Col>
+                    </Row>
 
                 )
             })}
-            </Col>
-        </Row>
-    </Container>
-    )
-}
-const Parent=()=>{
-    return(
-        <Container>
-            <Row>
-                <Col><h3>Dashboard</h3></Col>
-            </Row>
-            <Row>
-                <Col>
-                    <ActiveProjects />
-                </Col>
-            </Row>
-    
-            <Row>
-            <Col><h3>Budget Summary</h3></Col>
-            </Row>
-            <Row >
-
-                <Col >
-                <BudgetGraph />
-                </Col>
-                <Col>
-               
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <MeetingSummary />
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                <WorkStatus />
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                <Teams />
-                </Col>
-            </Row>
         </Container>
     )
 }
+
+    const Issues = () => {
+        const options = "Resolved"
+        const [allIssues, setActiveIssues] = useState([]);
+        const [show, setShow] = useState(false);
+    
+        useEffect(() => {
+            axios
+                .get("http://localhost:9000/api/Issues/getActiveIssues")
+                .then((response) => {
+                    setActiveIssues(response.data);
+                });
+        }, []);
+        const CommentBox = (props) => {
+            const [comment, setComment] = useState([])
+            const [message, setMessage] = useState({
+                Comment: "",
+            });
+            useEffect(() => {
+                setComment(props.comments)
+    
+            }, [])
+            const handleOnchangeEvent = (e) => {
+                const temp = Object.assign(message, { [e.target.name]: e.target.value });
+                setMessage(temp);
+            };
+            const handleComment = () => {
+                const temp = [...comment, message.Comment]
+                postComment({ id: props.id, comment: temp })
+                setComment(temp)
+    
+            }
+            if (props.display) {
+                return (
+                    <Container style={{ padding: "10px" }}>
+                        {comment.map((comment) => {
+                            return (
+                                <p>{comment}</p>
+                            )
+    
+                        })}
+                        <Row>
+                            <Form.Control type="text" placeholder="Comment"
+                                name="Comment"
+                                onChange={handleOnchangeEvent}
+                            />
+                        </Row>
+                        <Row style={{ margin: "10px 0px 0px 0px" }}>
+                            <Col sm={4}>
+                                <Button onClick={() => { handleComment() }}>
+                                    Post
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Container>
+                );
+            }
+        };
+        const Comment = (props) => {
+            const [show, setShow] = useState(false);
+    
+            return (
+                <Card style={{ margin: "10px 0px 0px 0px", padding: "10px" }}>
+                    <Card.Title>
+                        <Row>
+                            <h3>{props.title}</h3>
+                        </Row>
+                        <Row>
+                            <Col sm={4}>
+                                <p>PostedBy:{props.postedBy}</p>
+                            </Col>
+                            <Col sm={4}>
+                                <p>Date:{props.createdAt}</p>
+                            </Col>
+                        </Row>
+                    </Card.Title>
+                    <Card.Body>
+                        <Row>
+                            <p>{props.issue}</p>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <button
+                                    style={{ float: "right" }}
+                                    onClick={() => {
+                                        setShow(!show);
+                                    }}
+                                >
+                                    comment
+                                </button>
+                            </Col>
+                            <CommentBox display={show} comments={props.comments} id={props.id}></CommentBox>
+                        </Row>
+                    </Card.Body>
+                </Card>
+            );
+        };
+    
+        return (
+            <React.Fragment>
+                {allIssues.map((issue) => {
+                    console.log(issue)
+                    return (
+                        <Comment
+                            title={issue.title}
+                            postedBy={issue.postedBy}
+                            createdAt={issue.createdAt}
+                            issue={issue.body}
+                            comments={issue.comment}
+                            id={issue._id}
+                        ></Comment>
+                    );
+                })}
+            </React.Fragment>
+        );
+    };
+    
+
+
 const AdminPanel = ()=>
 {
+    const {adminPages,setAdminPages} = useContext(Context)
+    const pages = {
+        "projects": AllProjects,
+        "Issues":Issues ,
+        
+    }
     return(
         <>
-       <Parent />
+        <Header />
+        <ProjectNav />
+        <ContenetDisplay content={pages[adminPages]}>
+
+        </ContenetDisplay>
+       
         
         </>
     )
