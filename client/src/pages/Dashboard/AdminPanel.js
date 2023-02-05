@@ -36,12 +36,11 @@ const ProjectNav = () => {
     return (
         <>
         
-        <Nav appearance="tabs" pullRight>
-        
+        <Nav appearance="tabs"  style={{padding:"0px 0px 0px 0px"}}>
         <Nav.Item eventKey="home"  onSelect={()=>{setAdminPages("projects")}}>
         Your Projects
         </Nav.Item>
-        <Nav.Item eventKey="news" onSelect={()=>{setAdminPages("Issues")}}>Issues</Nav.Item>
+        <Nav.Item eventKey="news"    onSelect={()=>{setAdminPages("Issues")}}>Issues</Nav.Item>
         <Nav.Item eventKey="solutions">Teams</Nav.Item>
         <Nav.Item eventKey="products">Meetings</Nav.Item>
        
