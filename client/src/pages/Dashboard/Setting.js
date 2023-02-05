@@ -86,7 +86,7 @@ const SettingPage = () => {
     }
 
     return (
-        <div>
+        <div className='font-link'>
             <Alert show={show} variant={variant}>
                 <p style={{ textAlign: 'center' }}>
                     {message}

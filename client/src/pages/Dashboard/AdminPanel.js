@@ -13,7 +13,7 @@ import axios from "axios";
 const MeetingSummary = ()=>
 {
     return(
-        <Container>
+        <Container className="font-link">
             <Row>
                 <h3>Upcoming Meetings</h3>
                 <Col>

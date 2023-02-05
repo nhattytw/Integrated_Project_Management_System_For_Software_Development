@@ -21,7 +21,7 @@ const TeamsNav = () => {
     const { Team, setTeams } = useContext(Context)
 
     return (
-        <Container>
+        <Container className='font-link'>
             <Row>
                 <Col>
                     <Nav appearance='tabs' >
@@ -84,7 +84,7 @@ const CreateTeams = () => {
         }
 
         return (
-            <Container style={{ backgroundColor: "red !important" }} >
+            <Container style={{ backgroundColor: "red !important" }} className="font-link">
 
                 <Row>
                     <Col style={{ margin: '1000px 10px 10px 10px' }}>
@@ -121,7 +121,7 @@ const CreateTeams = () => {
     const CreateTeam = (props) => {
         return (
 
-            <Modal show={show} onHide={handleClose} animation={false}>
+            <Modal show={show} onHide={handleClose} animation={false} className="font-link">
                 <Modal.Header closeButton>
                     <Modal.Title>Team Name</Modal.Title>
                 </Modal.Header>
@@ -154,7 +154,7 @@ const CreateTeams = () => {
         handleShow()
     }
     return (
-        <div>
+        <div className='font-link'>
             <Alert show={show} variant={variant}>
                 <p style={{ textAlign: 'center' }}>
                     {message}
@@ -302,7 +302,7 @@ const ViewTeams = () => {
     }, [])
 
     return (
-        <div>
+        <div className='font-link'>
             <Alert show={show} variant={variant}>
                 <p style={{ textAlign: 'center' }}>
                     {message}
@@ -364,11 +364,11 @@ const Teams = () => {
     const { Team, setTeams } = useContext(Context)
 
     return (
-        <>
+        <div className='font-link'>
             <TeamsNav />
             <ContenetDisplay content={pages[Team]}>
             </ContenetDisplay>
-        </>
+        </div>
     )
 }
 

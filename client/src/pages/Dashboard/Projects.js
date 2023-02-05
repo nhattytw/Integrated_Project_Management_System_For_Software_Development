@@ -27,7 +27,7 @@ const endPoint = "http://127.0.0.1:3001"
 const ProjectNav = () => {
     const { Tabs, setTabs } = useContext(Context)
     return (
-        <Container>
+        <Container className='font-link'>
             <Row>
                 <Col>
                     <Nav appearance='tabs' >
@@ -127,7 +127,7 @@ const CreateProject = () => {
     const [show, setShow] = useState(false)
     const [message, setMessage] = useState()
     return (
-        <div>
+        <div className='font-link'>
             <Alert show={show} variant={variant}>
                 <p style={{ textAlign: 'center' }}>
                     {message}
@@ -235,7 +235,7 @@ useEffect(()=>{
    
 
     return (
-        <>
+        <div className='font-link'>
             <Container>
                 <h3>Project Summary</h3>
 
@@ -348,7 +348,7 @@ useEffect(()=>{
                 </Row>
 
             </Container>
-        </>
+        </div>
 
     )
 }
@@ -457,7 +457,7 @@ const ActiveProjects = () => {
     }
 
     return (
-        <div>
+        <div className='font-link'>
             <Alert show={show} variant={variant}>
                 <p style={{ textAlign: 'center' }}>
                     {message}

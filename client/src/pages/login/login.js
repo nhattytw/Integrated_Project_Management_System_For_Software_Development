@@ -98,7 +98,7 @@ export default function Login() {
     }
 
     return (
-        <>
+        <div className="font-link">
             <NavBar />
 
             <Alert show={show} variant={variant}>
@@ -107,12 +107,12 @@ export default function Login() {
                 </p>
             </Alert>
 
-            <Form className="login">
+            <Form className="logs">
                 <Container >
                     <Row>
                         <Col>
-                            <img src={people} alt="People" style={{ margin: "0px 0px 0px 75px" }} />
-                            <h2 style={{ margin: "0px 0px 0px 95px" }}>Welcome Back</h2>
+                            <img src={people} alt="People" style={{ width: "100%" }} />
+                            <h2 className="hhh1">Welcome Back</h2>
                             <hr ></hr>
                             <Form.Group className='d-grid gap-2'>
                                 <Form.Control
@@ -139,7 +139,6 @@ export default function Login() {
                                 </Button>
                                 <LinkContainer to='/forgetpassword'>
                                     <a href="#" style={{ textAlign: "center" }}>Forgot Password ?</a>
-
                                 </LinkContainer>
                             </Form.Group>
                         </Col>
@@ -147,6 +146,6 @@ export default function Login() {
                 </Container>
             </Form>
 
-        </>
+        </div>
     )
 }

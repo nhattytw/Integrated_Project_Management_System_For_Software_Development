@@ -98,7 +98,7 @@ export default function Login() {
     }
 
     return (
-        <>
+        <div className="font-link">
             <NavBar />
 
             <Alert show={show} variant={variant}>
@@ -107,7 +107,7 @@ export default function Login() {
                 </p>
             </Alert>
 
-            <Form className="login">
+            <Form className="logs">
                 <Container >
                     <Row>
                         <Col>
@@ -147,6 +147,6 @@ export default function Login() {
                 </Container>
             </Form>
 
-        </>
+        </div>
     )
 }

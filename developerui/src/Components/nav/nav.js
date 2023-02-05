@@ -17,7 +17,7 @@ import PeoplesIcon from '@rsuite/icons/Peoples';
 
  const NavBar =()=> {
   return (
-    <>
+    <div className='font-link'>
       <Navbar bg="dark" variant="dark" sticky="top" style={{height:"45px"}}>
       
         <Container className='left'>
@@ -27,13 +27,12 @@ import PeoplesIcon from '@rsuite/icons/Peoples';
           <LinkContainer to="/"><BootNav.Link >Home</BootNav.Link ></LinkContainer>
            <LinkContainer to="/login"><BootNav.Link >Login</BootNav.Link></LinkContainer>
            <LinkContainer to="/Registration"><BootNav.Link >Registration</BootNav.Link ></LinkContainer>
-            <BootNav.Link href="#pricing">About</BootNav.Link>
-            <BootNav.Link href="#pricing">Services</BootNav.Link>
-            <BootNav.Link href="#pricing">Contact</BootNav.Link>
+           <LinkContainer to="/About"><BootNav.Link >About</BootNav.Link ></LinkContainer>
+           <LinkContainer to="/Contact"><BootNav.Link >Contact</BootNav.Link ></LinkContainer>
           </BootNav>
         </Container>
       </Navbar>
-    </>
+    </div>
   );
 }
 export { NavBar  }
