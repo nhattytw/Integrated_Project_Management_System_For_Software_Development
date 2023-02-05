@@ -23,9 +23,12 @@ const MeetingsSchema = mongoose.Schema({
         },
         projectName: {
             type: String,
-            ref: 'projectInfo'
         }
     }],
+    projectName: {
+        type: String,
+        ref: 'projectInfo'
+    }
     // check start time before displaying
 }, { timestamps: true })
 // If frequency is set to weekly the system is required to compute the next meeting date and give cancelation option, 

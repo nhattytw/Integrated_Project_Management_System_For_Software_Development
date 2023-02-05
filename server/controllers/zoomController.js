@@ -5,6 +5,9 @@ const messageFunction = require('../utils/messageFunction')
 const Meeting = require('../model/meetings')
 const connectToDB = require('../utils/dbConnect')
 const User = require('../model/userInfo')
+const Project = require('../model/project')
+const teamAssignment = require('../model/teamAssignment')
+const { getAllProject } = require('./projectController')
 
 // Automatic delete if a meeting is time passed? or just listMeetings
 
@@ -64,15 +67,15 @@ const createMeeting = async (req, res) => {
                         })
 
                         if (userResult) {
-                              const existingUserMeeting = await Meeting.findOne({
-                                    projectManager: userResult._id
+                              const existingProjectMeeting = await Meeting.findOne({
+                                    projectName: projectName
                               })
 
-                              if (existingUserMeeting) {
-                                    // appends the meetingId array of that user, no duplicate entry for same user
+                              if (existingProjectMeeting) {
+                                    // appends the meetingId array of that user, no duplicate entry for same project
                                     const addMeeting = await Meeting.updateOne(
                                           {
-                                                projectManager: userResult._id
+                                                projectName: existingProjectMeeting.projectName
                                           },
                                           {
                                                 $push: {
@@ -83,7 +86,7 @@ const createMeeting = async (req, res) => {
                                                             meetingStartTime: response.start_time,
                                                             meetingStartUrl: response.join_url,
                                                             projectName: projectName
-                                                      }]
+                                                      }],
                                                 }
                                           }
                                     )
@@ -94,7 +97,7 @@ const createMeeting = async (req, res) => {
                                                       messageFunction(
                                                             false,
                                                             'Meeting Created',
-                                                            response
+                                                            response.meetingInfo
                                                       )
                                                 )
                                     } else {
@@ -118,11 +121,13 @@ const createMeeting = async (req, res) => {
                                                 meetingStartTime: response.start_time,
                                                 meetingStartUrl: response.join_url,
                                                 projectName: projectName
-                                          }]
+                                          }],
+                                          projectName: projectName
                                     }).save()
 
                                     if (newMeeting) {
                                           // creates new meeting
+
                                           return res
                                                 .status(200)
                                                 .json(
@@ -179,10 +184,16 @@ const createMeeting = async (req, res) => {
 
 // @desc     Get All Zoom Meetings
 // @access   Public
-//lists all active meetings
 const listMeetings = async (req, res) => {
       const { userName } = req.body
 
+      const sort_by_key = (array, key) => {
+            return array.sort(function (a, b) {
+                  var x = a[key]
+                  var y = b[key]
+                  return ((x < y) ? -1 : ((x > y) ? 1 : 0))
+            })
+      }
       try {
             connectToDB()
             const userResult = await User.findOne({
@@ -190,25 +201,35 @@ const listMeetings = async (req, res) => {
             })
 
             if (userResult) {
-                  const existingUserMeeting = await Meeting.findOne({
+                  await Meeting.find({
                         projectManager: userResult._id
-                  })
-
-                  if (existingUserMeeting) {
-                        var data = existingUserMeeting.meetingInfo
-
+                  }).exec((error, existingUserMeeting) => {
+                        existingUserMeeting = sort_by_key(
+                              existingUserMeeting,
+                              "projectName"
+                        )
+                        console.log(existingUserMeeting)
                         return res
                               .status(200)
                               .json(
                                     messageFunction(
                                           false,
                                           'List of Meetings',
-                                          data
+                                          existingUserMeeting
                                     )
                               )
-                  }
-            }
+                  })
+            } else {
+                  return res
+                        .status(403)
+                        .json(
+                              messageFunction(
+                                    true,
+                                    'Failed to Fetch Meetings, Please try again!'
+                              )
+                        )
 
+            }
       } catch (error) {
             return res
                   .status(500)
@@ -217,6 +238,70 @@ const listMeetings = async (req, res) => {
                   )
       }
 
+}
+
+// @desc     Get All Developer Zoom Meetings
+// @access   Public
+const listDevMeetings = async (req, res) => {
+      const { userName } = req.body
+      connectToDB()
+
+      try {
+            var userTeamResult = await User.findOne({
+                  userName: userName
+            })
+            var project = []
+
+            await userTeamResult.assignedTeam.map(async (item) => {
+                  var team = await teamAssignment.findOne({
+                        teamName: item
+                  })
+                  var meeting = Meeting.find({
+                        projectName: team.assignedProject[0]
+                  }).exec((err, meet) => {
+                        if (meet) {
+                              project.push(meet[0].meetingInfo)
+                        }
+                        console.log("=>", project)
+                  })
+            })
+
+
+            // return res
+            //       .status(200)
+            //       .json(
+            //             messageFunction(
+            //                   false,
+            //                   'List of Meetings',
+            //                   project
+            //             )
+            //       )
+            //             }).then((item) => {
+            //                   console.log("-----------", item)
+            //             })
+            //       })
+
+            // })
+            // })
+
+            // else {
+            //       return res
+            //             .status(403)
+            //             .json(
+            //                   messageFunction(
+            //                         true,
+            //                         'Failed to Fetch Meetings, Please try again!'
+            //                   )
+            //             )
+
+            // }
+      } catch (error) {
+            return res
+                  .status(500)
+                  .json(
+                        messageFunction(true, 'Server Error occured')
+                  )
+      }
 }
 
 // @desc     Get Zoom Meeting
@@ -403,5 +488,6 @@ module.exports = {
       getMeeting,
       deleteMeeting,
       instantMeeting,
-      deleteMeetingDB
+      deleteMeetingDB,
+      listDevMeetings
 }

@@ -15,17 +15,15 @@ const connectToDB = async (_req, res) => {
             console.log("Successfully connected to MongoDB.")
 
       } catch (error) {
-            console.log("Can't connect to MongoDb")
+            console.log(`Can't connect to MongoDb! Please make sure you are connected to the internet.`)
             console.error(error.message)
 
-            return res
-                  .status(400)
-                  .json(
-                        messageFunction(
-                              true,
-                              `Can't connect to MongoDb! Please make sure you are connected to the internet.`
-                        )
-                  )
+            // return res.status(400).json(
+            //       messageFunction(
+            //             true,
+            //             `Can't connect to MongoDb! Please make sure you are connected to the internet.`
+            //       )
+            // )
       }
 }
 
