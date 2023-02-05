@@ -86,7 +86,7 @@ const Dashboard = () => {
   const [expand, setExpand] = React.useState(true);
   let image = require("./logos.png");
   return (
-    <div className="show-fake-browser sidebar-page">
+    <div className="show-fake-browser sidebar-page font-link">
       <Container>
         <Sidebar
           style={{

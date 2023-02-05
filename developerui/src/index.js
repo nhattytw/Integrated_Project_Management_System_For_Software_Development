@@ -19,6 +19,9 @@ import {
   AssignmentContext,
   AssignmentContextProvider,
 } from "./Context/context";
+import About from "./pages/Landing/About";
+import Contact from "./pages/Landing/Contact";
+import Terms from "./pages/Registration/Terms";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -40,8 +43,20 @@ const router = new createBrowserRouter([
     element: <Dashboard />,
   },
   {
+    path: "/About",
+    element: <About />,
+  },
+  {
+    path: "/Contact",
+    element: <Contact />,
+  },
+  {
     path: "/forgetpassword",
     element: <ForgotPassword />,
+  },
+  {
+    paht: "/Terms",
+    element: <Terms />,
   },
 ]);
 root.render(

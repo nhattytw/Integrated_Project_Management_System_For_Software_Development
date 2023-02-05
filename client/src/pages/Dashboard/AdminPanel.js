@@ -12,7 +12,7 @@ import  ContenetDisplay  from "../../Components/ConentDisplay/ConentDisplay";
 const Header = ()=>{
     let x = new Date()
     return(
-        <Container>
+        <Container className="font-link">
             <Row>
                 <Col xs lg="0" >
                     <h3>Welcome  {localStorage.getItem("userName")}</h3>

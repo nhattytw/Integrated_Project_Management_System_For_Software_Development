@@ -1,59 +1,86 @@
-body,
-html {
+body,html{
   margin: 0px;
   padding: 0px;
 }
-#btn-get-started {
+
+.font-link {
+  font-family: 'Montserrat', sans-serif;
+}
+
+#btn-get-started{
   height: 50px;
   width: 150px;
   cursor: Pointer;
   font-family: Oxygen;
   border: 1px solid #fff;
-  background-color: rgba(66, 105, 158);
+  background-color: rgba(66,105,158);
   color: #fff;
+  
 }
-.summary > h3,
-h5,
-button {
+.summary > h3,h5,button{
   margin: 0px 0px 0px 5px;
+  
 }
 
-.secondary {
-  color: rgb(153, 153, 153);
+.secondary{
+      color: rgb(153, 153, 153);
 }
-.Navcontainer {
+.Navcontainer{
+  
   background: #e0e0e0;
-  box-shadow: 25px 25px 51px #868686, -25px -25px 51px #ffffff;
+  box-shadow:  25px 25px 51px #868686,
+               -25px -25px 51px #ffffff;
 }
-.NavItem {
-  color: #fff !important;
+.NavItem{
+  color:#fff !important
 }
-.NavItem:hover {
-  color: rgba(66, 105, 158) !important;
+.NavItem:hover{
+  color:rgba(66,105,158) !important;
   background-color: #fff !important;
 }
 .NavItem:active{
-  background-color: red;
+  color:rgba(66,105,158) !important;
+  background-color: #fff !important;
 }
 
-.customBoard {
+.customBoard{
   padding: 20px;
   background-color: #ececec;
   width: 30%;
-  float: left;
+  float:left;
+
 }
-.customBoardItem {
+.customBoardItem{
   margin: 0px 0px 8px 0px;
-  padding: 5px 0px 0px 8px;
+  padding: 5px 0px 0px 8px
 }
-.doneBoard {
+.doneBoard
+{
   margin-left: 10px;
   padding: 20px;
   background-color: #ececec;
   width: 30%;
-  float: left;
+  float:left;
+
 }
-.doneBoardItem {
+.doneBoardItem{
   margin: 0px 0px 8px 0px;
-  padding: 5px 0px 0px 8px;
+  padding: 5px 0px 0px 8px
+
 }
+.teamsContainer{
+  height: fit-content;
+  padding:20px;
+  box-shadow:  20px 20px 60px #d9d9d9,
+           -20px -20px 60px #ffffff;
+}
+.checkbox
+{
+  border-radius: 20pc;
+  margin:1px 0px 0px 5px;
+}
+
+.availableDevs{
+ 
+}
+

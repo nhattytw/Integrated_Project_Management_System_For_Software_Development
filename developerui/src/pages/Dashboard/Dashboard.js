@@ -11,7 +11,6 @@ import CogIcon from "@rsuite/icons/legacy/Cog";
 import AngleLeftIcon from "@rsuite/icons/legacy/AngleLeft";
 import AngleRightIcon from "@rsuite/icons/legacy/AngleRight";
 import DashboardIcon from "@rsuite/icons/Dashboard";
-import PageIcon from "@rsuite/icons/Page"; //for payroll page to be removed
 import ProjectIcon from "@rsuite/icons/Project"; //for project page
 import SentToUserIcon from "@rsuite/icons/SentToUser"; //for communications page
 import SettingIcon from "@rsuite/icons/legacy/Wrench"; //for setting page
@@ -24,8 +23,6 @@ import Assignments from "./Assignments/Assingments";
 import Communications from "./Communication";
 import SettingPage from "./Setting";
 import { useState } from "react";
-import SidenavHeader from "rsuite/esm/Sidenav/SidenavHeader";
-import NavItem from "rsuite/esm/Nav/NavItem";
 
 // add first best solution
 // page navigation preliminary logic
@@ -98,7 +95,7 @@ const Dashboard = () => {
   const [expand, setExpand] = React.useState(true);
   let image = require("./logos.png");
   return (
-    <div className="show-fake-browser sidebar-page">
+    <div className="show-fake-browser sidebar-page font-link">
       <Container>
         <Sidebar
           style={{

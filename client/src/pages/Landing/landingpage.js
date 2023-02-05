@@ -14,6 +14,8 @@ import team from './people.png';
 import constraintChart from './constraintChart.png'
 import laptop from './laptop.png'
 
+
+
 const Landing = () => {
   useEffect(() => {
     Aos.init({ duration: 2000 });
@@ -31,27 +33,23 @@ const Landing = () => {
   }
   return (
 
-    <>
+    <div className='font-link'>
 
       <Container fluid className='LandingImage intro' style={{ height: "100vh" }}>
         <div className="header">
           <Row >
             <Col className='c1'>
-              <h4 className='intro-h4' >
-                Now you can manage your projects,teams and constraints,
+              <h4 className='intro-h4' style={{padding: "10px"}} >
+                Now you can manage your projects, teams and constraints,
                 with ease and efficency to accomplish the best work.
               </h4>
             </Col>
           </Row>
-          <Row >
-            <Col>
-              <p className='intro-p'>
-                Lorem ipsum dolors sit amet, consectetur adipiscing elit. In dignissim tempus lorem nec dignissim. In lobortis est vitae lacus rhoncus hendrerit. Donec non quam sed urna ultrices varius. Pellentesque id vestibulum nibh.
-              </p>
-            </Col>
-
+          <Row>
             <Row>
               <Button
+                className="font-link"
+                style={{height: "70px" , width:"195px"}}
                 variant='primary'
                 onClick={handleSubmit}
                 id="btn-get-started"
@@ -68,7 +66,7 @@ const Landing = () => {
 
         </Container>
         <Row style={{margin:"0px 0px 40px 0px",textAlign:'center'}}>
-        <h3>Procratio is a web-based,list-making,scheduling and project management application</h3>
+        <h3>Procratio is a web-based, list-making, scheduling and project managing application</h3>
         <p></p>
 
         </Row>
@@ -180,7 +178,7 @@ const Landing = () => {
 
       </Container>
       <Footer />
-    </>
+    </div>
 
   )
 }

@@ -2,6 +2,11 @@ body,html{
     margin: 0px;
     padding: 0px;
 }
+
+.font-link {
+    font-family: 'Montserrat', sans-serif;
+}
+
 #btn-get-started{
     height: 50px;
     width: 150px;

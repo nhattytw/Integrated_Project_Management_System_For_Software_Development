@@ -156,7 +156,7 @@ export default function ForgotPassword() {
     }
 
     return (
-        <>
+        <div className='font-link'>
             <NavBar />
 
             <Alert show={show} variant={variant}>
@@ -254,6 +254,6 @@ export default function ForgotPassword() {
 
                 </Form>
             </Container>
-        </>
+        </div>
     )
 }
