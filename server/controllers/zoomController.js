@@ -21,8 +21,28 @@ const token = jwt.sign(
       process.env.ZOOM_API_SECRET // API SECRET
 )
 
-//request the zoom api to create a meeting and adding participants
-//registered with company email
+// @desc     Get Mail List
+// @access   Public
+const getMailList = (members) => {
+      let mailList = []
+
+      members.forEach(element => {
+            User.findOne({
+                  userName: element
+            }).lean(true).exec((err, result) => {
+                  if (err) {
+                        console.log(err)
+                  }
+                  else {
+                        mailList.push(result.email)
+                        if (mailList.length === members.length) {
+                              mailNotifications(mailList)
+
+                        }
+                  }
+            })
+      });
+}
 
 // @desc     Create Zoom Meeting
 // @access   Public
@@ -91,6 +111,7 @@ const createMeeting = async (req, res) => {
                                           }
                                     )
                                     if (addMeeting) {
+                                          // getMailList(members)
                                           return res
                                                 .status(200)
                                                 .json(

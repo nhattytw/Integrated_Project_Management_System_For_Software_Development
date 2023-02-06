@@ -46,16 +46,7 @@ input[type="number"] {
   margin: 40px;
 }
 
-/* #root{
-    overflow-x: hidden;
-} */
 .Description {
-  /* position: absolute;
-    top: 50%;
-    left: 25%;
-    padding: 0px;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%); */
   padding: 70px;
 }
 .img-height {
@@ -103,9 +94,7 @@ input[type="number"] {
 .navbar {
   background-color: rgba(66, 105, 158, 0.4);
 }
-/* .intro{
-    height: 650px;
-} */
+
 .LandingImage {
   background-image: linear-gradient(
       to right,

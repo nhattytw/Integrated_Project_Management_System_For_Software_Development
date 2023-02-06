@@ -39,7 +39,7 @@ const signup = async (req, res) => {
                         assignedTeam: [],
                         gitHubAccount: gitHubAccount,
                         secret: "",
-                        available   :true
+                        available: true
                   })
 
                   if (await newUser.save()) {
@@ -225,7 +225,7 @@ const searchUser = async (req, res) => {
 const updateUserInfo = async (req, res) => {
       connectToDB()
       try {
-            const { phoneNumber, email, userName, password, position, gitHubAccount } = req.body
+            const { phoneNumber, email, userName, password, gitHubAccount } = req.body
 
             // Try with checking session or cookie - of the authentication - to get the userName without being sent as part of the data
 
@@ -254,7 +254,6 @@ const updateUserInfo = async (req, res) => {
                                     $set: {
                                           phoneNumber: phoneNumber,
                                           email: email,
-                                          position: position,
                                           gitHubAccount: gitHubAccount
                                     }
                               },

@@ -72,32 +72,36 @@ const ActiveProjectList = async (req, res) => {
       { userName: userName }
     ).lean(true)
       .exec(async (error, managerResult) => {
+        if (error) {
 
-        await Project.find({
-          isAssignedTo: { $gt: 0 },
-          projectManager: managerResult._id
-        }).populate("projectManager")
-          .populate("wbs")
-          .sort({
-            projectName: 1
-          })
-          .then((result) => {
-            if (result) {
-              const jsonContent = JSON.stringify(result)
-              // console.log("Here", jsonContent.projectName)
+        } else {
+
+          await Project.find({
+            isAssignedTo: { $gt: 0 },
+            projectManager: managerResult._id
+          }).populate("projectManager")
+            .populate("wbs")
+            .sort({
+              projectName: 1
+            })
+            .then((result) => {
+              if (result) {
+                const jsonContent = JSON.stringify(result)
+                // console.log("Here", jsonContent.projectName)
+                return res
+                  .status(200)
+                  .send(jsonContent)
+              }
+            })
+            .catch((error) => {
+              console.log(error)
               return res
-                .status(200)
-                .send(jsonContent)
-            }
-          })
-          .catch((error) => {
-            console.log(error)
-            return res
-              .status(400)
-              .json(
-                messageFunction(true, 'Error Occurred When Fetching Data')
-              )
-          })
+                .status(400)
+                .json(
+                  messageFunction(true, 'Error Occurred When Fetching Data')
+                )
+            })
+        }
       })
   } catch (error) {
     console.log(error)
@@ -343,14 +347,14 @@ const getDeveloperAssigenedProject = (req, res) => {
         else {
           let assignedProject = []
           teamResult.forEach((element) => {
-            if(element.assignedProject){
-               assignedProject=[...assignedProject,...element.assignedProject]
+            if (element.assignedProject) {
+              assignedProject = [...assignedProject, ...element.assignedProject]
               console.log(element.assignedProject)
 
             }
           })
           console.log(assignedProject)
-          
+
           Project.find().where("projectName").in(assignedProject).populate('wbs').exec((err, Projectresult) => {
             console.log("Project Query")
             if (err) {

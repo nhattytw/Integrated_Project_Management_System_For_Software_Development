@@ -86,6 +86,7 @@ export default function RegistrationPage() {
       position: "Project Manager",
       gitHubAccount: "",
     });
+    window.open("/", "_self");
   };
 
   const handleDateChange = (event) => {
@@ -169,7 +170,7 @@ export default function RegistrationPage() {
               value={dateState.toLocaleDateString}
               onChange={handleDateChange}
               min="1975-01-01"
-              max="2050-12-31"
+              max="2005-12-31"
             />
           </Col>
           <Col></Col>
@@ -191,7 +192,6 @@ export default function RegistrationPage() {
                 name="phoneNumber"
                 value={state.phoneNumber}
                 onChange={handleChange}
-              // a way to check this ?
               />
             </Form>
           </Col>
@@ -283,11 +283,12 @@ export default function RegistrationPage() {
               <LinkContainer to='/Terms'>
                 <a href="#" style={{ textAlign: "center" }}>
                   {" "}
-                  terms and conditions ?</a>
+                  Terms and Conditions
+                </a>
               </LinkContainer>
             </label>
           </Col>
-          
+
         </Row>
       </Container>
     </div>

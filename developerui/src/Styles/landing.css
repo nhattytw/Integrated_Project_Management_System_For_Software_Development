@@ -41,30 +41,17 @@ input[type=number] {
  width: fit-content;
   
 }
+
 .container{
-  margin: 40px;
-  
-
-  
+  margin: 40px;  
 }
 
-/* #root{
-  overflow-x: hidden;
-} */
 .Description{
-  /* position: absolute;
-  top: 50%;
-  left: 25%;
-  padding: 0px;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%); */
-  padding: 70px;
-  
-  
+  padding: 70px; 
 }
+
 .img-height{
   height: 6rem;
-  
 }
 .cardH{
   height:100px;
@@ -76,7 +63,8 @@ input[type=number] {
   display: -webkit-flex; 
       display: -ms-flexbox; 
       display: flex; 
-      -webkit-flex-wrap: wrap; -ms-flex-wrap: wrap; 
+      -webkit-flex-wrap: wrap; 
+      -ms-flex-wrap: wrap; 
       flex-wrap: wrap; 
       overflow: hidden;
 }
@@ -112,9 +100,7 @@ input[type=number] {
 .navbar{
   background-color: rgba(66,105,158,0.4)
 }
-/* .intro{
-  height: 650px;
-} */
+
 .LandingImage{
   background-image: linear-gradient(to right, rgba(3,3,4,1),rgba(55,94,147,0.4)  ) ,url('../Assets/projectTeam.jpg');
   background-size: cover;
