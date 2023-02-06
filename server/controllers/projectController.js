@@ -42,7 +42,7 @@ const CreateProject = async (req, res) => {
 
                 await newProject.save()
                 console.log("Project saved")
-                // createRespository(projectRepository,descripion)
+                createRespository(projectRepository,descripion)
                 return res
                   .status(200)
                   .json(

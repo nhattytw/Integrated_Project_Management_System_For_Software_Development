@@ -248,6 +248,7 @@ const CreateTeams = async (req, res) => {
                                                 { available: false }
                                             )
                                         }
+                                        getMailList(members)
                                     } else {
                                         console.log("developer cannot be reassiged")
                                         return res
@@ -265,7 +266,7 @@ const CreateTeams = async (req, res) => {
                     })
             })
 
-            // getMailList(members)
+            
             // res.send("Teams Created")
 
         }

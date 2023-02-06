@@ -47,73 +47,58 @@ const ScheduledMeetings = () => {
     result: []
   })
 
-  const handleLoad = async () => {
-    setState({
-      ...state,
-      userName: localStorage.getItem('userName'),
-    })
+  useEffect(() => {
+    const handleLoad = async () => {
+      setState({
+        ...state,
+        userName: localStorage.getItem('userName'),
+      })
 
-    try {
-      var formBody = JSON.stringify(state)
+      try {
+        var formBody = JSON.stringify(state)
 
-      const response = await fetch(
-        base_url + `/listDevMeetings`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Authorization': localStorage.getItem('Bearer')
+        const response = await fetch(
+          base_url + `/listDevMeetings`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              'Authorization': localStorage.getItem('Bearer')
+            },
+            body: formBody
           },
-          body: formBody
-        },
-      )
-      const data = await response.json()
-      console.log("Data:", data)
+        )
+        const data = await response.json()
 
-      if (data.message === "List of Meetings") {
-        // setState({
-        //     ...state,
-        //     result: data.data
-        // })
-        state.result = []
-
-        data.data.forEach((element) => {
-          element.meetingInfo.forEach((item) => {
-            state.result.push(item)
+        if (data.message === "List of Meetings") {
+          setState({
+            ...state,
+            result: data.data
           })
-        })
-        console.log(state.result)
+        } else {
+          setMessage(data.message)
+          setVariant("danger")
+          setShow(true)
+        }
 
-        setState({
-          ...state,
-          temp: ""
-        })
-      } else {
-        setMessage(data.message)
-        setVariant("danger")
-        setShow(true)
-      }
-
-      setTimeout(() => {
-        setShow(false)
-      }, "3000")
-    } catch (error) {
-      if (error.message === `Unexpected token 'A', "Access Denied" is not valid JSON`) {
-        let msgg = `Access Denied`
-        setMessage(msgg)
-        setVariant("danger")
-        setShow(true)
-      }
-      else {
-        setMessage(error.message)
-        setVariant("danger")
-        setShow(true)
+        setTimeout(() => {
+          setShow(false)
+        }, "3000")
+      } catch (error) {
+        if (error.message === `Unexpected token 'A', "Access Denied" is not valid JSON`) {
+          let msgg = `Access Denied`
+          setMessage(msgg)
+          setVariant("danger")
+          setShow(true)
+        }
+        else {
+          setMessage(error.message)
+          setVariant("danger")
+          setShow(true)
+        }
       }
     }
-  }
-
-  useEffect(() => {
 
     handleLoad()
   }, [])
@@ -151,11 +136,9 @@ const ScheduledMeetings = () => {
                     <td>{meeting.meetingTopic}</td>
                     <td>{meeting.meetingDuration}</td>
                     <td>
-                      {meeting.meetingStartTime.split('T')[1].split('+')[0]}
+                      {meeting.meetingStartTime.split('T')[1].split('Z')[0]}
                     </td>
-                    <td>
-                      {meeting.meetingStartTime.split('T')[0]}
-                    </td>
+                    <td>{meeting.meetingStartTime.split('T')[0]}</td>
                     <td>
                       <ButtonGroup style={{ float: "center", padding: "0px 30px 0px 0px" }}>
                         <Button
@@ -198,7 +181,7 @@ const Issue = () => {
   const [message, setMessage] = useState({
     title: "",
     Issue: "",
-    username: localStorage.getItem("userName")
+    username:localStorage.getItem("userName")
   });
   let cached_messages = [];
 
@@ -332,7 +315,7 @@ const ActiveIssues = () => {
   };
   const Comment = (props) => {
     const [show, setShow] = useState(false);
-    const [status,setStatus] = useState['Active', 'Resolved', 'Pending']  
+    const status = ['Active', 'Resolved', 'Pending']  
     return (
       <Card style={{ margin: "10px 0px 0px 0px", padding: "10px" }}>
         <Card.Title>
@@ -369,7 +352,7 @@ const ActiveIssues = () => {
             <Col xs lg="2">
             <Form.Select >
               <option></option>
-              {status.map((item)=>{
+              {status?.map((item)=>{
                 return(
                     <option>{item}</option>
                 )
