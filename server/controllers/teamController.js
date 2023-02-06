@@ -164,26 +164,26 @@ const getAssignedTeam = async (_req, res) => {
 
 // @desc     Get Mail List
 // @access   Public
-const getMailList = (members) => {
+const getMailList = (members, type) => {
     let mailList = []
 
     members.forEach(element => {
         User.findOne({
             userName: element
-        }).lean(true).exec((err, result) => {
-            if (err) {
-                console.log(err)
-            }
-            else {
-                mailList.push(result.email)
-                if (mailList.length === members.length) {
-                    mailNotifications(mailList)
-
+        }).lean(true)
+            .exec((err, result) => {
+                if (err) {
+                    console.log(err)
                 }
-            }
-        })
-    });
+                else {
+                    mailList.push(result.email)
 
+                    if (mailList.length === members.length) {
+                        mailNotifications(mailList, type)
+                    }
+                }
+            })
+    })
 }
 
 // members must exist and project must be created before hand
@@ -207,7 +207,7 @@ const CreateTeams = async (req, res) => {
                     messageFunction(true, 'Team Name Already Exists')
                 )
         } else {
-            
+
             User.findOne({ userName: userName }).exec((err) => {
                 if (err) {
 
@@ -266,7 +266,7 @@ const CreateTeams = async (req, res) => {
                     })
             })
 
-            
+
             // res.send("Teams Created")
 
         }
@@ -348,6 +348,13 @@ const assignProjectToTeam = async (req, res) => {
                                         }
                                     }
                                 )
+
+                                const team = await Team.findOne({
+                                    teamName: teamName
+                                })
+
+                                getMailList(team.members,'assign')
+
                                 return res
                                     .json(
                                         messageFunction(

@@ -44,7 +44,22 @@ const scheduledMeeting = `Subject: Meeing Reminder
 
 Dear Employee, 
 
-This is to remind you of your upcoming meeting taking place on DATE at TIME.
+This is to remind you of your upcoming meeting.
+
+The meeting will be held on ZOOM and check your IMPS notifications. Please make sure that you are there on time and prepared for the discussion. 
+
+
+Thank you very much. 
+
+Best Regards, 
+Ahaz Software and Web Technologies
+`
+
+const assignProjectToTeam = `Subject: Meeing Reminder
+
+Dear Employee, 
+
+This is to remind you of your upcoming meeting.
 
 The meeting will be held on ZOOM and check your IMPS notifications. Please make sure that you are there on time and prepared for the discussion. 
 
@@ -66,6 +81,10 @@ const mailNotifications = (devList, type) => {
   else if (type === 'forgotPass') {
     text = forgot_password_secret_email
   }
+  else if (type === 'assign') {
+    text = assignProjectToTeam
+  }
+  
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
