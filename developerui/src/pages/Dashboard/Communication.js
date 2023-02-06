@@ -1,34 +1,24 @@
-import {
-  Container,
-  Col,
-  Row,
-  Form,
-  Button,
-  Table,
-  Tab,
-  Dropdown,
-  ButtonGroup,
-  Card,
-} from "react-bootstrap";
-import { Icon } from "@rsuite/icons";
+import { Alert, Container, Col, Row, Form, Button, ButtonGroup, Table, Card } from "react-bootstrap";
+// import { Icon } from "@rsuite/icons";
 import React, { useEffect } from "react";
-import Overlay from "react-bootstrap";
-import { Message, Nav } from "rsuite";
+// import Overlay from "react-bootstrap";
+import { Nav } from "rsuite";
 import NoticeIcon from "@rsuite/icons/Notice";
 import TimeIcon from "@rsuite/icons/Time";
-import EmailIcon from "@rsuite/icons/Email";
+// import EmailIcon from "@rsuite/icons/Email";
 import { Context } from "../../Context/context";
 import { useContext, useState, useReducer } from "react";
 import ContenetDisplay from "../../Components/ConentDisplay/ConentDisplay";
 import { issues, postComment, postIssue } from "../../API/Issues";
 import SpeakerIcon from "@rsuite/icons/Speaker";
-import CheckIcon from "@rsuite/icons/Check";
+// import CheckIcon from "@rsuite/icons/Check";
 import MessageIcon from "@rsuite/icons/Message";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
-import { cilOptions } from "@coreui/icons";
+// import { cilOptions } from "@coreui/icons";
 
 const endPoint = "http://localhost:3001";
+const base_url = 'http://localhost:9000/api'
 
 const CommunicationsNav = () => {
   const { communications, setCommunications } = useContext(Context);
@@ -37,30 +27,9 @@ const CommunicationsNav = () => {
       <Row>
         <Col>
           <Nav appearance="tabs">
-            <Nav.Item
-              icon={<SpeakerIcon />}
-              onSelect={() => {
-                setCommunications("active");
-              }}
-            >
-              Acitve Issue
-            </Nav.Item>
-            <Nav.Item
-              icon={<NoticeIcon />}
-              onSelect={() => {
-                setCommunications("ScheduledMeetings");
-              }}
-            >
-              Scheduled Meetings
-            </Nav.Item>
-            <Nav.Item
-              icon={<MessageIcon />}
-              onSelect={() => {
-                setCommunications("Issue");
-              }}
-            >
-              New Issue
-            </Nav.Item>
+            <Nav.Item icon={<NoticeIcon />} onSelect={() => { setCommunications("ScheduledMeetings"); }}>Scheduled Meetings</Nav.Item>
+            <Nav.Item icon={<SpeakerIcon />} onSelect={() => { setCommunications("active"); }}>Acitve Issue</Nav.Item>
+            <Nav.Item icon={<MessageIcon />} onSelect={() => { setCommunications("Issue"); }}>New Issue</Nav.Item>
           </Nav>
         </Col>
       </Row>
@@ -69,28 +38,131 @@ const CommunicationsNav = () => {
 };
 
 const ScheduledMeetings = () => {
+  const [variant, setVariant] = useState('success')
+  const [show, setShow] = useState(false)
+  const [message, setMessage] = useState()
+
+  const [state, setState] = useState({
+    userName: localStorage.getItem('userName'),
+    result: []
+  })
+
+  useEffect(() => {
+    const handleLoad = async () => {
+      setState({
+        ...state,
+        userName: localStorage.getItem('userName'),
+      })
+
+      try {
+        var formBody = JSON.stringify(state)
+
+        const response = await fetch(
+          base_url + `/listDevMeetings`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              'Authorization': localStorage.getItem('Bearer')
+            },
+            body: formBody
+          },
+        )
+        const data = await response.json()
+
+        if (data.message === "List of Meetings") {
+          setState({
+            ...state,
+            result: data.data
+          })
+        } else {
+          setMessage(data.message)
+          setVariant("danger")
+          setShow(true)
+        }
+
+        setTimeout(() => {
+          setShow(false)
+        }, "3000")
+      } catch (error) {
+        if (error.message === `Unexpected token 'A', "Access Denied" is not valid JSON`) {
+          let msgg = `Access Denied`
+          setMessage(msgg)
+          setVariant("danger")
+          setShow(true)
+        }
+        else {
+          setMessage(error.message)
+          setVariant("danger")
+          setShow(true)
+        }
+      }
+    }
+
+    handleLoad()
+  }, [])
+
   return (
-    <Container>
-      <Row>
-        <Col>
-          <h4>Scheduled Meetings</h4>
-          <Table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th>Participant/s</th>
-                <th>Start time</th>
-                <th>Completion time</th>
-                <th>date</th>
-              </tr>
-            </thead>
-          </Table>
-        </Col>
-      </Row>
-    </Container>
-  );
-};
+    <div>
+      <Alert show={show} variant={variant}>
+        <p style={{ textAlign: 'center' }}>
+          {message}
+        </p>
+      </Alert>
+      <Container>
+        <Row>
+          <Col>
+            <h4>Scheduled Meetings</h4>
+            <Table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Project Name</th>
+                  <th>Meeting Id</th>
+                  <th>Topic</th>
+                  <th>Duration</th>
+                  <th>Start Time</th>
+                  <th>Start Date</th>
+                  <th>Link</th>
+                </tr>
+              </thead>
+              <tbody>
+                {state.result?.map((meeting, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{meeting.projectName}</td>
+                    <td>{meeting.meetingId}</td>
+                    <td>{meeting.meetingTopic}</td>
+                    <td>{meeting.meetingDuration}</td>
+                    <td>
+                      {meeting.meetingStartTime.split('T')[1].split('Z')[0]}
+                    </td>
+                    <td>{meeting.meetingStartTime.split('T')[0]}</td>
+                    <td>
+                      <ButtonGroup style={{ float: "center", padding: "0px 30px 0px 0px" }}>
+                        <Button
+                          variant='primary'
+                          style={{ margin: "0px 8px 0px 0px" }}
+                          id="submitButton"
+                          onClick={() => {
+                            window.open(meeting.meetingStartUrl, "_blank")
+                          }}
+                        >
+                          Join
+                        </Button>
+                      </ButtonGroup>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+      </Container>
+    </div>
+  )
+}
 
 const Issue = () => {
   const States = ["Active", "Resolved", "Pending"];
@@ -100,7 +172,7 @@ const Issue = () => {
   const [receivedMessages, setReceivedMessages] = useReducer(
     (state, newState) => {
       for (const index in state) {
-        if (state[index].id == newState.id) return state;
+        if (state[index].id === newState.id) return state;
       }
       return [...state, newState];
     },
@@ -123,7 +195,7 @@ const Issue = () => {
   socket.on("messages", (data) => {
     let youCanAddMessage = true;
     cached_messages.forEach((message) => {
-      if (message.id == data.id) youCanAddMessage = false;
+      if (message.id === data.id) youCanAddMessage = false;
     });
     if (!youCanAddMessage) return 0;
     setReceivedMessages(data);
@@ -196,42 +268,42 @@ const ActiveIssues = () => {
       });
   }, []);
   const CommentBox = (props) => {
-    const [comment,setComment] = useState([])
+    const [comment, setComment] = useState([])
     const [message, setMessage] = useState({
       Comment: "",
     });
-    useEffect(()=>{
+    useEffect(() => {
       setComment(props.comments)
 
-    },[])
+    }, [])
     const handleOnchangeEvent = (e) => {
       const temp = Object.assign(message, { [e.target.name]: e.target.value });
       setMessage(temp);
     };
-    const handleComment = ()=>{
-      const temp = [...comment,message.Comment]
-      postComment({id:props.id,comment:temp})
+    const handleComment = () => {
+      const temp = [...comment, message.Comment]
+      postComment({ id: props.id, comment: temp })
       setComment(temp)
-     
+
     }
     if (props.display) {
       return (
         <Container style={{ padding: "10px" }}>
-          {comment.map((comment)=>{
-            return(
-                <p>{comment}</p>
+          {comment.map((comment) => {
+            return (
+              <p>{comment}</p>
             )
-            
+
           })}
           <Row>
-            <Form.Control type="text" placeholder="Comment" 
-            name="Comment" 
-            onChange={handleOnchangeEvent}
+            <Form.Control type="text" placeholder="Comment"
+              name="Comment"
+              onChange={handleOnchangeEvent}
             />
           </Row>
-          <Row style={{margin: "10px 0px 0px 0px" }}>
+          <Row style={{ margin: "10px 0px 0px 0px" }}>
             <Col sm={4}>
-              <Button onClick={()=>{handleComment()}}>
+              <Button onClick={() => { handleComment() }}>
                 Post
               </Button>
             </Col>
@@ -242,7 +314,7 @@ const ActiveIssues = () => {
   };
   const Comment = (props) => {
     const [show, setShow] = useState(false);
-    
+
     return (
       <Card style={{ margin: "10px 0px 0px 0px", padding: "10px" }}>
         <Card.Title>
@@ -314,4 +386,5 @@ const Communications = () => {
     </Container>
   );
 };
+
 export default Communications;

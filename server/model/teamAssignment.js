@@ -4,7 +4,6 @@ const teamAssignmentSchema = mongoose.Schema({
       teamName: {
             type: String,
       },
-
       members: [],
       assignedProject: {
             type: String,

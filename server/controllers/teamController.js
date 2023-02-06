@@ -186,7 +186,6 @@ const getMailList = (members) => {
 
 }
 
-// create teams and assign projects to those teams. 
 // members must exist and project must be created before hand
 
 // @desc     Create Teams

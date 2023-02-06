@@ -8,7 +8,8 @@ const {
       getMeeting,
       deleteMeeting,
       deleteMeetingDB,
-      instantMeeting } = require('../controllers/zoomController')
+      instantMeeting,
+      listDevMeetings } = require('../controllers/zoomController')
 
 // @route    POST api/createMeeting
 // @desc     Create a Zoom Meeting
@@ -18,6 +19,15 @@ router.post(
       verifyAuthentication,
       meetingValidation,
       createMeeting
+)
+
+// @route    POST api/listDevMeetings
+// @desc     List Created Zoom meeting for Developer
+// @access   Private
+router.post(
+      '/listDevMeetings',
+      verifyAuthentication,
+      listDevMeetings
 )
 
 // @route    GET api/instantMeeting
@@ -34,7 +44,7 @@ router.get(
 // @access   Private
 router.post(
       '/listMeetings',
-      // verifyAuthentication,
+      verifyAuthentication,
       listMeetings
 )
 

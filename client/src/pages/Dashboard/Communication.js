@@ -4,6 +4,7 @@ import { Nav } from 'rsuite'
 import NoticeIcon from '@rsuite/icons/Notice';
 import TimeIcon from '@rsuite/icons/Time';
 // import EmailIcon from '@rsuite/icons/Email';
+import SpeakerIcon from "@rsuite/icons/Speaker";
 import { Context } from '../../Context/context';
 import { useContext, useState, useEffect } from 'react';
 import ContenetDisplay from '../../Components/ConentDisplay/ConentDisplay';
@@ -24,7 +25,7 @@ const CommunicationsNav = () => {
             <Row>
                 <Col>
                     <Nav appearance='tabs' >
-                        <Nav.Item onSelect={() => { setCommunications("Issues") }}>Issues</Nav.Item>
+                        <Nav.Item icon={<SpeakerIcon />} onSelect={() => { setCommunications("Issues") }}>Issues</Nav.Item>
                         <Nav.Item icon={<NoticeIcon />} onSelect={() => { setCommunications("ScheduledMeetings") }} >Scheduled Meetings</Nav.Item>
                         <Nav.Item icon={<TimeIcon />} onSelect={() => { setCommunications("ScheduleMeetings") }}>Schedule Meeting</Nav.Item>
                     </Nav>
@@ -363,7 +364,8 @@ const ScheduledMeetings = () => {
 
     const [state, setState] = useState({
         userName: localStorage.getItem('userName'),
-        result: []
+        result: [],
+        temp: ""
     })
 
     const handleLoad = async () => {
@@ -390,9 +392,20 @@ const ScheduledMeetings = () => {
             const data = await response.json()
 
             if (data.message === "List of Meetings") {
+                // setState({
+                //     ...state,
+                //     result: data.data
+                // })
+
+                data.data.forEach((element) => {
+                    element.meetingInfo.forEach((item) => {
+                        state.result.push(item)
+                    })
+                })
+
                 setState({
                     ...state,
-                    result: data.data
+                    temp: ""
                 })
             } else {
                 setMessage(data.message)
@@ -450,7 +463,7 @@ const ScheduledMeetings = () => {
                             </thead>
                             <tbody>
                                 {state.result?.map((meeting, index) => (
-                                    <tr data-index={index}>
+                                    <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{meeting.projectName}</td>
                                         <td>{meeting.meetingId}</td>
@@ -481,7 +494,7 @@ const ScheduledMeetings = () => {
                     </Col>
                 </Row>
             </Container>
-        </div>
+        </div >
     )
 }
 
