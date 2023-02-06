@@ -83,7 +83,7 @@ const createMeeting = async (req, res) => {
                                                             meetingId: response.id,
                                                             meetingTopic: response.topic,
                                                             meetingDuration: response.duration,
-                                                            meetingStartTime: response.start_time,
+                                                            meetingStartTime: start_time,
                                                             meetingStartUrl: response.join_url,
                                                             projectName: projectName
                                                       }],
@@ -250,43 +250,44 @@ const listDevMeetings = async (req, res) => {
             var userTeamResult = await User.findOne({
                   userName: userName
             })
-            var project = []
 
-            await userTeamResult.assignedTeam.map(async (item) => {
-                  var team = await teamAssignment.findOne({
-                        teamName: item
+            teamAssignment.find()
+                  .where("teamName")
+                  .in(userTeamResult.assignedTeam)
+                  .exec((err, teamResult) => {
+                        let assignedProject = []
+                        teamResult.forEach((element) => {
+                              if (element.assignedProject[0]) {
+                                    assignedProject = [
+                                          ...assignedProject,
+                                          ...element.assignedProject
+                                    ]
+                              }
+                        })
+                        Meeting.find()
+                              .where("projectName")
+                              .in(assignedProject)
+                              .exec((err, projectResult) => {
+                                    console.log("Project Query")
+                                    if (err) {
+                                          console.log(err)
+                                    }
+                                    else {
+
+                                          console.log(projectResult)
+
+                                          return res
+                                                .status(200)
+                                                .json(
+                                                      messageFunction(
+                                                            false,
+                                                            'List of Meetings',
+                                                            projectResult
+                                                      )
+                                                )
+                                    }
+                              })
                   })
-                  var meeting = Meeting.find({
-                        projectName: team.assignedProject[0]
-                  }).exec((err, meet) => {
-                        if (meet) {
-                             // console.log(meet)
-                              project.push(meet[0].meetingInfo)
-                              
-                        }
-                        console.log("=>", project)
-                        
-                  })
-            })
-
-
-            // return res
-            //       .status(200)
-            //       .json(
-            //             messageFunction(
-            //                   false,
-            //                   'List of Meetings',
-            //                   project
-            //             )
-            //       )
-            //             }).then((item) => {
-            //                   console.log("-----------", item)
-            //             })
-            //       })
-
-            // })
-            // })
-
             // else {
             //       return res
             //             .status(403)
