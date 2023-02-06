@@ -10,12 +10,9 @@ const SettingPage = () => {
     const [show, setShow] = useState(false)
     const [message, setMessage] = useState()
 
-    const Positions = ['Project Manager', 'Frontend Developer', 'Backend Developer', 'Mobile Developer']
-
     const [state, setState] = useState({
         phoneNumber: "",
         email: "",
-        position: "",
         userName: localStorage.getItem('userName'),
         gitHubAccount: "",
         password: ""
@@ -79,7 +76,6 @@ const SettingPage = () => {
             ...state,
             phoneNumber: "",
             email: "",
-            position: "Project Manager",
             gitHubAccount: "",
             password: ""
         })
@@ -114,23 +110,6 @@ const SettingPage = () => {
                         value={state.email}
                         onChange={handleChange}
                     />
-                </Form>
-
-                <Form>
-                    <Form.Group className='mb-3'>
-                        <Form.Label>Position</Form.Label>
-                        <Form.Select
-                            name="position"
-                            value={state.position}
-                            onChange={handleChange}
-                        >
-                            {Positions.map((position) => {
-                                return (
-                                    <option value={position}>{position}</option>
-                                )
-                            })}
-                        </Form.Select>
-                    </Form.Group>
                 </Form>
 
                 <Form>
