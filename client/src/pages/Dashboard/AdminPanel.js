@@ -5,7 +5,7 @@ import { Container,Row,Col,Card,Form,Button } from "react-bootstrap";
 import NavItem from "rsuite/esm/Nav/NavItem";
 import { Nav } from "rsuite";
 import { Context } from "../../Context/context";
-import Clock from 'react-live-clock';
+// import Clock from 'react-live-clock';
 import React from "react";
 import { postComment } from "../../API/Issues";
 import  ContenetDisplay  from "../../Components/ConentDisplay/ConentDisplay";
@@ -18,7 +18,7 @@ const Header = ()=>{
                     <h3>Welcome  {localStorage.getItem("userName")}</h3>
                 </Col>
                 <Col xs lg="2">
-                    <Clock style={{float:"right",fontSize:"20px"}} className="adminClock" format={'HH:mm:ss'}  ticking={true} timezone={'Africa/Addis_Ababa'} />
+                    {/* <Clock style={{float:"right",fontSize:"20px"}} className="adminClock" format={'HH:mm:ss'}  ticking={true} timezone={'Africa/Addis_Ababa'} /> */}
                 </Col>
             </Row>
             <div style={{float:"right",fontSize:"40px"}}>

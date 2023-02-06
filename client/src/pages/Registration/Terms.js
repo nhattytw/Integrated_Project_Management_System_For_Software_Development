@@ -16,12 +16,13 @@ export default function Terms() {
 
                     By using this Site, you indicate that you have read and understand these Terms and Conditions and agree to abide by them at all times.
 
-                    THESE TERMS AND CONDITIONS CONTAIN A DISPUTE RESOLUTION CLAUSE THAT IMPACTS YOUR RIGHTS ABOUT HOW TO RESOLVE DISPUTES. PLEASE READ IT CAREFULLY.
+                    THESE TERMS AND CONDITIONS CONTAIN A DISPUTE RESOLUTION CLAUSE THAT IMPACTS YOUR RIGHTS ABOUT HOW TO RESOLVE DISPUTES. PLEASE READ IT CAREFULLY. </p>
 
-                    <b>Intellectual Property</b>
+                    <p>
+                    <h4>Intellectual Property</h4>
                     All content published and made available on our Site is a property of Procuratio and the Site's creators. This includes, but is not limited to images, text, logos, documents, downloadable files and anything that contributed to the composition of our Site. 
 
-                    <b>Acceptable Use</b>
+                    <h4>Acceptable Use</h4>
                     As a user of our Site, you agree to use our Site legally, not to use our Site for illegal purposes. and not to:
 
                     <ul>
@@ -31,7 +32,7 @@ export default function Terms() {
                      
                      If we believe you are using or Site Illegaly or in a manner that violates these Terms and Conditions, we reserve the right to limit, suspend or terminate yout access to our Site. We also reserve the right to take any legal steps neccessary to prevent you from accessing our Site.
 
-                     <b>Accounts</b>
+                     <h4>Accounts</h4>
                      When you create an account on our Site, you agre to the following:
 
                      <ol>
@@ -45,7 +46,7 @@ export default function Terms() {
 
                      We reserve the right to suspend or terminate your account if you are using our Site illegaly or if you violate these Terms and Conditions.
 
-                     <b>Sale of Services</b>
+                     <h4>Sale of Services</h4>
                      These Terms and Conditions govern the sale of services available on our Site.
 
                      The following services are available on our Site:
@@ -60,7 +61,7 @@ export default function Terms() {
 
                      We reserve the right to modify, reject or cancel your order whenever it becomes neccessary. If we cancel your order and have already processed your payment. we will give you a refund equal to the amount you paid. You agree that it is your responsability to monitor your payment instrument to verify receipt of any refund.
 
-                     <b>Payments</b>
+                     <h4>Payments</h4>
                      We accept the following payment methods on our Site:
 
                      <ul>
@@ -74,13 +75,13 @@ export default function Terms() {
 
                      If we believe your payment has violated any law or these Terms and Conditions, we reserve the right to cancel or reverse your transaction.
 
-                     <b>Limatation of Liability</b>
+                     <h4>Limatation of Liability</h4>
                      Procuratio and our directors, officers, agents, employees, subsidiaries, and affiliates will not be liable for any actions, claims, losses, damages, liabilities and expenses including legal fees from your use of the Site.
 
-                     <b>Indemnity</b>
+                     <h4>Indemnity</h4>
                      Except where prohibited by law, by using this Site you indemnify and holde harmless Procuratio and our directors, officers, agents, employees, subsidiaries, and affiliates from any actions, claims, losses, damages, liabilities and expenses including legal fees arising out of your use of our Site or your violation of these Terms and Conditions.
 
-                     <b>Contact Details</b>
+                     <h4>Contact Details</h4>
                      Please contact us if you have any questions or concerns. Our contact details are as follows:
 
                      +(251) 111-5597

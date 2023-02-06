@@ -126,22 +126,24 @@ input[type=number] {
 
 
 
-#btn-get-started{
-  height: 80px;
-  width: 240px;
+.btn-landing {
+  height: 60px;
+  width: 180px;
   font-size: 28px;
   font-weight: 700;
+  font-family: Georgia, "Times New Roman", Times, serif;
   cursor: Pointer;
   border: 1px solid #fff;
-  background-color: rgba(66,105,158);
+  background-color: rgba(66, 105, 158);
   color: #fff;
-  margin: 2px 0px 0px 15px
+  margin: 2px 0px 0px 15px;
 }
-#btn-get-started:hover{
-  border: 2px solid rgba(66,105,158);
+
+.btn-landing:hover {
+  border: 2px solid rgba(66, 105, 158);
   font-weight: 900;
   background-color: #fff;
-  color: rgba(66,105,158);
+  color: rgba(66, 105, 158);
 }
 /* ===== Scrollbar CSS ===== */
 /* Firefox */

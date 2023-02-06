@@ -111,8 +111,8 @@ export default function Login() {
                 <Container >
                     <Row>
                         <Col>
-                            <img src={people} alt="People" style={{ margin: "0px 0px 0px 75px" }} />
-                            <h2 style={{ margin: "0px 0px 0px 95px" }}>Welcome Back</h2>
+                            <img src={people} alt="People" style={{ margin: "0px 0px 0px 60px" }} />
+                            <h2 className="hhh1">Welcome Back</h2>
                             <hr ></hr>
                             <Form.Group className='d-grid gap-2'>
                                 <Form.Control
