@@ -40,7 +40,7 @@ const Landing = () => {
           <Row >
             <Col className='c1'>
               <h4 className='intro-h4' style={{padding: "10px"}} >
-                Now you can manage your projects, teams and constraints,
+                Now you can manage your projects, teams and constraints
                 with ease and efficency to accomplish the best work.
               </h4>
             </Col>
