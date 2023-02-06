@@ -1,7 +1,10 @@
-import { Container, Col, Row } from "react-bootstrap";
+import { Container, Col, Row, Button } from "react-bootstrap";
 import { NavBar } from "../../Components/nav/nav";
+import { useNavigate } from "react-router-dom";
 
 export default function Terms() {
+  const navigate = useNavigate();
+
   return (
     <div className="font-link">
       <NavBar />
@@ -159,6 +162,13 @@ export default function Terms() {
             </p>
           </p>
         </Row>
+        <Button
+          variant="dark"
+          style={{ margin: "0px 8px 0px 0px", float: "right" }}
+          onClick={() => navigate(-1)}
+        >
+          Go Back
+        </Button>
       </Container>
     </div>
   );
