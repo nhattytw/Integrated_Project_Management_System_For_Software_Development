@@ -8,11 +8,12 @@ const { default: mongoose } = require("mongoose");
 const PostIssue = async (req, res) => {
   connectToDB();
   try {
-    const { Issue, title, notify } = req.body;
+    const { Issue, title, notify,username } = req.body;
 
     const issueItem = new issues({
       title: title,
       body: Issue,
+      postedBy:username,
       comment:[]
     });
     issueItem.save((err, result) => {

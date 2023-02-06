@@ -26,7 +26,7 @@ router.post(
 // @access   Private
 router.post(
       '/listDevMeetings',
-      verifyAuthentication,
+     // verifyAuthentication,
       listDevMeetings
 )
 

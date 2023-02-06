@@ -260,9 +260,12 @@ const listDevMeetings = async (req, res) => {
                         projectName: team.assignedProject[0]
                   }).exec((err, meet) => {
                         if (meet) {
+                             // console.log(meet)
                               project.push(meet[0].meetingInfo)
+                              
                         }
                         console.log("=>", project)
+                        
                   })
             })
 
