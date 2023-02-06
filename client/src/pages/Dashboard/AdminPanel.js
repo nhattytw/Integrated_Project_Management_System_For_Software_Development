@@ -40,7 +40,7 @@ const ProjectNav = () => {
         <Nav.Item eventKey="home"  onSelect={()=>{setAdminPages("projects")}}>
         Your Projects
         </Nav.Item>
-        <Nav.Item eventKey="news"    onSelect={()=>{setAdminPages("Issues")}}>Issues</Nav.Item>
+        <Nav.Item eventKey="news"  onSelect={()=>{setAdminPages("Issues")}}>Issues</Nav.Item>
         <Nav.Item eventKey="solutions">Teams</Nav.Item>
         <Nav.Item eventKey="products">Meetings</Nav.Item>
        
