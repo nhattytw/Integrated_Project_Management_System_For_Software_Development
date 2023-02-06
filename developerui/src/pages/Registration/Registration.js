@@ -93,6 +93,7 @@ export default function RegistrationPage() {
       position: "Frontend Developer",
       gitHubAccount: "",
     });
+    window.open("/", "_self");
   };
 
   const handleDateChange = (event) => {
@@ -282,10 +283,10 @@ export default function RegistrationPage() {
             />
             <label style={{ padding: "10px 0px 0px 10px" }} htmlFor="agree">
               I agree to the{" "}
-              <LinkContainer to="/Terms">
+              <LinkContainer to='/Terms'>
                 <a href="#" style={{ textAlign: "center" }}>
                   {" "}
-                  terms and conditions ?
+                  Terms and Conditions
                 </a>
               </LinkContainer>
             </label>

@@ -72,9 +72,20 @@ const ScheduledMeetings = () => {
         const data = await response.json()
 
         if (data.message === "List of Meetings") {
+          // setState({
+          //     ...state,
+          //     result: data.data
+          // })
+          state.result = []
+          data.data.forEach((element) => {
+            element.meetingInfo.forEach((item) => {
+              state.result.push(item)
+            })
+          })
+
           setState({
             ...state,
-            result: data.data
+            temp: ""
           })
         } else {
           setMessage(data.message)
@@ -181,7 +192,7 @@ const Issue = () => {
   const [message, setMessage] = useState({
     title: "",
     Issue: "",
-    username:localStorage.getItem("userName")
+    username: localStorage.getItem("userName")
   });
   let cached_messages = [];
 
@@ -315,13 +326,13 @@ const ActiveIssues = () => {
   };
   const Comment = (props) => {
     const [show, setShow] = useState(false);
-    const status = ['Active', 'Resolved', 'Pending']  
+    const status = ['Active', 'Resolved', 'Pending']
     return (
       <Card style={{ margin: "10px 0px 0px 0px", padding: "10px" }}>
         <Card.Title>
           <Row>
             <Col>
-            <h3>{props.title}</h3>
+              <h3>{props.title}</h3>
             </Col>
             <Col sm={4}>
               <p>Date:{props.createdAt}</p>
@@ -347,17 +358,17 @@ const ActiveIssues = () => {
               >
                 comment
               </button>
-             
+
             </Col>
             <Col xs lg="2">
-            <Form.Select >
-              <option></option>
-              {status?.map((item)=>{
-                return(
+              <Form.Select >
+                <option></option>
+                {status?.map((item) => {
+                  return (
                     <option>{item}</option>
-                )
-              })}
-            </Form.Select>
+                  )
+                })}
+              </Form.Select>
             </Col>
             <CommentBox display={show} comments={props.comments} id={props.id}></CommentBox>
 
