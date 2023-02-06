@@ -16,9 +16,9 @@ export default function RegistrationPage() {
   const base_url = "http://localhost:9000/api";
 
   const Positions = [
-    "Project Manager",
     "Frontend Developer",
     "Backend Developer",
+    "Fullstack Developer",
     "Mobile Developer",
   ];
 
@@ -37,7 +37,7 @@ export default function RegistrationPage() {
     email: "",
     userName: "",
     password: "",
-    position: "Project Manager",
+    position: "Frontend Developer",
     gitHubAccount: "",
   });
 
@@ -90,7 +90,7 @@ export default function RegistrationPage() {
       email: "",
       userName: "",
       password: "",
-      position: "Project Manager",
+      position: "Frontend Developer",
       gitHubAccount: "",
     });
   };
@@ -198,7 +198,7 @@ export default function RegistrationPage() {
                 name="phoneNumber"
                 value={state.phoneNumber}
                 onChange={handleChange}
-                // a way to check this ?
+              // a way to check this ?
               />
             </Form>
           </Col>
