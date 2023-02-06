@@ -1,14 +1,15 @@
 require('dotenv').config({ path: './config/config.env' })
 const { Octokit } = require("@octokit/rest");
+const { response } = require('express');
+const { func } = require('joi');
 
-const createRespository =  async (repositoryName,description)=>{
+async function createRespository  (repositoryName){
     const octokitSDK =  new Octokit({
         auth:process.env.GIT_HUB_FGAT
     })
      await octokitSDK.request('POST /orgs/{org}/repos', {
         org: 'RoblexIPMS',
         name: repositoryName,
-        description: description,
         homepage: 'https://github.com',
         'private': true,
         has_issues: true,

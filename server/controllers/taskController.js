@@ -148,11 +148,17 @@ const updateTaskStatus = async (req, res) => {
   }
 };
 const postCompletedTasks = (req, res) => {
+  function removeDuplicates(arr) {
+    return arr.filter((item, 
+        index) => arr.indexOf(item) === index);
+}
   connectToDB();
   const { ProjectName, title, finishedTask } = req.body;
   let RemainingTasks = [];
   let progress = 0;
   let taskUpdate = [];
+  let wbsCompletedTasks=[];
+  let wbsTask = []
   let index = 0;
   let id = mongoose.Schema.Types.ObjectId
 
@@ -179,7 +185,8 @@ const postCompletedTasks = (req, res) => {
                     ? t.tasks.filter((task) => task !== finsihedtask)
                     : RemainingTasks.filter((task) => task !== finsihedtask);
                     taskUpdate[index].tasks = RemainingTasks;
-                    taskUpdate[index].completedTasks = finishedTask;
+                    taskUpdate[index].completedTasks =[...taskUpdate[index].completedTasks,...finishedTask];
+                    taskUpdate[index].completedTasks =removeDuplicates( taskUpdate[index].completedTasks);
               });
             }
           });
@@ -191,10 +198,14 @@ const postCompletedTasks = (req, res) => {
             console.log(err)
           }
           else{
-            console.log(response)
+              console.log(response)
+              if(response.progress === response.workload){
+                project.findOneAndUpdate({projectName:ProjectName},{status:"completed"})
+              }  
           }
          }))
       }
+      
     });
     
 

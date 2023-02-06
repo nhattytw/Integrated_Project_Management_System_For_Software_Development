@@ -389,11 +389,11 @@ const getDevelopers = (req, res) => {
                 assignedTeam: { $exists: false }
             },
             {
-                available: { $eq: 'true' }
+                available: { $eq:true }
             }
         ]
     }).select("email userName position phoneNumber gitHubAccount")
-        .where("position").in(['Frontend Developer', 'Backend Developer', 'Mobile Developer'])
+        .where("position").in(['Frontend Developer', 'Backend Developer', 'Mobile Developer','Fullstack Developer'])
         .sort({
             userName: 1
         }).exec((err, result) => {
@@ -402,7 +402,9 @@ const getDevelopers = (req, res) => {
             }
             else {
                 const jsonContent = JSON.stringify(result)
+                
                 res.send(jsonContent)
+
             }
         })
 }

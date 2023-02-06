@@ -1,7 +1,7 @@
 const connectToDB = require("../utils/dbConnect")
 const Project = require("../model/project")
 const User = require("../model/userInfo")
-const { default: createRespository } = require("../middleware/githubOperations")
+const  createRespository = require("../middleware/githubOperations")
 const messageFunction = require("../utils/messageFunction")
 const project = require("../model/project")
 const teamAssignment = require("../model/teamAssignment")
@@ -42,7 +42,7 @@ const CreateProject = async (req, res) => {
 
                 await newProject.save()
                 console.log("Project saved")
-                createRespository(projectRepository,descripion)
+                createRespository(projectRepository)
                 return res
                   .status(200)
                   .json(
