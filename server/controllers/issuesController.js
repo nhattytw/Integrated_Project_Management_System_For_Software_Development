@@ -74,5 +74,20 @@ const getIssues = async (req, res) => {
       }
     });
 };
-
+const getResolvedIssues = async (req, res) => {
+  connectToDB();
+  issues
+    .find()
+    .where("status")
+    .equals("Resolved")
+    .lean(true)
+    .exec((err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        const jsonContent = JSON.stringify(result);
+        res.send(jsonContent);
+      }
+    });
+};
 module.exports = { PostIssue, getIssues, postComment };

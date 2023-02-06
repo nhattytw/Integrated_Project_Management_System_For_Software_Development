@@ -315,19 +315,21 @@ const ActiveIssues = () => {
   };
   const Comment = (props) => {
     const [show, setShow] = useState(false);
-
+    const [status,setStatus] = useState['Active', 'Resolved', 'Pending']  
     return (
       <Card style={{ margin: "10px 0px 0px 0px", padding: "10px" }}>
         <Card.Title>
           <Row>
+            <Col>
             <h3>{props.title}</h3>
+            </Col>
+            <Col sm={4}>
+              <p>Date:{props.createdAt}</p>
+            </Col>
           </Row>
           <Row>
             <Col sm={4}>
               <p>PostedBy:{props.postedBy}</p>
-            </Col>
-            <Col sm={4}>
-              <p>Date:{props.createdAt}</p>
             </Col>
           </Row>
         </Card.Title>
@@ -345,8 +347,20 @@ const ActiveIssues = () => {
               >
                 comment
               </button>
+             
+            </Col>
+            <Col xs lg="2">
+            <Form.Select >
+              <option></option>
+              {status.map((item)=>{
+                return(
+                    <option>{item}</option>
+                )
+              })}
+            </Form.Select>
             </Col>
             <CommentBox display={show} comments={props.comments} id={props.id}></CommentBox>
+
           </Row>
         </Card.Body>
       </Card>

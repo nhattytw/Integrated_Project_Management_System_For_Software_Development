@@ -145,16 +145,7 @@ const Dashboard = () => {
                 >
                   Dashboard
                 </Nav.Item>
-                <Nav.Item
-                  eventKey="2"
-                  icon={<ProjectIcon />}
-                  onClick={() => {
-                    SetPage("Projects");
-                  }}
-                  className="NavItem"
-                >
-                  Project
-                </Nav.Item>
+
 
                 <Nav.Item
                   eventKey="3-2"
