@@ -15,13 +15,6 @@ import { Alert } from "react-bootstrap";
 export default function RegistrationPage() {
   const base_url = "http://localhost:9000/api";
 
-  const Positions = [
-    "Project Manager",
-    "Frontend Developer",
-    "Backend Developer",
-    "Mobile Developer",
-  ];
-
   const [agree, setAgree] = useState(false);
   const [dateState, setDateState] = useState(new Date());
 
@@ -198,7 +191,7 @@ export default function RegistrationPage() {
                 name="phoneNumber"
                 value={state.phoneNumber}
                 onChange={handleChange}
-                // a way to check this ?
+              // a way to check this ?
               />
             </Form>
           </Col>
@@ -245,22 +238,6 @@ export default function RegistrationPage() {
         <Row style={{ padding: "10px 0px 0px 0px" }}>
           <Col>
             <Form>
-              <Form.Group className="mb-3">
-                <Form.Label>Position</Form.Label>
-                <Form.Select
-                  name="position"
-                  value={state.position}
-                  onChange={handleChange}
-                >
-                  {Positions.map((position) => {
-                    return <option value={position}>{position}</option>;
-                  })}
-                </Form.Select>
-              </Form.Group>
-            </Form>
-          </Col>
-          <Col>
-            <Form>
               <Form.Label>GitHub Account</Form.Label>
               <Form.Control
                 type="select"
@@ -270,24 +247,6 @@ export default function RegistrationPage() {
                 onChange={handleChange}
               />
             </Form>
-          </Col>
-        </Row>
-        <Row style={{ padding: "10px 0px 0px 0px" }}>
-          <Col>
-            <input
-              type="checkbox"
-              name="agree"
-              id="agree"
-              onClick={handleChecked}
-            />
-            <label style={{ padding: "10px 0px 0px 10px" }} htmlFor="agree">
-              I agree to the
-              <LinkContainer to='/Terms'>
-                <a href="#" style={{ textAlign: "center" }}>
-                  {" "}
-                  terms and conditions ?</a>
-              </LinkContainer>
-            </label>
           </Col>
           <Col style={{ padding: "0px 0px 0px 10px" }}>
             <ButtonGroup
@@ -310,6 +269,25 @@ export default function RegistrationPage() {
               </Button>
             </ButtonGroup>
           </Col>
+        </Row>
+        <Row style={{ padding: "10px 0px 0px 0px" }}>
+          <Col>
+            <input
+              type="checkbox"
+              name="agree"
+              id="agree"
+              onClick={handleChecked}
+            />
+            <label style={{ padding: "10px 0px 0px 10px" }} htmlFor="agree">
+              I agree to the
+              <LinkContainer to='/Terms'>
+                <a href="#" style={{ textAlign: "center" }}>
+                  {" "}
+                  terms and conditions ?</a>
+              </LinkContainer>
+            </label>
+          </Col>
+          
         </Row>
       </Container>
     </div>

@@ -91,10 +91,10 @@ const ScheduleMeetings = () => {
             const data = await response.json()
 
             if (data.message === "Meeting Created") {
-                handleCancel()
                 setMessage("Meeting Created successfully!")
                 setVariant("success")
                 setShow(true)
+                handleCancel()
 
             } else {
                 setMessage(data.message)
@@ -431,7 +431,6 @@ const ScheduledMeetings = () => {
         }
     }
 
-
     useEffect(() => {
 
         handleLoad()
@@ -470,7 +469,7 @@ const ScheduledMeetings = () => {
                                         <td>{meeting.meetingTopic}</td>
                                         <td>{meeting.meetingDuration}</td>
                                         <td>
-                                            {meeting.meetingStartTime.split('T')[1].split('Z')[0]}
+                                            {meeting.meetingStartTime.split('T')[1].split('+')[0]}
                                         </td>
                                         <td>{meeting.meetingStartTime.split('T')[0]}</td>
                                         <td>
