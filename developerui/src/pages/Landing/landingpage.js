@@ -46,11 +46,10 @@ const Landing = () => {
           <Row>
             <Row>
               <Button
-                className="font-link"
-                style={{height: "70px" , width:"195px"}}
+                className="font-link btn-landing"
+                style={{height: "60px" , width:"180px"}}
                 variant='primary'
                 onClick={handleSubmit}
-                id="btn-get-started"
               >
                 Get Started
               </Button>

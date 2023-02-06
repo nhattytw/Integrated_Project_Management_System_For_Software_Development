@@ -55,7 +55,7 @@ const router = new createBrowserRouter([
     element: <ForgotPassword />,
   },
   {
-    paht: "/Terms",
+    path: "/Terms",
     element: <Terms />,
   },
 ]);
