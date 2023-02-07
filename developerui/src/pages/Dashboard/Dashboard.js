@@ -71,8 +71,6 @@ const NavToggle = ({ expand, onChange }) => {
             />
           }
         >
-          <Nav.Item>Help</Nav.Item>
-
           <Nav.Item onClick={handleSignout}>Sign out</Nav.Item>
         </Nav.Menu>
       </Nav>

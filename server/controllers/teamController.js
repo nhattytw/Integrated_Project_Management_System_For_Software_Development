@@ -164,7 +164,7 @@ const getAssignedTeam = async (_req, res) => {
 
 // @desc     Get Mail List
 // @access   Public
-const getMailList = (members, type) => {
+const getMailList = (members, type, project, team) => {
     let mailList = []
 
     members.forEach(element => {
@@ -179,7 +179,7 @@ const getMailList = (members, type) => {
                     mailList.push(result.email)
 
                     if (mailList.length === members.length) {
-                        mailNotifications(mailList, type)
+                        mailNotifications(mailList, type, project, team)
                     }
                 }
             })
@@ -221,6 +221,8 @@ const CreateTeams = async (req, res) => {
                 }
             })
 
+            getMailList(members, 'addToteams', null, teamName)
+
             members.forEach((memeber) => {
                 User.find({ userName: memeber })
                     .lean(true)
@@ -248,7 +250,6 @@ const CreateTeams = async (req, res) => {
                                                 { available: false }
                                             )
                                         }
-                                        getMailList(members)
                                     } else {
                                         console.log("developer cannot be reassiged")
                                         return res
@@ -353,7 +354,7 @@ const assignProjectToTeam = async (req, res) => {
                                     teamName: teamName
                                 })
 
-                                getMailList(team.members,'assign')
+                                getMailList(team.members, 'assign', projectName, teamName)
 
                                 return res
                                     .json(
@@ -393,14 +394,17 @@ const getDevelopers = (req, res) => {
     User.find({
         $or: [
             {
+                assignedTeam: { $size: 1 }
+            },
+            {
                 assignedTeam: { $exists: false }
             },
             {
-                available: { $eq:true }
+                available: { $eq: true }
             }
         ]
     }).select("email userName position phoneNumber gitHubAccount")
-        .where("position").in(['Frontend Developer', 'Backend Developer', 'Mobile Developer','Fullstack Developer'])
+        .where("position").in(['Frontend Developer', 'Backend Developer', 'Mobile Developer', 'Fullstack Developer'])
         .sort({
             userName: 1
         }).exec((err, result) => {
@@ -409,7 +413,7 @@ const getDevelopers = (req, res) => {
             }
             else {
                 const jsonContent = JSON.stringify(result)
-                
+
                 res.send(jsonContent)
 
             }

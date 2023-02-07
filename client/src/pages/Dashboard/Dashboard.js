@@ -66,8 +66,7 @@ const NavToggle = ({ expand, onChange }) => {
           trigger="click"
           icon={<CogIcon style={{ width: 20, height: 20, color: "white" }} size="sm" />}
         >
-          <Nav.Item>Help</Nav.Item>
-
+         
           <Nav.Item onClick={handleSignout}>Sign out</Nav.Item>
         </Nav.Menu>
       </Nav>
