@@ -99,11 +99,24 @@ const PendingAssignments = () => {
         index) => arr.indexOf(item) === index);
 }
   const handleCheck=(e,title)=>{
-    let Arr = [...tasks,e.target.value]
-    setTasks(Arr)
-    let temp = {}
-    temp[title] = Arr
-    setDoneAssignments(temp)
+    if(e.target.checked){
+      let Arr = [...tasks,e.target.value]
+      setTasks(Arr)
+      let temp = {}
+      temp[title] = Arr
+      console.log(temp)
+      setDoneAssignments(temp)
+    }else{
+      let RemoveUncheckedtasks  = tasks.filter(x => x!== e.target.value)
+     
+      setTasks(RemoveUncheckedtasks)
+      let temp = {}
+      temp[title] = RemoveUncheckedtasks
+      setDoneAssignments(temp)
+      console.log(temp)
+
+    }
+
 
 
     
@@ -126,11 +139,18 @@ const PendingAssignments = () => {
       
       finishedTask:NewObject 
     }
-    
-    
+  
    
+    const base_path = 'http://localhost:9000/api/';
     
-    postCompletedTask(taskDetail)
+    axios({
+        method: 'post',
+        url: base_path.concat('task/postCompletedTasks'),
+        data:taskDetail
+      }).then((response)=>{
+       
+       setAssignment(response.data.task)
+      });
   }
 
   return (

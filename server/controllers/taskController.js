@@ -189,8 +189,9 @@ return a
                 temp=[...task_update.completedTasks,...finishedTask[task]]
                 task_update.completedTasks=[...temp]
                 progress += finishedTask[task].length
-
                 wbsTask = removeElements(task_update.tasks,finishedTask[task])
+                console.log(wbsTask)
+                task_update.tasks=wbsTask
               
                 
               }
@@ -207,13 +208,15 @@ return a
                 project.findOneAndUpdate({projectName:ProjectName},{status:"completed"})
               }  
           }
+          const jsonData = JSON.stringify(response)
+          res.send(jsonData)
          }))
       }
       
     });
     
 
-  res.send("ok");
+ 
 };
 const searchTasks = async (req, res) => {
   connectToDB();
