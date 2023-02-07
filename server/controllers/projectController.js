@@ -79,7 +79,7 @@ const ActiveProjectList = async (req, res) => {
           await Project.find({
             isAssignedTo: { $gt: 0 },
             projectManager: managerResult._id
-          }).populate("projectManager")
+          }).where("status").equals("active").populate("projectManager")
             .populate("wbs")
             .sort({
               projectName: 1
@@ -88,6 +88,52 @@ const ActiveProjectList = async (req, res) => {
               if (result) {
                 const jsonContent = JSON.stringify(result)
                 // console.log("Here", jsonContent.projectName)
+                return res
+                  .status(200)
+                  .send(jsonContent)
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+              return res
+                .status(400)
+                .json(
+                  messageFunction(true, 'Error Occurred When Fetching Data')
+                )
+            })
+        }
+      })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json(messageFunction(true, "Server Error occured"))
+  }
+}
+const ActiveCompletedProjectList = async (req, res) => {
+  connectToDB()
+
+  const { userName } = req.body
+
+  try {
+    await User.findOne(
+      { userName: userName }
+    ).lean(true)
+      .exec(async (error, managerResult) => {
+        if (error) {
+
+        } else {
+
+          await Project.find({
+            isAssignedTo: { $gt: 0 },
+            projectManager: managerResult._id
+          }).where("status").equals("completed").populate("projectManager")
+            .populate("wbs")
+            .sort({
+              projectName: 1
+            })
+            .then((result) => {
+              if (result) {
+                const jsonContent = JSON.stringify(result)
+                
                 return res
                   .status(200)
                   .send(jsonContent)

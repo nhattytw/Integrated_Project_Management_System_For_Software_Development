@@ -28,3 +28,10 @@ export const postComment=(comment)=>{
         data:comment
     })
 }
+export const changeStatus = (id) =>{
+    axios({
+        method:'post',
+        url:'http://localhost:9000/api/Issues/setIssueResolved',
+        data:{id:id}
+    })
+}

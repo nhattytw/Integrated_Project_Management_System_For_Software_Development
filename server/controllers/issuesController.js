@@ -31,11 +31,15 @@ const PostIssue = async (req, res) => {
 const setIssueResolved = async (req, res) => {
   connectToDB();
   try {
-    const { issue, status, title } = req.body;
-    if (status === 1) {
-      //set issue resolved
-      issue.findOne({ title: title }).exec((err, result) => {});
-    }
+    const {id} = req.body;
+    console.log(req.body)
+    issues.findByIdAndUpdate(id,{status:"Resolved"},{new:true},((err,result)=>{
+      console.log(result)
+      if(result){
+        const jsonContent = JSON.stringify(result);
+        res.send(jsonContent);
+      }
+    }))
   } catch (error) {}
 };
 
@@ -90,4 +94,4 @@ const getResolvedIssues = async (req, res) => {
       }
     });
 };
-module.exports = { PostIssue, getIssues, postComment };
+module.exports = { PostIssue, getIssues, postComment,setIssueResolved,getResolvedIssues };

@@ -9,7 +9,7 @@ import TimeIcon from "@rsuite/icons/Time";
 import { Context } from "../../Context/context";
 import { useContext, useState, useReducer } from "react";
 import ContenetDisplay from "../../Components/ConentDisplay/ConentDisplay";
-import { issues, postComment, postIssue } from "../../API/Issues";
+import { changeStatus, issues, postComment, postIssue } from "../../API/Issues";
 import SpeakerIcon from "@rsuite/icons/Speaker";
 // import CheckIcon from "@rsuite/icons/Check";
 import MessageIcon from "@rsuite/icons/Message";
@@ -298,7 +298,9 @@ const ActiveIssues = () => {
       setComment(temp)
 
     }
-    if (props.display) {
+    if (props.display) {const resolvedIssues = ()=>{
+  
+    }
       return (
         <Container style={{ padding: "10px" }}>
           {comment.map((comment) => {
@@ -326,7 +328,18 @@ const ActiveIssues = () => {
   };
   const Comment = (props) => {
     const [show, setShow] = useState(false);
-    const status = ['Active', 'Resolved', 'Pending']
+    const status = ['Resolved']
+
+    const handleStatusChange = (id)=>{
+      axios({
+        method:'post',
+        url:'http://localhost:9000/api/Issues/setIssueResolved',
+        data:{id:id}
+    }).then((response)=>{
+      console.log(response.data)
+    setActiveIssues([response.data])
+    })
+    }
     return (
       <Card style={{ margin: "10px 0px 0px 0px", padding: "10px" }}>
         <Card.Title>
@@ -361,7 +374,7 @@ const ActiveIssues = () => {
 
             </Col>
             <Col xs lg="2">
-              <Form.Select >
+              <Form.Select onChange={()=>{handleStatusChange(props.id)}}>
                 <option></option>
                 {status?.map((item) => {
                   return (

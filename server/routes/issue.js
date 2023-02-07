@@ -4,6 +4,8 @@ const {
   PostIssue,
   getIssues,
   postComment,
+  setIssueResolved,
+  getResolvedIssues
 } = require("../controllers/issuesController");
 
 // @route    POST api/Issues/PostIssue
@@ -12,4 +14,6 @@ const {
 router.post("/Issues/PostIssue", PostIssue);
 router.get("/Issues/getActiveIssues", getIssues);
 router.post("/Issues/postComment", postComment);
+router.post('/Issues/setIssueResolved',setIssueResolved)
+router.get("/Issues/getResolvedIssues",getResolvedIssues)
 module.exports = router;

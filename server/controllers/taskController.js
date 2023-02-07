@@ -152,8 +152,14 @@ const postCompletedTasks = (req, res) => {
     return arr.filter((item, 
         index) => arr.indexOf(item) === index);
 }
+const removeElements=(a,b)=>{
+  a = a.filter(function (item) {
+    return b.indexOf(item) === -1;
+});
+return a
+}
   connectToDB();
-  const { ProjectName, title, finishedTask } = req.body;
+  const { ProjectName,finishedTask } = req.body;
   let RemainingTasks = [];
   let progress = 0;
   let taskUpdate = [];
@@ -174,24 +180,22 @@ const postCompletedTasks = (req, res) => {
         progress = wbs.progress
         taskUpdate = wbs.task;
 
-        title.forEach((taskTitle) => {
-          wbs.task.forEach((t) => {
-            if (t.title === taskTitle) {
-              index = wbs.task.indexOf(t);
-              progress += finishedTask.length;
-              finishedTask.forEach((finsihedtask) => {
-                RemainingTasks =
-                  RemainingTasks.length === 0
-                    ? t.tasks.filter((task) => task !== finsihedtask)
-                    : RemainingTasks.filter((task) => task !== finsihedtask);
-                    taskUpdate[index].tasks = RemainingTasks;
-                    taskUpdate[index].completedTasks =[...taskUpdate[index].completedTasks,...finishedTask];
-                    taskUpdate[index].completedTasks =removeDuplicates( taskUpdate[index].completedTasks);
-              });
-            }
-          });
-         
-        });
+        console.log(taskUpdate)
+        for(task in finishedTask)
+        {
+            taskUpdate.forEach((task_update)=>{
+              let temp = []
+              if(task_update.title === task){
+                temp=[...task_update.completedTasks,...finishedTask[task]]
+                task_update.completedTasks=[...temp]
+                progress += finishedTask[task].length
+
+                wbsTask = removeElements(task_update.tasks,finishedTask[task])
+              
+                
+              }
+            })
+        }
         
          WBS.findByIdAndUpdate(id,{task:taskUpdate,progress:progress},{new:true},((err,response)=>{
           if(err){

@@ -56,7 +56,8 @@ const AssignemtsNav = () => {
 const PendingAssignments = () => {
   const [activeAssignments, setAssignment] = useState([]);
   const [projects,setProjects] = useState([])
-  const [doneAssignements, setDoneAssignments] = useState([])
+  const [doneAssignements, setDoneAssignments] = useState({})
+  const [tasks,setTasks] = useState([])
   const [disabled,setDisabled] = useState(false)
   const [selectedProject,setSelectedProject] = useState("")
   const [title,setTitle] = useState("")
@@ -93,28 +94,42 @@ const PendingAssignments = () => {
         console.log(error)
       })
   }
+  function removeDuplicates(arr) {
+    return arr.filter((item, 
+        index) => arr.indexOf(item) === index);
+}
   const handleCheck=(e,title)=>{
-    let value = e.target.value
-    if(doneAssignements.includes(value))
-    {
-      let newlist = doneAssignements.filter(x => x !== value)
-       setDoneAssignments(newlist)
-    }
-    else{
-      let temp = [...doneAssignements,e.target.value]
-      setDoneAssignments(temp)
+    let Arr = [...tasks,e.target.value]
+    setTasks(Arr)
+    let temp = {}
+    temp[title] = Arr
+    setDoneAssignments(temp)
 
-    }
-    setTitle(title)
 
+    
+    // setTitle(title)
+    
     
   }
   const postComplete=()=>{
+   
+    let NewObject = {}
+    let newArr = []
+    for(const task in doneAssignements){
+      
+       newArr = removeDuplicates(doneAssignements[task])
+       NewObject[task] = newArr
+    }
+    console.log("new",NewObject)
     const taskDetail ={ 
       ProjectName:selectedProject, 
-      title:[title], 
-      finishedTask:doneAssignements 
+      
+      finishedTask:NewObject 
     }
+    
+    
+   
+    
     postCompletedTask(taskDetail)
   }
 

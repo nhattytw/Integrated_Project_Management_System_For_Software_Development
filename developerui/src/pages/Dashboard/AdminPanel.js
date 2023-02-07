@@ -1,115 +1,150 @@
-import { Container, Row, Col, Card, Button, Accordion } from "react-bootstrap";
+import { Container, Row, Col, Card, Button, Accordion,Form } from "react-bootstrap";
 import "../../Styles/dashboard.css";
-import { ProjectBudgetData } from "../../API/Budgetdata";
-import { teams } from "../../API/Teams";
-import { assignments } from "../../API/Assignments";
-import { issues } from "../../API/Issues";
+import axios from "axios";
+import { useEffect,useState } from "react";
+import React from "react";
+import { postComment } from "../../API/Issues";
+const ResolvedIssues=()=>{
+  const options = "Resolved"
+  const [allIssues, setActiveIssues] = useState([]);
+  const [show, setShow] = useState(false);
 
-const MeetingSummary = () => {
-  return (
-    <Container>
-      <Row>
-        <Col>
-          <Card>
-            <Card.Body>
-              <Card.Title>Meeting with Front End Team</Card.Title>
-              <Card.Text>
-                We will have a meeting regarding the design and analysis of the
-                new project for our new clients Ahadu Printing
-                <h5>Date: 10/01/23</h5>
-                <h5>Time: 10:30 Am</h5>
-                <h5>Participating Team: Front End Team</h5>
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col>
-          <Card>
-            <Card.Body>
-              <Card.Title>Meeting with Back End Team</Card.Title>
-              <Card.Text>
-                We will have a meeting regarding the database design and
-                implementaion of the new project for our new clients Ahadu
-                Printing
-                <h5>Date: 15/01/23</h5>
-                <h5>Time: 9:30 Am</h5>
-                <h5>Participating Team: Back End Team</h5>
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col>
-          <Card>
-            <Card.Body>
-              <Card.Title>Meeting with Ahadu Printing</Card.Title>
-              <Card.Text>
-                Onboarding session with new clients to asses their needs and the
-                system functionalities they require
-                <h5>Date: 5/01/23</h5>
-                <h5>Time: 11:00 Am</h5>
-                <h5>Participating Team: Team 1</h5>
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
-  );
-};
+  useEffect(() => {
+    axios
+      .get("http://localhost:9000/api//Issues/getResolvedIssues")
+      .then((response) => {
+        setActiveIssues(response.data);
+      });
+  }, []);
+  const CommentBox = (props) => {
+    const [comment, setComment] = useState([])
+    const [message, setMessage] = useState({
+      Comment: "",
+    });
+    useEffect(() => {
+      setComment(props.comments)
 
-const WorkStatus = () => {
-  return (
-    <Container>
-      <Row>
-        <Col xs={6}>
-          <h3>Active Assignments</h3>
-        </Col>
-        <Col xs={6}>
-          <h3>issues</h3>
-          {issues.map((issue) => {
+    }, [])
+    const handleOnchangeEvent = (e) => {
+      const temp = Object.assign(message, { [e.target.name]: e.target.value });
+      setMessage(temp);
+    };
+    const handleComment = () => {
+      const temp = [...comment, message.Comment]
+      postComment({ id: props.id, comment: temp })
+      setComment(temp)
+
+    }
+    if (props.display) {const resolvedIssues = ()=>{
+  
+    }
+      return (
+        <Container style={{ padding: "10px" }}>
+          {comment.map((comment) => {
             return (
-              <>
-                <h6>{issue.project}</h6>
-                <ul>
-                  {issue.comment.map((i) => {
-                    return <li>{i}</li>;
-                  })}
-                </ul>
-              </>
-            );
+              <p>{comment}</p>
+            )
+
           })}
-        </Col>
-      </Row>
-    </Container>
-  );
-};
+          <Row>
+            <Form.Control type="text" placeholder="Comment"
+              name="Comment"
+              onChange={handleOnchangeEvent}
+            />
+          </Row>
+          <Row style={{ margin: "10px 0px 0px 0px" }}>
+            <Col sm={4}>
+              <Button onClick={() => { handleComment() }}>
+                Post
+              </Button>
+            </Col>
+          </Row>
+        </Container>
+      );
+    }
+  };
+  const Comment = (props) => {
+    const [show, setShow] = useState(false);
+    const status = ['Resolved']
 
-const Parent = () => {
+    const handleStatusChange = (id)=>{
+      axios({
+        method:'post',
+        url:'http://localhost:9000/api/Issues/setIssueResolved',
+        data:{id:id}
+    }).then((response)=>{
+      console.log(response.data)
+    setActiveIssues([response.data])
+    })
+    }
+    return (
+      <Card style={{ margin: "10px 0px 0px 0px", padding: "10px" }}>
+        <Card.Title>
+          <Row>
+            <Col>
+              <h3>{props.title}</h3>
+            </Col>
+            <Col sm={4}>
+              <p>Date:{props.createdAt}</p>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={4}>
+              <p>PostedBy:{props.postedBy}</p>
+            </Col>
+          </Row>
+        </Card.Title>
+        <Card.Body>
+          <Row>
+            <p>{props.issue}</p>
+          </Row>
+          <Row>
+            <Col>
+              <button
+                style={{ float: "right" }}
+                onClick={() => {
+                  setShow(!show);
+                }}
+              >
+                comment
+              </button>
+
+            </Col>
+           
+
+            <CommentBox display={show} comments={props.comments} id={props.id}></CommentBox>
+
+          </Row>
+        </Card.Body>
+      </Card>
+    );
+  };
+
   return (
-    <Container>
-      <Row>
-        <Col>
-          <h3>Dashboard</h3>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <MeetingSummary />
-        </Col>
-      </Row>
-
-      <Row>
-        <Col>
-          <WorkStatus />
-        </Col>
-      </Row>
-    </Container>
+    <React.Fragment>
+      {allIssues.map((issue) => {
+        console.log(issue)
+        return (
+          <Comment
+            title={issue.title}
+            postedBy={issue.postedBy}
+            createdAt={issue.createdAt}
+            issue={issue.body}
+            comments={issue.comment}
+            id={issue._id}
+          ></Comment>
+        );
+      })}
+    </React.Fragment>
   );
 };
+
+
 const AdminPanel = () => {
   return (
     <>
-      <Parent />
+    <h5>welcome,{localStorage.getItem("userName")}</h5>
+      <ResolvedIssues />
     </>
   );
 };
