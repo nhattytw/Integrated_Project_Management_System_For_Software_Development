@@ -35,14 +35,15 @@ const CreateProject = async (req, res) => {
                   projectName: projectName,
                   projectRepository: projectRepository,
                   projectManager: Managerresult._id,
+                  wbs:null,
                   budget: budget,
                   duration: duration,
                   descripion: descripion,
                 })
 
                 await newProject.save()
-                console.log("Project saved")
-                createRespository(projectRepository)
+               //   console.log("Project saved")
+                //createRespository(projectRepository)
                 return res
                   .status(200)
                   .json(

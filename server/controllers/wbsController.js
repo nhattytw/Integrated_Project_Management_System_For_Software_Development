@@ -42,13 +42,12 @@ return  {workload:workload,EstimatedCompletionTime:firstTaskDate}
 };
 const addWbs = async (req, res) => {
   connectToDB();
-  const { Task, ProjectName } = req.body;
-
-  const {workload,EstimatedCompletionTime} = timeWorkloadEstimation(Task);
  
+
+  const { Task, ProjectName } = req.body;
+  const {workload,EstimatedCompletionTime} = timeWorkloadEstimation(Task);
   
   try {
-    const { Task, ProjectName } = req.body;
 
     const InsertItems = new item({
       task: Task,
@@ -57,6 +56,7 @@ const addWbs = async (req, res) => {
     });
 
     InsertItems.save((err, result) => {
+      console.log("wbs",result)
       if (err) {
         res.status(403).json("Task failed");
         console.log(err);
@@ -67,21 +67,22 @@ const addWbs = async (req, res) => {
             { wbs: result._id },
             { new: true }
           )
-          .exec((err, result) => {
+          .exec((err, Projectresult) => {
             if (err) {
               console.log(err);
             } else {
-              console.log(result);
+              console.log("consoel",Projectresult);
+              
             }
           });
-        console.log(result._id);
+        console.log("OPen",result._id);
         res.send("ok");
       }
     });
   }
 
   catch (err) {
-    console.log(err);
+    console.log("error",err);
   }
 };
 
