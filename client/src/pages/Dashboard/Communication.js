@@ -552,7 +552,7 @@ const Issues = () => {
                                 Post
                             </Button>
                         </Col>
-                    </Row>
+                    </Row> 
                 </Container>
             );
         }
@@ -568,10 +568,10 @@ const Issues = () => {
                     </Row>
                     <Row>
                         <Col sm={4}>
-                            <p>PostedBy:{props.postedBy}</p>
+                            <p>PostedBy: {props.postedBy}</p>
                         </Col>
                         <Col sm={4}>
-                            <p>Date:{props.createdAt}</p>
+                            <p>Date: {props.createdAt.split('T')[0]}</p>
                         </Col>
                     </Row>
                 </Card.Title>

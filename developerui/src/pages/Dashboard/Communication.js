@@ -348,12 +348,12 @@ const ActiveIssues = () => {
               <h3>{props.title}</h3>
             </Col>
             <Col sm={4}>
-              <p>Date:{props.createdAt}</p>
+              <p>Date: {props.createdAt.split('T')[0]}</p>
             </Col>
           </Row>
           <Row>
             <Col sm={4}>
-              <p>PostedBy:{props.postedBy}</p>
+              <p>PostedBy: {props.postedBy}</p>
             </Col>
           </Row>
         </Card.Title>

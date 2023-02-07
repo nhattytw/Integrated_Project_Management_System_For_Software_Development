@@ -1,7 +1,7 @@
 import "../../Styles/dashboard.css"
 import { useEffect, useState,useContext } from "react";
 import axios from "axios";
-import { Container,Row,Col,Card,Form,Button } from "react-bootstrap";
+import { Container,Row,Col,Card,Form,Button,Alert,Table,ButtonGroup } from "react-bootstrap";
 import NavItem from "rsuite/esm/Nav/NavItem";
 import { Nav } from "rsuite";
 import { Context } from "../../Context/context";
@@ -9,6 +9,9 @@ import { Context } from "../../Context/context";
 import React from "react";
 import { postComment } from "../../API/Issues";
 import  ContenetDisplay  from "../../Components/ConentDisplay/ConentDisplay";
+
+const base_url = 'http://localhost:9000/api'
+
 const Header = ()=>{
     let x = new Date()
     return(
@@ -42,7 +45,7 @@ const ProjectNav = () => {
         </Nav.Item>
         <Nav.Item eventKey="news"  onSelect={()=>{setAdminPages("Issues")}}>Issues</Nav.Item>
         <Nav.Item eventKey="solutions">Teams</Nav.Item>
-        <Nav.Item eventKey="products">Meetings</Nav.Item>
+        <Nav.Item eventKey="products" onSelect={()=>{setAdminPages("ScheduledMeetings")}}>Meetings</Nav.Item>
        
       </Nav>
         
@@ -164,10 +167,10 @@ const AllProjects=()=>{
                         </Row>
                         <Row>
                             <Col sm={4}>
-                                <p>PostedBy:{props.postedBy}</p>
+                                <p>PostedBy: {props.postedBy}</p>
                             </Col>
                             <Col sm={4}>
-                                <p>Date:{props.createdAt}</p>
+                                <p>Date: {props.createdAt.split('T')[0]}</p>
                             </Col>
                         </Row>
                     </Card.Title>
@@ -212,6 +215,145 @@ const AllProjects=()=>{
         );
     };
     
+    const ScheduledMeetings = () => {
+        const [variant, setVariant] = useState('success')
+        const [show, setShow] = useState(false)
+        const [message, setMessage] = useState()
+    
+        const [state, setState] = useState({
+            userName: localStorage.getItem('userName'),
+            result: [],
+            temp: ""
+        })
+    
+        const handleLoad = async () => {
+            setState({
+                ...state,
+                userName: localStorage.getItem('userName'),
+            })
+    
+            try {
+                var formBody = JSON.stringify(state)
+    
+                const response = await fetch(
+                    base_url + `/listMeetings`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'Authorization': localStorage.getItem('Bearer')
+                        },
+                        body: formBody
+                    },
+                )
+                const data = await response.json()
+    
+                if (data.message === "List of Meetings") {
+                    // setState({
+                    //     ...state,
+                    //     result: data.data
+                    // })
+    
+                    data.data.forEach((element) => {
+                        element.meetingInfo.forEach((item) => {
+                            state.result.push(item)
+                        })
+                    })
+    
+                    setState({
+                        ...state,
+                        temp: ""
+                    })
+                } else {
+                    setMessage(data.message)
+                    setVariant("danger")
+                    setShow(true)
+                }
+    
+                setTimeout(() => {
+                    setShow(false)
+                }, "3000")
+            } catch (error) {
+                if (error.message === `Unexpected token 'A', "Access Denied" is not valid JSON`) {
+                    let msgg = `Access Denied`
+                    setMessage(msgg)
+                    setVariant("danger")
+                    setShow(true)
+                }
+                else {
+                    setMessage(error.message)
+                    setVariant("danger")
+                    setShow(true)
+                }
+            }
+        }
+    
+        useEffect(() => {
+    
+            handleLoad()
+        }, [])
+    
+        return (
+            <div>
+                <Alert show={show} variant={variant}>
+                    <p style={{ textAlign: 'center' }}>
+                        {message}
+                    </p>
+                </Alert>
+                <Container>
+                    <Row>
+                        <Col>
+                            <h4>Scheduled Meetings</h4>
+                            <Table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Project Name</th>
+                                        <th>Meeting Id</th>
+                                        <th>Topic</th>
+                                        <th>Duration</th>
+                                        <th>Start Time</th>
+                                        <th>Start Date</th>
+                                        <th>Link</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {state.result?.map((meeting, index) => (
+                                        <tr key={index}>
+                                            <td>{index + 1}</td>
+                                            <td>{meeting.projectName}</td>
+                                            <td>{meeting.meetingId}</td>
+                                            <td>{meeting.meetingTopic}</td>
+                                            <td>{meeting.meetingDuration}</td>
+                                            <td>
+                                                {meeting.meetingStartTime.split('T')[1].split('+')[0]}
+                                            </td>
+                                            <td>{meeting.meetingStartTime.split('T')[0]}</td>
+                                            <td>
+                                                <ButtonGroup style={{ float: "center", padding: "0px 30px 0px 0px" }}>
+                                                    <Button
+                                                        variant='primary'
+                                                        style={{ margin: "0px 8px 0px 0px" }}
+                                                        id="submitButton"
+                                                        onClick={() => {
+                                                            window.open(meeting.meetingStartUrl, "_blank")
+                                                        }}
+                                                    >
+                                                        Start
+                                                    </Button>
+                                                </ButtonGroup>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        </Col>
+                    </Row>
+                </Container>
+            </div >
+        )
+    }
 
 
 const AdminPanel = ()=>

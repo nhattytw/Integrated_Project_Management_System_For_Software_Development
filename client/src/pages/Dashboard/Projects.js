@@ -259,9 +259,9 @@ useEffect(()=>{
                                                 <p>Starting Date:{detail.status}</p>
                                                 <p>Project Repository Name:{detail.projectRepository}</p>
                                                 <p>Duration:{detail.duration}</p>
-                                                <p>Created At:{detail.createdAt}</p>
+                                                <p>Created At:{detail.createdAt.split('T')[0]}</p>
                                                 <p>Description:{detail.descripion}</p>
-                                                <p>Estimated Completion:{detail.EstimatedCompletionTime}</p>
+                                                <p>Estimated Completion:{detail.EstimatedCompletionTime.split('T')[0]}</p>
                                                 
 
                                             </div>
@@ -286,12 +286,12 @@ useEffect(()=>{
                                             <th>Ending Date</th>
 
                                         </tr>
-                                        {Tasks.map((task) => {
+                                        {Tasks?.map((task) => {
                                             return (
                                                 <tr>
                                                     <td>{task.title}</td>
-                                                    <td>{task.StartingDate}</td>
-                                                    <td>{task.EndingDate}</td>
+                                                    <td>{task.StartingDate.split('T')[0]}</td>
+                                                    <td>{task.EndingDate.split('T')[0]}</td>
                                                 </tr>
                                             )
                                         })}
