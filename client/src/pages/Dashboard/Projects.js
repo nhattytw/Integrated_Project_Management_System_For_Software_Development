@@ -860,12 +860,13 @@ const CreateWbs = () => {
 
     const createWbs = (event) => {
         let newData = Object.assign(wbs, { [event.target.name]: event.target.value })
+        console.log(newData)
         setWbs(newData)
     }
 
     const submitWbs = () => {
         const { projectName } = wbs
-
+            
         addWbs(Data, projectName)
     }
 
@@ -895,6 +896,7 @@ const CreateWbs = () => {
                     <Col sm={6}>
                         <Form.Label>Select Project</Form.Label>
                         <Form.Select name="projectName" onChange={(e) => { createWbs(e) }}>
+                            <option></option>
                             {projects.map((data) => {
                                 return (
                                     <option >{data.projectName}</option>

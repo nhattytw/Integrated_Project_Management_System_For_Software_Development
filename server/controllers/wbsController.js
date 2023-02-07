@@ -45,6 +45,9 @@ const addWbs = async (req, res) => {
  
 
   const { Task, ProjectName } = req.body;
+  
+  console.log(req.body)
+  console.log("Name of p:",req)
   const {workload,EstimatedCompletionTime} = timeWorkloadEstimation(Task);
   
   try {
