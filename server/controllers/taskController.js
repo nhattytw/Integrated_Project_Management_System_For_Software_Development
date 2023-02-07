@@ -184,8 +184,8 @@ return a
         for(task in finishedTask)
         {
             taskUpdate.forEach((task_update)=>{
-              let temp = []
               if(task_update.title === task){
+                let temp = []
                 temp=[...task_update.completedTasks,...finishedTask[task]]
                 task_update.completedTasks=[...temp]
                 progress += finishedTask[task].length
@@ -203,9 +203,12 @@ return a
             console.log(err)
           }
           else{
-              console.log(response)
-              if(response.progress === response.workload){
-                project.findOneAndUpdate({projectName:ProjectName},{status:"completed"})
+
+              if(response.progress <= response.workload){
+                
+                project.findOneAndUpdate({projectName:ProjectName},{status:"completed"},{new:true},((err,Projectresponse)=>{
+                  console.log(Projectresponse)
+                }))
               }  
           }
           const jsonData = JSON.stringify(response)

@@ -117,6 +117,7 @@ const ActiveCompletedProjectList = async (req, res) => {
   connectToDB();
 
   const { userName } = req.body;
+  console.log(req.body)
 
   try {
     await User.findOne({ userName: userName })
@@ -453,4 +454,5 @@ module.exports = {
   getDeveloperAssigenedProject,
   getAllProject,
   findProjectSummary,
+  ActiveCompletedProjectList
 };

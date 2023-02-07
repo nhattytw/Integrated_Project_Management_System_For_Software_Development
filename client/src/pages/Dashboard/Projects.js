@@ -34,7 +34,7 @@ const ProjectNav = () => {
                         <Nav.Item icon={<PlusIcon />} onSelect={() => { setTabs("CreateProject") }}>Create Project</Nav.Item>
                         <Nav.Item icon={<BarChartIcon />} onSelect={() => { setTabs("CreateWbs") }}>Create WBS</Nav.Item>
                         <Nav.Item icon={<TimeIcon />} onSelect={() => { setTabs("ActiveProjects") }}>Active Projects</Nav.Item>
-                        {/* <Nav.Item icon={<CheckRoundIcon />} onSelect={() => { setTabs("CompletedProjects") }}>Completed Projects</Nav.Item> */}
+                        <Nav.Item icon={<CheckRoundIcon />} onSelect={() => { setTabs("CompletedProjects") }}>Completed Projects</Nav.Item>
                         <Nav.Item icon={<PauseRoundIcon />} onSelect={() => { setTabs("InactiveProjects") }}>Inactive Projects</Nav.Item>
 
                     </Nav>
@@ -237,7 +237,7 @@ const SummaryPage = () => {
     return (
         <div className='font-link'>
             <Container>
-                <h3>Project Summary</h3>
+                {console.log(Project_Details)}
 
                 {Project_Details.map((detail) => {
                     return (
@@ -261,7 +261,7 @@ const SummaryPage = () => {
                                                 <p>Duration:{detail.duration}</p>
                                                 <p>Created At:{detail.createdAt.split('T')[0]}</p>
                                                 <p>Description:{detail.descripion}</p>
-                                                {/* <p>Estimated Completion:{detail.wbs.EstimatedCompletionTime.split('T')[0]}</p> */}
+                                                <p>Estimated Completion:{detail.wbs.EstimatedCompletionTime .split('T')[0]}</p>
 
 
                                             </div>
@@ -636,6 +636,7 @@ const CompletedProjects = () => {
     const [variant, setVariant] = useState('success')
     const [show, setShow] = useState(false)
     const [message, setMessage] = useState()
+    const[completed,setCompleted] = useState([])
 
     const [state, setState] = useState({
         projectName: "",
@@ -644,63 +645,67 @@ const CompletedProjects = () => {
     })
 
     useEffect(() => {
-        const handleLoad = async () => {
-            try {
-                var formBody = JSON.stringify(state)
+        axios.post(base_url+'/project/completedProjects',{userName:localStorage.getItem('userName')}).then((response)=>{
+            console.log(response.data)
+            setCompleted(response.data)
+        })
+        // const handleLoad = async () => {
+        //     try {
+        //         var formBody = JSON.stringify(state)
 
-                const projectResponse = await fetch(
-                    base_url + `/project/getProject`,
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin': '*',
-                            'Authorization': localStorage.getItem('Bearer')
-                        },
-                        body: formBody
-                    },
-                )
-                const projectData = await projectResponse.json()
+        //         const projectResponse = await fetch(
+        //             base_url + `/project/completedProjects`,
+        //             {
+        //                 method: 'POST',
+        //                 headers: {
+        //                     'Content-Type': 'application/json',
+        //                     'Access-Control-Allow-Origin': '*',
+        //                     'Authorization': localStorage.getItem('Bearer')
+        //                 },
+        //                 body: formBody
+        //             },
+        //         )
+        //         const projectData = await projectResponse.json()
 
-                if (projectData.message === "Project Information") {
-                    var projectResult = []
+        //         if (projectData.message === "Project Information") {
+        //             var projectResult = []
 
-                    projectData.data.forEach(element => {
-                        projectResult.push(element)
-                    })
+        //             projectData.data.forEach(element => {
+        //                 projectResult.push(element)
+        //             })
 
-                    state.result = projectResult
+        //             state.result = projectResult
 
-                    setState({
-                        ...state,
-                        projectName: "",
-                    })
-                } else {
-                    console.log(projectData.message)
-                    setMessage(projectData.message)
-                    setVariant("danger")
-                    setShow(true)
-                }
+        //             setState({
+        //                 ...state,
+        //                 projectName: "",
+        //             })
+        //         } else {
+        //             console.log(projectData.message)
+        //             setMessage(projectData.message)
+        //             setVariant("danger")
+        //             setShow(true)
+        //         }
 
-                setTimeout(() => {
-                    setShow(false)
-                }, "3000")
-            } catch (error) {
-                if (error.message === `Unexpected token 'A', "Access Denied" is not valid JSON`) {
-                    let msgg = `Access Denied`
-                    setMessage(msgg)
-                    setVariant("danger")
-                    setShow(true)
-                }
-                else {
-                    setMessage(error.message)
-                    setVariant("danger")
-                    setShow(true)
-                }
-            }
-        }
+        //         setTimeout(() => {
+        //             setShow(false)
+        //         }, "3000")
+        //     } catch (error) {
+        //         if (error.message === `Unexpected token 'A', "Access Denied" is not valid JSON`) {
+        //             let msgg = `Access Denied`
+        //             setMessage(msgg)
+        //             setVariant("danger")
+        //             setShow(true)
+        //         }
+        //         else {
+        //             setMessage(error.message)
+        //             setVariant("danger")
+        //             setShow(true)
+        //         }
+        //     }
+        // }
 
-        handleLoad()
+        // handleLoad()
     }, [])
 
     return (
@@ -715,7 +720,7 @@ const CompletedProjects = () => {
                     <Col style={{ margin: "0px 0px 0px 18px" }}>
                         <h4>Completed Projects</h4>
 
-                        <h1>Not done yet</h1>
+                        
 
                         <Table>
                             <thead>
@@ -728,12 +733,12 @@ const CompletedProjects = () => {
                                 </tr>
                             </thead>
                             <tbody >
-                                {state.result?.map((projects, index) => (
+                                {completed?.map((projects, index) => (
                                     <tr data-index={index}>
                                         <td>{index + 1}</td>
-                                        <td>{projects}</td>
-                                        <td>{projects}</td>
-                                        <td>{projects}</td>
+                                        <td>{projects.projectName}</td>
+                                        <td>{projects.isAssignedTo[0]}</td>
+                                        {/* <td>{projects}</td> */}
                                         {/* <td>
                                             <Button
                                                 variant="primary"

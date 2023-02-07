@@ -11,7 +11,8 @@ const {
       findProject,
       findProjectSummary,
       getDeveloperAssigenedProject,
-      getAllProject } = require("../controllers/projectController");
+      getAllProject, 
+      ActiveCompletedProjectList} = require("../controllers/projectController");
 
 // @route    POST api/project/createProject
 // @desc     Add Project
@@ -85,6 +86,10 @@ router.post(
 router.post(
       '/project/findProjectSummary',
       findProjectSummary
+)
+router.post(
+      '/project/completedProjects',
+      ActiveCompletedProjectList
 )
 router.post('/project/myprojects', getDeveloperAssigenedProject)
 
