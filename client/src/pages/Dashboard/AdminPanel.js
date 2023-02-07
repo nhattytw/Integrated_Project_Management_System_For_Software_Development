@@ -34,7 +34,7 @@ const ProjectNav = () => {
 
     const { adminPages,setAdminPages } = useContext(Context)
     return (
-        <>
+        <div style={{margin:"0px 200px 0px 180px"}}>
         
         <Nav appearance="tabs"  style={{padding:"0px 0px 0px 0px"}}>
         <Nav.Item eventKey="home"  onSelect={()=>{setAdminPages("projects")}}>
@@ -46,7 +46,7 @@ const ProjectNav = () => {
        
       </Nav>
         
-        </>
+        </div>
     )
 }
 //add padding to the cards

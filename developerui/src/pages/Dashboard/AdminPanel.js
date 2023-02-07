@@ -142,10 +142,10 @@ const ResolvedIssues=()=>{
 
 const AdminPanel = () => {
   return (
-    <>
-    <h5>welcome,{localStorage.getItem("userName")}</h5>
+    <div style={{margin: "40px 200px 200px 200px"}}>
+    <h3 style={{padding:"0px 0px 20px 0px"}}>Welcome {localStorage.getItem("userName")}</h3>
       <ResolvedIssues />
-    </>
+    </div>
   );
 };
 export default AdminPanel;
