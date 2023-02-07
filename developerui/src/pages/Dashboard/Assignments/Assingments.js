@@ -9,7 +9,7 @@ import {
   Accordion,
   Tab,
   FormText,
-  
+
 } from "react-bootstrap";
 import { CheckTreePicker, Toggle } from "rsuite";
 import { Nav } from "rsuite";
@@ -36,16 +36,16 @@ const AssignemtsNav = () => {
                 setAssignment("PendingAssignments");
               }}
             >
-              Pending Assignments
+              Assignments
             </Nav.Item>
-            <Nav.Item
+            {/* <Nav.Item
               icon={<CheckRoundIcon />}
               onSelect={() => {
                 setAssignment("CompletedAssgnement");
               }}
             >
               Completed Assignments
-            </Nav.Item>
+            </Nav.Item> */}
           </Nav>
         </Col>
       </Row>
@@ -55,60 +55,60 @@ const AssignemtsNav = () => {
 
 const PendingAssignments = () => {
   const [activeAssignments, setAssignment] = useState([]);
-  const [projects,setProjects] = useState([])
+  const [projects, setProjects] = useState([])
   const [doneAssignements, setDoneAssignments] = useState({})
-  const [tasks,setTasks] = useState([])
-  const [disabled,setDisabled] = useState(false)
-  const [selectedProject,setSelectedProject] = useState("")
-  const [title,setTitle] = useState("")
+  const [tasks, setTasks] = useState([])
+  const [disabled, setDisabled] = useState(false)
+  const [selectedProject, setSelectedProject] = useState("")
+  const [title, setTitle] = useState("")
   const base_url = "http://localhost:9000/api/";
   const props = {
-    disabled:disabled
+    disabled: disabled
   }
 
   useEffect(() => {
     axios({
-      method:'post',
-      url:base_url.concat('project/myprojects'),
-      data:{
-        username:localStorage.getItem('userName')
-      
+      method: 'post',
+      url: base_url.concat('project/myprojects'),
+      data: {
+        username: localStorage.getItem('userName')
+
       }
-      
-    }).then((response)=>{
+
+    }).then((response) => {
       console.log(response)
       setProjects(response.data)
     })
-   
+
   }, []);
-  const getProjects = (e)=>{
-      axios.post(base_url + "project/findProject",
-     {"project":e.target.value  }
-      ).then((response)=>{
-        if(response.status === 200){
-          setAssignment(response.data[0].wbs.task)
-          setSelectedProject(e.target.value)
-          
-        }
-      }).catch((error)=>{
-        console.log(error)
-      })
+  const getProjects = (e) => {
+    axios.post(base_url + "project/findProject",
+      { "project": e.target.value }
+    ).then((response) => {
+      if (response.status === 200) {
+        setAssignment(response.data[0].wbs.task)
+        setSelectedProject(e.target.value)
+
+      }
+    }).catch((error) => {
+      console.log(error)
+    })
   }
   function removeDuplicates(arr) {
-    return arr.filter((item, 
-        index) => arr.indexOf(item) === index);
-}
-  const handleCheck=(e,title)=>{
-    if(e.target.checked){
-      let Arr = [...tasks,e.target.value]
+    return arr.filter((item,
+      index) => arr.indexOf(item) === index);
+  }
+  const handleCheck = (e, title) => {
+    if (e.target.checked) {
+      let Arr = [...tasks, e.target.value]
       setTasks(Arr)
       let temp = {}
       temp[title] = Arr
       console.log(temp)
       setDoneAssignments(temp)
-    }else{
-      let RemoveUncheckedtasks  = tasks.filter(x => x!== e.target.value)
-     
+    } else {
+      let RemoveUncheckedtasks = tasks.filter(x => x !== e.target.value)
+
       setTasks(RemoveUncheckedtasks)
       let temp = {}
       temp[title] = RemoveUncheckedtasks
@@ -119,83 +119,83 @@ const PendingAssignments = () => {
 
 
 
-    
+
     // setTitle(title)
-    
-    
+
+
   }
-  const postComplete=()=>{
-   
+  const postComplete = () => {
+
     let NewObject = {}
     let newArr = []
-    for(const task in doneAssignements){
-      
-       newArr = removeDuplicates(doneAssignements[task])
-       NewObject[task] = newArr
+    for (const task in doneAssignements) {
+
+      newArr = removeDuplicates(doneAssignements[task])
+      NewObject[task] = newArr
     }
-    console.log("new",NewObject)
-    const taskDetail ={ 
-      ProjectName:selectedProject, 
-      
-      finishedTask:NewObject 
+    console.log("new", NewObject)
+    const taskDetail = {
+      ProjectName: selectedProject,
+
+      finishedTask: NewObject
     }
-  
-   
+
+
     const base_path = 'http://localhost:9000/api/';
-    
+
     axios({
-        method: 'post',
-        url: base_path.concat('task/postCompletedTasks'),
-        data:taskDetail
-      }).then((response)=>{
-       
-       setAssignment(response.data.task)
-      });
+      method: 'post',
+      url: base_path.concat('task/postCompletedTasks'),
+      data: taskDetail
+    }).then((response) => {
+
+      setAssignment(response.data.task)
+    });
   }
 
   return (
     <Container>
       <Row>
         <Col xs={5}>
-        <Form.Label>select project</Form.Label>
-        <Form.Select title="Select project" onChange={(e)=>{getProjects(e)}} >
-          <option></option>
-         {projects.map((project)=>{
-          return(
-            <option>{project.projectName}</option>
-          )
-         })}
-            
-           </Form.Select >
+          <Form.Label>select project</Form.Label>
+          <Form.Select title="Select project" onChange={(e) => { getProjects(e) }} >
+            <option></option>
+            {projects.map((project) => {
+              return (
+                <option>{project.projectName}</option>
+              )
+            })}
 
-          
+          </Form.Select >
+
+
         </Col>
       </Row>
       <Row>
         <Col>
-          {activeAssignments.map((active)=>{
-            return(
-              <Accordion style={{margin:'10px 0px 0px 0px'}}>
+          {activeAssignments.map((active) => {
+            return (
+              <Accordion style={{ margin: '10px 0px 0px 0px' }}>
                 <Accordion.Header>{active.title}</Accordion.Header>
                 <Accordion.Body>
-                  {active.tasks.map((t)=>{
-                    return(
+                  {active.tasks.map((t) => {
+                    return (
                       <>
-                      <Row>
-                      <Col>
-                      <p>{t}</p>
-                      </Col>
-                      <Col>
-                      <input type="checkbox"  value={t} onChange={(e)=>handleCheck(e,active.title)} />
-                      </Col>
-                  </Row>
-                      
+                        <Row>
+                          <Col>
+                            <p>{t}</p>
+                          </Col>
+                          <Col>
+                            <input type="checkbox" value={t} onChange={(e) => handleCheck(e, active.title)} />
+                          </Col>
+                        </Row>
+
                       </>
 
                     )
                   })}
-                  <Button variant="success" style={{float:'right',margin:'5px 0px 5px 0px'}} onClick={()=>{postComplete()}}>Completed</Button>
-              </Accordion.Body>
+                  <Button variant="success" style={{ float: 'right', margin: '5px 0px 5px 0px' }} onClick={() => { postComplete() }}>Completed</Button>
+                </Accordion.Body>
               </Accordion>
             )
           })}
@@ -206,22 +206,22 @@ const PendingAssignments = () => {
   );
 };
 const CompletedAssignments = () => {
-  const [completedTask,setCompletedTask] = useState([])
+  const [completedTask, setCompletedTask] = useState([])
   const base_url = "http://localhost:9000/api/";
   useEffect(() => {
     axios({
-      method:'post',
-      url:base_url.concat('project/myprojects'),
-      data:{
-        username:localStorage.getItem('userName')
-      
+      method: 'post',
+      url: base_url.concat('project/myprojects'),
+      data: {
+        username: localStorage.getItem('userName')
+
       }
-      
-    }).then((response)=>{
-     console.log(response)
+
+    }).then((response) => {
+      console.log(response)
       // setCompletedTask(response.data[0].wbs)
     })
-  },[])
+  }, [])
   return (
     <Container>
       <Row>
@@ -235,12 +235,12 @@ const CompletedAssignments = () => {
                 <th>Assigned Team</th>
                 <th>Date Assigend</th>
                 <th>Date Completed</th>
-                
+
               </tr>
               <tr>
-                {completedTask.map((task)=>{
+                {completedTask.map((task) => {
 
-                <td></td>
+                  <td></td>
                 })}
               </tr>
             </thead>
