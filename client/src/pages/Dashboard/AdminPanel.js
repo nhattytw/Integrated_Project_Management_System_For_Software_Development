@@ -89,7 +89,7 @@ const AllProjects = () => {
                         <Col>{project.duration}</Col>
                         <Col>{project.projectRepository}</Col>
                         <Col><li style={{ color: 'green' }}>{project.status}</li></Col>
-                        <Col>{project.createdAt}</Col>
+                        <Col>{project.createdAt.split('T')[0]}</Col>
                     </Row>
 
                 )

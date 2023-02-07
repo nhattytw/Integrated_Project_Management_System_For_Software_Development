@@ -34,7 +34,7 @@ const ProjectNav = () => {
                         <Nav.Item icon={<PlusIcon />} onSelect={() => { setTabs("CreateProject") }}>Create Project</Nav.Item>
                         <Nav.Item icon={<BarChartIcon />} onSelect={() => { setTabs("CreateWbs") }}>Create WBS</Nav.Item>
                         <Nav.Item icon={<TimeIcon />} onSelect={() => { setTabs("ActiveProjects") }}>Active Projects</Nav.Item>
-                        <Nav.Item icon={<CheckRoundIcon />} onSelect={() => { setTabs("CompletedProjects") }}>Completed Projects</Nav.Item>
+                        {/* <Nav.Item icon={<CheckRoundIcon />} onSelect={() => { setTabs("CompletedProjects") }}>Completed Projects</Nav.Item> */}
                         <Nav.Item icon={<PauseRoundIcon />} onSelect={() => { setTabs("InactiveProjects") }}>Inactive Projects</Nav.Item>
 
                     </Nav>
@@ -58,18 +58,18 @@ const CreateProject = () => {
         const { name, value } = event.target
         // this spreading works
         setFormData({
-             ...formData,
+            ...formData,
             [name]: value,
         })
     }
-    
+
     const handleSubmit = async (event) => {
-        
-        let temp = Object.assign(formData,{userName: localStorage.getItem('userName')})
+
+        let temp = Object.assign(formData, { userName: localStorage.getItem('userName') })
         setFormData({
             temp
         })
-      
+
 
         try {
             var formBody = JSON.stringify(formData)
@@ -87,7 +87,7 @@ const CreateProject = () => {
                 },
             )
             const data = await response.json()
-          
+
             if (data.message === "Project Created Successfully.") {
                 handleCancel()
                 setMessage("Project Created Successfully!")
@@ -151,14 +151,14 @@ const CreateProject = () => {
                                 <Form.Control
                                     type="number"
                                     name="budget"
-                                    onChange={(e)=>{handleChange(e)}}
+                                    onChange={(e) => { handleChange(e) }}
                                     value={formData.budget}
                                 />
                                 <Form.Label>Duration(months)</Form.Label>
                                 <Form.Control
                                     type="number"
                                     name='duration'
-                                    onChange={(e)=>{handleChange(e)}}
+                                    onChange={(e) => { handleChange(e) }}
                                     value={formData.duration}
                                 />
 
@@ -172,14 +172,14 @@ const CreateProject = () => {
                             <Form.Control
                                 type='text'
                                 name="projectRepository"
-                                onChange={(e)=>{handleChange(e)}}
+                                onChange={(e) => { handleChange(e) }}
                                 value={formData.projectRepository}
                             />
                             <Form.Label>Project Description</Form.Label>
                             <Form.Control
                                 as="textarea"
                                 name="descripion"
-                                onChange={(e)=>{handleChange(e)}}
+                                onChange={(e) => { handleChange(e) }}
                                 value={formData.descripion}
                             />
                         </Col>
@@ -190,13 +190,13 @@ const CreateProject = () => {
                             <div style={{ margin: "10px 0px 0px 0px", justifyContent: "end" }}>
                                 <Button
                                     variant="primary"
-                                    onClick={()=>{handleSubmit()}}
+                                    onClick={() => { handleSubmit() }}
                                 >
                                     Submit
                                 </Button>
                                 <Button
                                     variant="dark"
-                                    onClick={()=>{handleCancel()}}
+                                    onClick={() => { handleCancel() }}
                                 >
                                     Clear
                                 </Button>
@@ -214,25 +214,25 @@ const CreateProject = () => {
 
 const SummaryPage = () => {
     const { Detail, setDetail } = useContext(Context)
-    const [Project_Details,setProject_Details] = useState([])
+    const [Project_Details, setProject_Details] = useState([])
     const { wbs } = Detail;
     const Tasks = wbs.task
-    
+
     const base_Path = 'http://localhost:9000/api'
 
-useEffect(()=>{
-    axios.post(base_Path+'/project/findProjectSummary',{
-        "project":Detail.projectName,
-    }).then(
-        (response)=>{
-            setProject_Details(response.data)
-        }
-    )
+    useEffect(() => {
+        axios.post(base_Path + '/project/findProjectSummary', {
+            "project": Detail.projectName,
+        }).then(
+            (response) => {
+                setProject_Details(response.data)
+            }
+        )
 
-},[])
-    
+    }, [])
 
-   
+
+
 
     return (
         <div className='font-link'>
@@ -249,7 +249,7 @@ useEffect(()=>{
                                         <Col>
                                             <div style={{ margin: '0px 0px 0px 20px' }}>
                                                 <h3>Project Progress</h3>
-                                             <Example data = {[{value:wbs.workload},{value:wbs.progress}]}/>
+                                                <Example data={[{ value: wbs.workload }, { value: wbs.progress }]} />
                                             </div>
                                         </Col>
                                         <Col xs={6}>
@@ -261,8 +261,8 @@ useEffect(()=>{
                                                 <p>Duration:{detail.duration}</p>
                                                 <p>Created At:{detail.createdAt.split('T')[0]}</p>
                                                 <p>Description:{detail.descripion}</p>
-                                                <p>Estimated Completion:{detail.EstimatedCompletionTime.split('T')[0]}</p>
-                                                
+                                                {/* <p>Estimated Completion:{detail.wbs.EstimatedCompletionTime.split('T')[0]}</p> */}
+
 
                                             </div>
 
@@ -324,7 +324,7 @@ useEffect(()=>{
                             })}
                         </Container>
                         <Container className='doneBoard'>
-                           
+
                             <h5>Done</h5>
                             {Tasks.map((task) => {
                                 return (
